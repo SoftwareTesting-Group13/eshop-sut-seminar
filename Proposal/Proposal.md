@@ -1,6 +1,7 @@
 # PROPOSAL SEMINAR: CI/CD & TEST HARNESS ENGINEERING
 **Chủ đề:** T07 — CI/CD & Test Harness Engineering  
-**Khóa học:** Kiểm thử Phần mềm (Software Testing - AI-First)  
+**Mã Môn học / Lớp:** Testing-CQ2023-3-LQVu
+**Giảng viên phụ trách:** TS. Lâm Quang Vũ, TS. Trần Duy Hoàng, ThS. Trương Phước Lộc, ThS. Hồ Tuấn Thanh 
 **Hệ thống kiểm thử (SUT):** EShop System (Node.js/Express Backend, SQLite3, Vite/React Frontend)  
 
 ### Thông tin nhóm sinh viên thực hiện:

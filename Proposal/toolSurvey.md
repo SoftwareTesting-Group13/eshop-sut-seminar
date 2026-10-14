@@ -1,6 +1,6 @@
 # BÁO CÁO KHẢO SÁT VÀ SO SÁNH CÁC CÔNG CỤ (TOOL SURVEY)
 **Chủ đề:** T07 — CI/CD & Test Harness Engineering  
-**Môn học:** Kiểm thử Phần mềm (CSC13003 - Software Testing)  
+**Mã Môn học / Lớp:** Testing-CQ2023-3-LQVu
 **Hệ thống kiểm thử (SUT):** EShop System (Node.js/Express, SQLite3, Jest)  
 **Nhóm sinh viên thực hiện:**
 - 23120102 — Nguyễn Ngọc Minh Tuấn

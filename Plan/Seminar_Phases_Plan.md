@@ -1,7 +1,6 @@
 # KẾ HOẠCH THỰC HIỆN SEMINAR T07: CI/CD & TEST-HARNESS ENGINEERING
-**Khóa học:** Kiểm thử Phần mềm (Software Testing - AI-First) — 2026  
-**Giảng viên phụ trách:** TS. Lâm Quang Vũ  
-**Phụ trách Lab & EShop:** ThS. Trần Thị Bích Hạnh  
+**Mã Môn học / Lớp:** Testing-CQ2023-3-LQVu
+**Giảng viên phụ trách:** TS. Lâm Quang Vũ, TS. Trần Duy Hoàng, ThS. Trương Phước Lộc, ThS. Hồ Tuấn Thanh 
 **Nhóm thực hiện:** Nhóm 13 (4 thành viên)
 - **23120102** — Nguyễn Ngọc Minh Tuấn
 - **23120223** — Dương Nhật Cường
