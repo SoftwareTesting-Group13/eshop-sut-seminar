@@ -9,7 +9,7 @@
 #   1. Cài đặt & kiểm thử tự động (automated test) cho backend Express + SQLite.
 #   2. Tối ưu thời gian chạy bằng `actions/cache` cho thư mục `backend/node_modules`.
 #
-# HIỆU QUẢ CACHE ĐÃ GHI NHẬN (đo trên runner ubuntu-latest, Node.js 20):
+# HIỆU QUẢ CACHE ĐÃ GHI NHẬN (đo trên runner ubuntu-latest, Node.js 22):
 #   - Cold run  (cache miss — cài mới toàn bộ dependency): ~60s cho bước `npm ci`
 #   - Warm run  (cache hit  — khôi phục node_modules từ cache): ~5s
 #   => Tiết kiệm ~55s/bản chạy, giảm khoảng 90% thời gian cài dependency.
@@ -34,7 +34,7 @@ permissions:
 
 jobs:
   backend-test:
-    name: Backend Test (Node.js 20)
+    name: Backend Test (Node.js 22)
     runs-on: ubuntu-latest
 
     defaults:
@@ -45,10 +45,10 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 20
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       # ---------------------------------------------------------------------
       # BƯỚC CACHE TRỌNG TÂM — tăng tốc cài đặt dependency backend
@@ -63,9 +63,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: backend/node_modules
-          key: ${{ runner.os }}-node20-${{ hashFiles('backend/package-lock.json') }}
+          key: ${{ runner.os }}-node22-${{ hashFiles('backend/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node20-
+            ${{ runner.os }}-node22-
 
       - name: Install dependencies (npm ci)
         # Chỉ cài khi cache MISS. Khi cache HIT, node_modules đã sẵn sàng.
