@@ -32,7 +32,7 @@
 | :--- | :--- | :---: | :--- |
 | **Nguyễn Ngọc Minh Tuấn** | Viết Data-Driven test coupon API, bắt lỗi `server.js` | `[...]` | `[...]` |
 | **Dương Nhật Cường** | Viết workflow GitHub Actions, setup cache, gom Weekly Report | `[...]` | `[...]` |
-| **Trần Gia Cường** | Rà soát Proposal & toolSurvey, cấu hình Jest `--runInBand` | `[...]` | `[...]` |
+| **Trần Gia Cường** | Rà soát Proposal & toolSurvey, cấu hình Jest `--runInBand` | Hoàn thành | Đã hoàn thành rà soát tài liệu đề cương; cấu hình thành công Jest test engine với Supertest; tái hiện lỗi SQLITE_BUSY và xử lý triệt để bằng cờ --runInBand (Pass 100%) |
 | **Nguyễn Gia Huy** | Viết script `ai_triage.py`, xây dựng kịch bản Flaky test | `[...]` | `[...]` |
 
 ---
@@ -59,9 +59,10 @@
 2. **Minh chứng 2: Tối ưu hóa Cache Dependencies / Test Run**
    - File: `screenshots/[Tên_file_anh_2]`
    - Mô tả: `[Mô tả ảnh chụp màn hình 2]`
-3. **Minh chứng 3: Kết quả thực thi kiểm thử Jest Backend**
-   - File: `screenshots/[Tên_file_anh_3]`
-   - Mô tả: `[Mô tả ảnh chụp màn hình 3]`
+3. **Minh chứng 3: Kết quả thực thi kiểm thử Jest Backend & Xử lý SQLite Lock**
+   - File 1 (Lỗi chạy song song đa tiến trình): [01_sqlite_busy_failure_mode.png](./screenshots/01_sqlite_busy_failure_mode.png)
+   - File 2 (Thành công khi chạy tuần tự --runInBand): [02_jest_run_in_band_success.png](./screenshots/02_jest_run_in_band_success.png)
+   - Mô tả: Thực nghiệm đối chứng giữa việc chạy test song song (`--maxWorkers=4`) gây xung đột khóa file SQLite (`SQLITE_BUSY: database is locked`) và giải pháp cấu hình `--runInBand` giúp 100% test suites vượt qua thành công.
 4. **Minh chứng 4: Script AI Log Triage phân tích lỗi**
    - File: `screenshots/[Tên_file_anh_4]`
    - Mô tả: `[Mô tả ảnh chụp màn hình 4]`
