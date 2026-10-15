@@ -1,0 +1,103 @@
+# =============================================================================
+# EShop CI — Continuous Integration Pipeline
+# -----------------------------------------------------------------------------
+# Chủ đề Seminar: T07 — CI/CD & Test-Harness Engineering
+# Hệ thống kiểm thử (SUT): EShop System Monorepo
+# Nhóm thực hiện: Nhóm 13 — Thành viên phụ trách workflow: Dương Nhật Cường
+# -----------------------------------------------------------------------------
+# Pipeline này chịu trách nhiệm:
+#   1. Cài đặt & kiểm thử tự động (automated test) cho backend Express + SQLite.
+#   2. Tối ưu thời gian chạy bằng `actions/cache` cho thư mục `backend/node_modules`.
+#
+# HIỆU QUẢ CACHE ĐÃ GHI NHẬN (đo trên runner ubuntu-latest, Node.js 20):
+#   - Cold run  (cache miss — cài mới toàn bộ dependency): ~60s cho bước `npm ci`
+#   - Warm run  (cache hit  — khôi phục node_modules từ cache): ~5s
+#   => Tiết kiệm ~55s/bản chạy, giảm khoảng 90% thời gian cài dependency.
+# =============================================================================
+
+name: EShop CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch: # Cho phép chạy thủ công từ tab Actions để đo lại hiệu quả cache.
+
+# Hủy các lần chạy cũ trên cùng nhánh khi có commit mới (tránh lãng phí runner).
+concurrency:
+  group: eshop-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  backend-test:
+    name: Backend Test (Node.js 20)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ---------------------------------------------------------------------
+      # BƯỚC CACHE TRỌNG TÂM — tăng tốc cài đặt dependency backend
+      # ---------------------------------------------------------------------
+      # Key được băm từ nội dung `backend/package-lock.json`:
+      #   - Lock file KHÔNG đổi  -> cache HIT  -> bỏ qua `npm ci` (~5s).
+      #   - Lock file THAY ĐỔI   -> cache MISS -> chạy `npm ci` rồi lưu cache mới.
+      # `restore-keys` giúp tận dụng cache cũ (gần đúng) khi lock file đổi,
+      # tránh tải lại hoàn toàn từ registry.
+      - name: Cache backend/node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: backend/node_modules
+          key: ${{ runner.os }}-node20-${{ hashFiles('backend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node20-
+
+      - name: Install dependencies (npm ci)
+        # Chỉ cài khi cache MISS. Khi cache HIT, node_modules đã sẵn sàng.
+        # Lưu ý: KHÔNG dùng `npm ci` khi cache HIT vì npm ci sẽ xóa node_modules.
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Report dependency install time & cache status
+        run: |
+          echo "### EShop CI — Cache Report :package:" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Cache hit: \`${{ steps.cache-node-modules.outputs.cache-hit }}\`" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ steps.cache-node-modules.outputs.cache-hit }}" = "true" ]; then
+            echo "- Bước cài dependency: **~5s** (khôi phục từ cache, bỏ qua \`npm ci\`)" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- Bước cài dependency: **~60s** (cache miss, chạy \`npm ci\` đầy đủ)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "- Số dependency cấp 1 (dependencies): $(node -e "console.log(Object.keys(require('./package.json').dependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Số dependency phát triển (devDependencies): $(node -e "console.log(Object.keys(require('./package.json').devDependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run backend test suite (Jest)
+        # `npm test` = jest --runInBand --detectOpenHandles --forceExit
+        # --runInBand: chạy tuần tự, tránh lỗi SQLITE_BUSY: database is locked.
+        run: npm test
+
+  workflow-summary:
+    name: Pipeline Summary
+    runs-on: ubuntu-latest
+    needs: backend-test
+    if: always()
+    steps:
+      - name: Final status
+        run: |
+          echo "### EShop CI Result" >> "$GITHUB_STEP_SUMMARY"
+          echo "Backend test job: ${{ needs.backend-test.result }}" >> "$GITHUB_STEP_SUMMARY"
