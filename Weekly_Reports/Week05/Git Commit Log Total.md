@@ -17,7 +17,7 @@
 | :---: | :--- | :---: | :--- | :--- | :--- |
 | **1** | `[Điền Git Username]` | **23120102** | **Nguyễn Ngọc Minh Tuấn** | `23120102@student.hcmus.edu.vn` | Lead Backend Testing & Logic Nghiệp vụ |
 | **2** | `[Điền Git Username]` | **23120223** | **Dương Nhật Cường** | `23120223@student.hcmus.edu.vn` | Lead CI/CD Pipeline & Tổng hợp Báo cáo |
-| **3** | `[Điền Git Username]` | **23120225** | **Trần Gia Cường** | `23120225@student.hcmus.edu.vn` | Lead Đề cương & Cấu hình Test Engine |
+| **3** | trancuonG05 | **23120225** | **Trần Gia Cường** | `giacuong.0023@gmail.com` | Lead Đề cương & Cấu hình Test Engine |
 | **4** | `[Điền Git Username]` | **23120273** | **Nguyễn Gia Huy** | `23120273@student.hcmus.edu.vn` | Lead AI Log Triage & Phân tích Metrics |
 
 ---
@@ -46,7 +46,11 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
 *(Chạy lệnh 1 ở trên và dán toàn bộ kết quả commit log thực tế của dự án vào khối code dưới đây)*
 
 ```text
-[Dán kết quả chạy lệnh: git log --pretty=format:"- [%h] %ad | %an: %s" --date=format:"%Y-%m-%d %H:%M" --reverse vào đây]
+- [2f9bf2b] 2026-05-15 08:27 | Hanh Tran: Initial commit
+- [85af3ba] 2026-05-15 08:30 | ttbhanh-hcmus: first upload
+- [c734272] 2026-10-15 01:10 | 23120225: docs: add seminar proposal, phases plan, week 5 plan, and weekly reports
+- [6c8ce2a] 2026-10-15 01:29 | 23120225: docs: organize plans into Plan directory and clean weekly report templates
+- [c7e7d81] 2026-10-15 21:12 | 23120225: test: configure jest test engine with --runInBand to prevent SQLITE_BUSY lock
 ```
 
 ---
@@ -68,10 +72,12 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
   ```
 
 ### 4.3. Thành viên 3: Trần Gia Cường (MSSV: 23120225)
-* **Tổng số commit:** `[...]`
+* **Tổng số commit:** `3`
 * **Danh sách commits thực tế:**
   ```text
-  [Dán kết quả commit log của Trần Gia Cường vào đây]
+  - [c734272] 2026-10-15 01:10: docs: add seminar proposal, phases plan, week 5 plan, and weekly reports
+  - [6c8ce2a] 2026-10-15 01:29: docs: organize plans into Plan directory and clean weekly report templates
+  - [c7e7d81] 2026-10-15 21:12: test: configure jest test engine with --runInBand to prevent SQLITE_BUSY lock
   ```
 
 ### 4.4. Thành viên 4: Nguyễn Gia Huy (MSSV: 23120273)
@@ -91,7 +97,7 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
 | :--- | :---: | :---: | :---: | :--- |
 | **Nguyễn Ngọc Minh Tuấn** | | | | Data-Driven test coupon API, bắt lỗi server.js |
 | **Dương Nhật Cường** | | | | Workflow GitHub Actions, Cache setup, Gom báo cáo |
-| **Trần Gia Cường** | | | | Rà soát Proposal & toolSurvey, Cấu hình Jest --runInBand |
+| **Trần Gia Cường** | 3 | 6577 | 664 | Rà soát Proposal & toolSurvey, Cấu hình Jest --runInBand |
 | **Nguyễn Gia Huy** | | | | Script Python ai_triage.py, kịch bản Flaky test |
 | **TỔNG CỘNG** | | | | |
 
