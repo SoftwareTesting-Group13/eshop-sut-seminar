@@ -79,9 +79,9 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "- Cache hit: \`${{ steps.cache-node-modules.outputs.cache-hit }}\`" >> "$GITHUB_STEP_SUMMARY"
           if [ "${{ steps.cache-node-modules.outputs.cache-hit }}" = "true" ]; then
-            echo "- Bước cài dependency: **~5s** (khôi phục từ cache, bỏ qua \`npm ci\`)" >> "$GITHUB_STEP_SUMMARY"
+            echo "- Bước cài dependency (khôi phục từ cache, bỏ qua \`npm ci\`)" >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "- Bước cài dependency: **~60s** (cache miss, chạy \`npm ci\` đầy đủ)" >> "$GITHUB_STEP_SUMMARY"
+            echo "- Bước cài dependency (cache miss, chạy \`npm ci\` đầy đủ)" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo "- Số dependency cấp 1 (dependencies): $(node -e "console.log(Object.keys(require('./package.json').dependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"
           echo "- Số dependency phát triển (devDependencies): $(node -e "console.log(Object.keys(require('./package.json').devDependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"

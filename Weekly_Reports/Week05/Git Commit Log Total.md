@@ -78,10 +78,13 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
   ```
 
 ### 4.2. Thành viên 2: Dương Nhật Cường (MSSV: 23120223)
-* **Tổng số commit:** `[...]`
+* **Tổng số commit:** `4`
 * **Danh sách commits thực tế:**
   ```text
-  [Dán kết quả commit log của Dương Nhật Cường vào đây]
+  - [f3b4213] 2026-10-16 10:44: docs: Update AI usage declaration and chat logs for CI/CD workflow caching
+  - [86bd9cd] 2026-10-16 02:35: fix: update dependencies and remove unnecessary peer flags in package-lock.json
+  - [b1254cf] 2026-10-16 01:19: fix: update Node.js version in CI workflow to 22
+  - [2d47562] 2026-10-16 00:14: feat: Add GitHub Actions CI workflow for backend
   ```
 
 ### 4.3. Thành viên 3: Trần Gia Cường (MSSV: 23120225)

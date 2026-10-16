@@ -14,8 +14,8 @@
 
 | STT | Họ và tên sinh viên | Mã số sinh viên (MSSV) | Trạng thái sử dụng (Có dùng / Không dùng) | Các công cụ AI đã sử dụng | Tỷ lệ đóng góp của AI vào kết quả (%) |
 | :---: | :--- | :---: | :---: | :--- | :---: |
-| 1 | Nguyễn Ngọc Minh Tuấn | 23120102 | | | |
-| 2 | Dương Nhật Cường | 23120223 | | | |
+| 1 | Nguyễn Ngọc Minh Tuấn | 23120102 | Có dùng | Claude | 40% |
+| 2 | Dương Nhật Cường | 23120223 | Có dùng | OpenCode | 40% |
 | 3 | Trần Gia Cường | 23120225 | Có dùng | Antigravity IDE (Gemini) | 35% |
 | 4 | Nguyễn Gia Huy | 23120273 | | | |
 
@@ -29,24 +29,44 @@
 - **Mục đích:**
   - Quét nhanh codebase eshop-sut-seminar để hiểu cấu trúc và các điểm lệch so với api_specification.md
   - Hỗ trợ soạn backend/tests/coupon.test.js (Data-Driven Testing với test.each) cho POST /api/apply-coupon
+  - Hỗ trợ phân tích lỗi công thức coupon percent ở server.js dòng 398–401 (Failure Mode 2)
 - **Câu Prompt tiêu biểu:**
   > *"Viết bộ kiểm thử hướng dữ liệu (Data-Driven Testing với test.each) trong file tests/coupon.test.js để kiểm thử toàn diện API POST /api/apply-coupon (các trường hợp coupon hợp lệ, coupon hết hạn, đơn hàng chưa đủ điều kiện tối thiểu)"*
-- **Đánh giá kết quả sinh ra:** `[Đánh giá tính chính xác, hữu ích của câu trả lời]`
-- **Kiểm chứng & Biên tập thủ công:** `[Mô tả cách thức bạn tự kiểm chứng, sửa lỗi của AI]`
+- **Đánh giá kết quả sinh ra:**
+  - Quét được toàn bộ codebase và xác định chức năng để chuẩn bị các test cases
+  - Hoàn tất việc sinh ra 21 test cases gồm: coupon hợp lệ (7), hết hạn (2), chưa đủ ngưỡng (4), mã không hợp lệ (4 + 1 ca is_active = 0), và nhóm Failure Mode 2 (3 ca kiểm tra bất biến 0 <= discount_amount <= total)
+  - Phát hiện thêm lỗi biên C3: server.js dòng 379 dùng > nên đơn đúng bằng min_order_amount bị từ chối
+- **Kiểm chứng & Biên tập thủ công:**
+  - Tự tay chạy npm test -- tests/coupon.test.js trên máy cá nhân và lưu log vào
+  - Đối chiếu kết quả thực tế với bảng dự đoán ở Lượt 2
+  - Chụp màn hình terminal và ghi các chỉnh sửa thủ công vào Report
 
 ---
 
 ### 2.2. Sinh viên 2: Dương Nhật Cường (MSSV: 23120223)
-- **Tình trạng sử dụng:** `[Có sử dụng / Tôi xác nhận không sử dụng AI trong tuần này]`
-- **Công cụ:** `[Tên công cụ AI hoặc ghi "Không có"]`
-- **Mục đích:** `[Mô tả mục đích sử dụng AI]`
+- **Tình trạng sử dụng:** Có sử dụng
+- **Công cụ:** OpenCode
+- **Mục đích:** 
+  - Quét toàn bộ cấu trúc repo EShop (monorepo 4 thành phần) để xác định runtime và cách chạy backend test suite.
+  - Thiết kế và sinh file cấu hình CI/CD `eshop-ci.yml` cho GitHub Actions (runner `ubuntu-latest`, Node.js 22).
+  - Hướng dẫn tích hợp `actions/cache` cho thư mục `backend/node_modules` và cách băm cache key theo `backend/package-lock.json`.
+  - Giải thích lý do không được chạy `npm ci` khi cache HIT (vì `npm ci` sẽ xóa `node_modules`) và cách dùng điều kiện `if: steps.cache.outputs.cache-hit != 'true'`.
+  - Review và chẩn đoán lỗi pipeline CI thất bại ở bước `npm ci` (`npm error code EUSAGE`), chỉ ra nguyên nhân gốc là `backend/package-lock.json` bị khuyết entry `@emnapi/core` / `@emnapi/runtime` so với `package.json`.
+  - Hướng dẫn khắc phục bằng cách sinh lại lock (`npm install --package-lock-only`) và kiểm chứng lại luồng `npm ci` + `npm test` trên đúng phiên bản Node.js/npm của runner.
 - **Câu Prompt tiêu biểu:**
-  > `[Dán prompt tiêu biểu tại đây]`
-- **Đánh giá kết quả sinh ra:**
-  - 21 test cases đã được tạo gồm: coupon hợp lệ (7), hết hạn (2), chưa đủ ngưỡng (4), mã không hợp lệ (4 + 1 ca is_active = 0), và nhóm Failure Mode 2 (3 ca kiểm tra bất biến 0 <= discount_amount <= total)
-- **Kiểm chứng & Biên tập thủ công:**
-  - Kiểm tra tính chính xác bằng cách tự chạy thực nghiệm *"npm test -- tests/coupon.test.js"*, xem log và đối chiếu lại với code 
-  - Chụp ảnh screenshots để lưu vào `screenshots/` và commit mã nguồn
+  > *"Bạn là 1 chuyên gia DevOps với kinh nghiệm build các CI/CD Pipeline hoàn chỉnh. Task: Quét toàn bộ repo này, khởi tạo thư mục `.github/workflows/` trong repo EShop, xây dựng file cấu hình `eshop-ci.yml` chạy trên runner `ubuntu-latest` với Node.js 22, tích hợp `actions/cache` cho thư mục `backend/node_modules` và ghi nhận hiệu quả tăng tốc (từ ~60s xuống ~5s)."* (sau đó điều chỉnh runtime từ Node.js 20 lên Node.js 22 vì Node.js 20 hiện đã quá cũ và ít được support nữa)
+  > *"Pipeline CI bị lỗi như hình, review và report lại giúp tôi."* (kèm ảnh chụp log GitHub Actions thất bại ở bước `Install dependencies (npm ci)`)
+- **Đánh giá kết quả sinh ra:** 
+  - AI quét repo chính xác: nhận diện đúng `backend/package.json` (script test `jest --runInBand --detectOpenHandles --forceExit`), sự tồn tại của `backend/package-lock.json` và 4 test suites, đồng thời chỉ ra repo chưa có thư mục `.github/`.
+  - File workflow sinh ra đúng yêu cầu, đặc biệt cảnh báo chính xác cạm bẫy "`npm ci` luôn xóa `node_modules`" — nguyên nhân khiến cache mất tác dụng nếu dùng sai.
+  - Với lỗi pipeline: AI chẩn đoán đúng, **không đổ lỗi cho code/test**, mà chỉ ra `package-lock.json` thiếu entry `@emnapi/core` và `@emnapi/runtime` (transitive của Jest 30 qua `@unrs/resolver-binding-wasm32-wasi`, nền tảng `wasm32`), đồng thời truy đúng commit `c7e7d81` làm lock bị lệch.
+- **Kiểm chứng & Biên tập thủ công:** 
+  - Review file chat log `chatlog_cuong_workflow_cache.md` và commit lên GitHub Organization.
+  - Tự tái hiện lỗi `npm ci` bằng Node.js `22.17.0` / npm `10.9.2` (khớp runner) để xác nhận thông báo `EUSAGE`.
+  - Tự đối chiếu lock file (đếm package, kiểm tra sự tồn tại của `@emnapi/core` và `@emnapi/runtime`) để xác nhận nguyên nhân do AI nêu.
+  - Tự chạy lại `npm ci` (exit 0) và `npm test` (4 suites / 6 tests passed) trên lock file đã sinh, rồi tự commit `backend/package-lock.json` và push để pipeline chạy lại.
+  - Tự kích hoạt lại workflow CI/CD trên GitHub Actions để kiểm chứng cache HIT và chụp ảnh màn hình minh chứng lưu vào thư mục `screenshots/`.
+>>>>>>> origin/main
 
 ---
 
@@ -84,7 +104,7 @@
 Lưu các file xuất lịch sử trò chuyện (Chat Log / Prompt Log) chi tiết với các công cụ AI tại thư mục:
 * Thư mục lưu trữ: `Weekly_Reports/Week05/chat_logs/`
   * `[Tên file chat log của thành viên 1]`
-  * `[Tên file chat log của thành viên 2]`
+  * `chatlog_cuong_workflow_cache.md` (CI/CD Workflow & Dependency Cache — Dương Nhật Cường; gồm cả phiên điều tra & sửa lỗi pipeline `npm ci` EUSAGE)
   * `[Tên file chat log của thành viên 3]`
   * `[Tên file chat log của thành viên 4]`
 
@@ -99,7 +119,7 @@ Chúng tôi cam đoan những thông tin kê khai trên là hoàn toàn trung th
 | Họ và tên | Chữ ký số / Xác nhận điện tử | Ngày ký |
 | :--- | :---: | :---: |
 | **Nguyễn Ngọc Minh Tuấn** | `[Chưa ký / Đã ký]` | `[dd/mm/yyyy]` |
-| **Dương Nhật Cường** | `[Chưa ký / Đã ký]` | `[dd/mm/yyyy]` |
+| **Dương Nhật Cường** | `Đã ký` | `16/10/2026` |
 | **Trần Gia Cường** | `Đã ký` | `15/10/2026` |
 | **Nguyễn Gia Huy** | `[Chưa ký / Đã ký]` | `[dd/mm/yyyy]` |
 
