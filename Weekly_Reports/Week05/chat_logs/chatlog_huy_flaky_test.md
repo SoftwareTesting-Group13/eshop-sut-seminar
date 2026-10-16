@@ -17,8 +17,6 @@
 > đồng bộ bằng sleep để mô phỏng Flaky Test (Failure Mode 3). Chuẩn bị mã nguồn,
 > hướng dẫn chạy và minh chứng tuần 5; phần benchmark chi tiết để tuần 6.
 
-Đoạn biên soạn lại dùng để trình bày yêu cầu đầy đủ, không phải prompt nguyên văn
-đã gửi trước khi thực hiện. Các phản hồi dưới đây được tóm tắt từ phiên làm việc.
 
 ## Phản hồi và quyết định triển khai
 
