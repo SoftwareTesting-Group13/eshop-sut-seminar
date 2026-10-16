@@ -15,7 +15,7 @@
 
 | STT | Git / GitHub Username | Mã số sinh viên (MSSV) | Họ và tên đầy đủ | Email đăng ký Git | Vai trò chính trong dự án |
 | :---: | :--- | :---: | :--- | :--- | :--- |
-| **1** | `[Điền Git Username]` | **23120102** | **Nguyễn Ngọc Minh Tuấn** | `23120102@student.hcmus.edu.vn` | Lead Backend Testing & Logic Nghiệp vụ |
+| **1** | nnmt2810 | **23120102** | **Nguyễn Ngọc Minh Tuấn** | `23120102@student.hcmus.edu.vn` | Lead Backend Testing & Logic Nghiệp vụ |
 | **2** | `[Điền Git Username]` | **23120223** | **Dương Nhật Cường** | `23120223@student.hcmus.edu.vn` | Lead CI/CD Pipeline & Tổng hợp Báo cáo |
 | **3** | trancuonG05 | **23120225** | **Trần Gia Cường** | `giacuong.0023@gmail.com` | Lead Đề cương & Cấu hình Test Engine |
 | **4** | `[Điền Git Username]` | **23120273** | **Nguyễn Gia Huy** | `23120273@student.hcmus.edu.vn` | Lead AI Log Triage & Phân tích Metrics |
@@ -51,6 +51,17 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
 - [c734272] 2026-10-15 01:10 | 23120225: docs: add seminar proposal, phases plan, week 5 plan, and weekly reports
 - [6c8ce2a] 2026-10-15 01:29 | 23120225: docs: organize plans into Plan directory and clean weekly report templates
 - [c7e7d81] 2026-10-15 21:12 | 23120225: test: configure jest test engine with --runInBand to prevent SQLITE_BUSY lock
+- [74a1afd] 2026-10-15 21:50 | trancuonG05: Merge pull request #1 from SoftwareTesting-Group13/feature/giacuong-setup-jest
+- [989e4e4] 2026-10-15 22:56 | 23120225: docs(reports): update week 5 ai usage declaration and git commit log for Tran Gia Cuong
+- [e5a1c29] 2026-10-15 23:01 | trancuonG05: Merge pull request #2 from SoftwareTesting-Group13/feature/giacuong-setup-jest
+- [2d47562] 2026-10-16 00:14 | cuogne: feat: Add GitHub Actions CI workflow for backend
+- [b1254cf] 2026-10-16 01:19 | cuogne: fix: update Node.js version in CI workflow to 22
+- [e601f21] 2026-10-16 02:00 | cừn: Merge pull request #3 from SoftwareTesting-Group13/ncuong
+- [86bd9cd] 2026-10-16 02:35 | cuogne: fix: update dependencies and remove unnecessary peer flags in package-lock.json
+- [7be8fe8] 2026-10-16 02:40 | cừn: Merge pull request #4 from SoftwareTesting-Group13/ncuong
+- [9a328b4] 2026-10-16 09:26 | 23120102: test: add data-driven coupon tests for apply-coupon API
+- [098f447] 2026-10-16 09:30 | 23120102: docs: add coupon test screenshots
+- [6b7ddf0] 2026-10-16 09:44 | 23120102: test: move data-driven coupon tests to coupon.test.js, restore coupons.test.js
 ```
 
 ---
@@ -61,7 +72,9 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
 * **Tổng số commit:** `[...]`
 * **Danh sách commits thực tế:**
   ```text
-  [Dán kết quả commit log của Minh Tuấn vào đây]
+   - [9a328b4] 2026-10-16 09:26 | 23120102: test: add data-driven coupon tests for apply-coupon API
+   - [098f447] 2026-10-16 09:30 | 23120102: docs: add coupon test screenshots
+   - [6b7ddf0] 2026-10-16 09:44 | 23120102: test: move data-driven coupon tests to coupon.test.js, restore coupons.test.js
   ```
 
 ### 4.2. Thành viên 2: Dương Nhật Cường (MSSV: 23120223)
@@ -98,7 +111,7 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
 
 | Thành viên | Số commit | Số dòng code / tài liệu thêm (+) | Số dòng xóa (-) | Hạng mục đóng góp chính |
 | :--- | :---: | :---: | :---: | :--- |
-| **Nguyễn Ngọc Minh Tuấn** | | | | Data-Driven test coupon API, bắt lỗi server.js |
+| **Nguyễn Ngọc Minh Tuấn** | 3 | 303 | 151 | Data-Driven test coupon API, bắt lỗi server.js |
 | **Dương Nhật Cường** | | | | Workflow GitHub Actions, Cache setup, Gom báo cáo |
 | **Trần Gia Cường** | 3 | 6577 | 664 | Rà soát Proposal & toolSurvey, Cấu hình Jest --runInBand |
 | **Nguyễn Gia Huy** | | | | Script Python ai_triage.py, kịch bản Flaky test |

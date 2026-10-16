@@ -14,7 +14,7 @@
 
 | STT | Họ và tên sinh viên | Mã số sinh viên (MSSV) | Trạng thái sử dụng (Có dùng / Không dùng) | Các công cụ AI đã sử dụng | Tỷ lệ đóng góp của AI vào kết quả (%) |
 | :---: | :--- | :---: | :---: | :--- | :---: |
-| 1 | Nguyễn Ngọc Minh Tuấn | 23120102 | | | |
+| 1 | Nguyễn Ngọc Minh Tuấn | 23120102 | Có dùng | Claude | 40% |
 | 2 | Dương Nhật Cường | 23120223 | Có dùng | OpenCode | 40% |
 | 3 | Trần Gia Cường | 23120225 | Có dùng | Antigravity IDE (Gemini) | 35% |
 | 4 | Nguyễn Gia Huy | 23120273 | | | |
@@ -24,13 +24,22 @@
 ## 2. NHẬT KÝ CHI TIẾT QUÁ TRÌNH SỬ DỤNG AI CỦA TỪNG THÀNH VIÊN
 
 ### 2.1. Sinh viên 1: Nguyễn Ngọc Minh Tuấn (MSSV: 23120102)
-- **Tình trạng sử dụng:** `[Có sử dụng / Tôi xác nhận không sử dụng AI trong tuần này]`
-- **Công cụ:** `[Tên công cụ AI hoặc ghi "Không có"]`
-- **Mục đích:** `[Mô tả mục đích sử dụng AI]`
+- **Tình trạng sử dụng:** Có sử dụng 
+- **Công cụ:** Claude (Anthropic)
+- **Mục đích:**
+  - Quét nhanh codebase eshop-sut-seminar để hiểu cấu trúc và các điểm lệch so với api_specification.md
+  - Hỗ trợ soạn backend/tests/coupon.test.js (Data-Driven Testing với test.each) cho POST /api/apply-coupon
+  - Hỗ trợ phân tích lỗi công thức coupon percent ở server.js dòng 398–401 (Failure Mode 2)
 - **Câu Prompt tiêu biểu:**
-  > `[Dán prompt tiêu biểu tại đây]`
-- **Đánh giá kết quả sinh ra:** `[Đánh giá tính chính xác, hữu ích của câu trả lời]`
-- **Kiểm chứng & Biên tập thủ công:** `[Mô tả cách thức bạn tự kiểm chứng, sửa lỗi của AI]`
+  > *"Viết bộ kiểm thử hướng dữ liệu (Data-Driven Testing với test.each) trong file tests/coupon.test.js để kiểm thử toàn diện API POST /api/apply-coupon (các trường hợp coupon hợp lệ, coupon hết hạn, đơn hàng chưa đủ điều kiện tối thiểu)"*
+- **Đánh giá kết quả sinh ra:**
+  - Quét được toàn bộ codebase và xác định chức năng để chuẩn bị các test cases
+  - Hoàn tất việc sinh ra 21 test cases gồm: coupon hợp lệ (7), hết hạn (2), chưa đủ ngưỡng (4), mã không hợp lệ (4 + 1 ca is_active = 0), và nhóm Failure Mode 2 (3 ca kiểm tra bất biến 0 <= discount_amount <= total)
+  - Phát hiện thêm lỗi biên C3: server.js dòng 379 dùng > nên đơn đúng bằng min_order_amount bị từ chối
+- **Kiểm chứng & Biên tập thủ công:**
+  - Tự tay chạy npm test -- tests/coupon.test.js trên máy cá nhân và lưu log vào
+  - Đối chiếu kết quả thực tế với bảng dự đoán ở Lượt 2
+  - Chụp màn hình terminal và ghi các chỉnh sửa thủ công vào Report
 
 ---
 
@@ -57,6 +66,7 @@
   - Tự đối chiếu lock file (đếm package, kiểm tra sự tồn tại của `@emnapi/core` và `@emnapi/runtime`) để xác nhận nguyên nhân do AI nêu.
   - Tự chạy lại `npm ci` (exit 0) và `npm test` (4 suites / 6 tests passed) trên lock file đã sinh, rồi tự commit `backend/package-lock.json` và push để pipeline chạy lại.
   - Tự kích hoạt lại workflow CI/CD trên GitHub Actions để kiểm chứng cache HIT và chụp ảnh màn hình minh chứng lưu vào thư mục `screenshots/`.
+>>>>>>> origin/main
 
 ---
 
