@@ -1,0 +1,36 @@
+> backend@1.0.0 test:flaky
+> jest --config demos/jest.flaky.config.cjs --runInBand
+
+  console.log
+    [FM3][sleep] profile=slow workDelayMs=200 waitMs=100 ready=false
+
+      at Object.log (demos/flaky-delay.demo.js:32:15)
+
+  console.log
+    [FM3][await] profile=slow workDelayMs=200 ready=true
+
+      at Object.log (demos/flaky-delay.demo.js:45:13)
+
+FAIL demos/flaky-delay.demo.js
+  ● Failure Mode 3 - async delay / sleep-based flaky test › sleep-based wait can inspect work before completion
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      33 |         `[FM3][sleep] profile=${profile} workDelayMs=${workDelayMs} waitMs=${waitMs} ready=${job.state.ready}`,
+      34 |       );
+    > 35 |       expect(job.state.ready).toBe(true);
+         |                               ^
+      36 |     } finally {
+      37 |       // Drain the operation even after an assertion failure, avoiding leaked timers.
+      38 |       await job.completed;
+
+      at Object.toBe (demos/flaky-delay.demo.js:35:31)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 passed, 2 total
+Snapshots:   0 total
+Time:        0.876 s, estimated 1 s
+Ran all test suites.

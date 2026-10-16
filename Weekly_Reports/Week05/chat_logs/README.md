@@ -4,3 +4,4 @@ Lưu các file log tại đây:
 - `chatlog_cuong_workflow_cache.md`
 - `chatlog_giacuong_jest_sqlite.md`
 - `chatlog_huy_ai_triage_script.md`
+- `chatlog_huy_flaky_test.md`

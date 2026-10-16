@@ -17,7 +17,7 @@
 | 1 | Nguyễn Ngọc Minh Tuấn | 23120102 | Có dùng | Claude | 40% |
 | 2 | Dương Nhật Cường | 23120223 | Có dùng | OpenCode | 40% |
 | 3 | Trần Gia Cường | 23120225 | Có dùng | Antigravity IDE (Gemini) | 35% |
-| 4 | Nguyễn Gia Huy | 23120273 | | | |
+| 4 | Nguyễn Gia Huy | 23120273 | Có dùng | Codex (OpenAI) | 40% |
 
 ---
 
@@ -66,7 +66,6 @@
   - Tự đối chiếu lock file (đếm package, kiểm tra sự tồn tại của `@emnapi/core` và `@emnapi/runtime`) để xác nhận nguyên nhân do AI nêu.
   - Tự chạy lại `npm ci` (exit 0) và `npm test` (4 suites / 6 tests passed) trên lock file đã sinh, rồi tự commit `backend/package-lock.json` và push để pipeline chạy lại.
   - Tự kích hoạt lại workflow CI/CD trên GitHub Actions để kiểm chứng cache HIT và chụp ảnh màn hình minh chứng lưu vào thư mục `screenshots/`.
->>>>>>> origin/main
 
 ---
 
@@ -89,13 +88,31 @@
 ---
 
 ### 2.4. Sinh viên 4: Nguyễn Gia Huy (MSSV: 23120273)
-- **Tình trạng sử dụng:** `[Có sử dụng / Tôi xác nhận không sử dụng AI trong tuần này]`
-- **Công cụ:** `[Tên công cụ AI hoặc ghi "Không có"]`
-- **Mục đích:** `[Mô tả mục đích sử dụng AI]`
+- **Tình trạng sử dụng:** Có sử dụng
+- **Công cụ:** Codex (OpenAI)
+- **Thời điểm:** 16/10/2026 (giờ Việt Nam)
+- **Mục đích:**
+  - Tham khảo cách xây dựng công cụ AI Log Triage cho log kiểm thử Jest của EShop.
+  - Hỗ trợ viết `.github/scripts/ai_triage.py`: đọc log từ stdin/file, chuẩn bị yêu cầu phân tích nguyên nhân và Cây giả thuyết, xử lý phản hồi API và xuất Markdown.
+  - Hỗ trợ viết bộ kiểm tra offline, hướng dẫn chạy trên PowerShell và phân tích lỗi khi thử kết nối API.
+  - Điều chỉnh phần kết nối từ OpenAI sang Gemini sau khi lần gọi OpenAI trả lỗi hết credits.
+  - Hỗ trợ xây dựng kịch bản Flaky Test do chờ cố định bằng sleep, ca đối chứng dùng await và hướng dẫn tái hiện Failure Mode 3.
 - **Câu Prompt tiêu biểu:**
-  > `[Dán prompt tiêu biểu tại đây]`
-- **Đánh giá kết quả sinh ra:** `[Đánh giá tính chính xác, hữu ích của câu trả lời]`
-- **Kiểm chứng & Biên tập thủ công:** `[Mô tả cách thức bạn tự kiểm chứng, sửa lỗi của AI]`
+  > "Bạn là một kỹ sư kiểm thử phần mềm có kinh nghiệm xây dựng công cụ AI hỗ trợ phân tích log lỗi trong CI/CD. Hãy đọc nhiệm vụ của Nguyễn Gia Huy trong `Plan/Week5Plan.md` và hỗ trợ viết `.github/scripts/ai_triage.py`: đọc log kiểm thử thất bại từ stdin hoặc file, gọi OpenAI API, xuất Cây giả thuyết gồm hiện tượng, nguyên nhân khả dĩ, bằng chứng, cách kiểm chứng và hướng khắc phục ra terminal hoặc Markdown. Đọc API key từ biến môi trường, bổ sung hướng dẫn chạy và kiểm tra offline. Thực hiện từng nhiệm vụ một, để phần Flaky Test và đẩy nhánh lên GitHub sau."
+  - *Prompt được biên soạn lại từ yêu cầu và lựa chọn trong hội thoại; các lời nhắn thực tế được lưu trong `chat_logs/chatlog_huy_ai_triage_script.md`.*
+  - **Prompt bổ sung:** "bắt đầu qua phần flaky test thôi".
+- **Đánh giá kết quả sinh ra:**
+  - AI hỗ trợ tạo phần triển khai chính của script, bộ kiểm tra và hướng dẫn sử dụng. Script đọc được log Jest thực tế ở chế độ dry run; bộ kiểm tra offline đạt 6/6 test với phản hồi API giả lập.
+  - Hướng dẫn ban đầu còn dài; thông báo HTTP 429 ban đầu chưa phân biệt được nguyên nhân. Phần xử lý lỗi được bổ sung mã chi tiết, giúp xác định `credit_balance_exhausted` từ phản hồi OpenAI.
+  - Kết quả hiện có xác nhận khả năng đọc log và các luồng xử lý được kiểm tra offline. Chưa có Cây giả thuyết từ LLM thật nên chưa đánh giá được độ chính xác của chẩn đoán hoặc hiệu quả rút ngắn thời gian phân tích.
+  - AI tạo demo `backend/demos/flaky-delay.demo.js` và lệnh `test:flaky`. Codex chạy xác nhận: profile fast có 2 ca pass; profile slow có 1 ca fail do sleep và 1 ca pass nhờ await; hai lượt random quan sát được cả pass và fail. Đây là mô phỏng có can thiệp độ trễ, chưa phải số liệu benchmark CI.
+- **Kiểm chứng & Biên tập thủ công:**
+  - Tự chạy nhóm Jest `Failure Mode 2`, lưu log tại `Weekly_Reports/Week05/coupon_failure_mode2_huy.txt`: 3 test thất bại, 18 test bỏ qua; ghi nhận `discount_amount = -9000000` và `final_amount = 10000000`.
+  - Tự chạy script với `--dry-run` trên log đã tạo, lưu ảnh đầu vào và đầu ra để minh chứng việc đọc log.
+  - Thử gọi OpenAI API trên máy cá nhân và ghi nhận lỗi `credit_balance_exhausted`; bản triển khai hiện tại chuyển sang Gemini để tiếp tục thử nghiệm với quota miễn phí khi có thể.
+  - Lưu ảnh minh chứng trong `Weekly_Reports/Week05/screenshots/`: `04_ai_triage_offline_tests.png`, `04_ai_triage_input_log.png`, `04_ai_triage_dry_run_02.png`; lưu prompt và quá trình kiểm chứng trong `chat_logs/chatlog_huy_ai_triage_script.md`.
+  - Tự chạy demo Flaky với profile fast: 2 ca pass; profile slow: ca sleep fail với `Expected: true`, `Received: false`, còn ca await pass. Đã chụp và lưu `05_flaky_test_fast_pass.png`, `05_flaky_test_slow_fail.png` trong thư mục screenshots.
+  - Phần gọi Gemini thật và đối chiếu chẩn đoán với mã nguồn chưa được kiểm chứng. Kịch bản Flaky tuần 5 đã có mã và minh chứng đối chứng; chạy lặp, đo flake rate trên CI để tuần 6.
 
 ---
 
@@ -106,7 +123,8 @@ Lưu các file xuất lịch sử trò chuyện (Chat Log / Prompt Log) chi ti�
   * `[Tên file chat log của thành viên 1]`
   * `chatlog_cuong_workflow_cache.md` (CI/CD Workflow & Dependency Cache — Dương Nhật Cường; gồm cả phiên điều tra & sửa lỗi pipeline `npm ci` EUSAGE)
   * `[Tên file chat log của thành viên 3]`
-  * `[Tên file chat log của thành viên 4]`
+  * `chatlog_huy_ai_triage_script.md` (Nguyễn Gia Huy — Codex hỗ trợ xây dựng AI Log Triage; kết nối ban đầu OpenAI, hiện chuyển sang Gemini)
+  * `chatlog_huy_flaky_test.md` (Nguyễn Gia Huy — Flaky Test do async delay, ca đối chứng await và kết quả chạy của Codex)
 
 ---
 

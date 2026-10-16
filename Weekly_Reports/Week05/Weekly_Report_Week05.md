@@ -22,7 +22,8 @@
 3. **Về mặt Test Harness & Backend Testing:**
    - `[Điền kết quả cấu hình Jest, --runInBand SQLite, test coupon API]`
 4. **Về mặt AI Log Triage & Kịch bản Flaky Test:**
-   - `[Điền kết quả script ai_triage.py và kịch bản test delay]`
+   - Đã viết `ai_triage.py`, kiểm tra offline đạt 6/6 test và đọc được log coupon qua dry run; kết nối Gemini thật chưa được kiểm chứng thành công.
+   - Đã tạo demo async delay trong `backend/demos/` với lệnh `npm run test:flaky`. Codex chạy đối chứng fast/slow và quan sát hai lượt random có kết quả pass/fail khác nhau; ca await hoàn tất tác vụ đều pass. Nguyễn Gia Huy đã tự chạy fast (2 passed), slow (1 failed, 1 passed) và lưu hai ảnh minh chứng; benchmark CI để tuần 6.
 
 ---
 
@@ -33,7 +34,7 @@
 | **Nguyễn Ngọc Minh Tuấn** | Viết Data-Driven test coupon API, bắt lỗi `server.js` | `[...]` | `[...]` |
 | **Dương Nhật Cường** | Viết workflow GitHub Actions, setup cache, gom Weekly Report | `[...]` | `[...]` |
 | **Trần Gia Cường** | Rà soát Proposal & toolSurvey, cấu hình Jest `--runInBand` | Hoàn thành | Đã hoàn thành rà soát tài liệu đề cương; cấu hình thành công Jest test engine với Supertest; tái hiện lỗi SQLITE_BUSY và xử lý triệt để bằng cờ --runInBand (Pass 100%) |
-| **Nguyễn Gia Huy** | Viết script `ai_triage.py`, xây dựng kịch bản Flaky test | `[...]` | `[...]` |
+| **Nguyễn Gia Huy** | Viết script `ai_triage.py`, xây dựng kịch bản Flaky test | Đang làm | Hoàn thành kịch bản Flaky tuần 5, đã tự chạy fast/slow và lưu ảnh. AI Triage đã có mã, kiểm tra offline và dry run; còn kiểm chứng Gemini thật. |
 
 ---
 
@@ -63,9 +64,15 @@
    - File 1 (Lỗi chạy song song đa tiến trình): [01_sqlite_busy_failure_mode.png](./screenshots/01_sqlite_busy_failure_mode.png)
    - File 2 (Thành công khi chạy tuần tự --runInBand): [02_jest_run_in_band_success.png](./screenshots/02_jest_run_in_band_success.png)
    - Mô tả: Thực nghiệm đối chứng giữa việc chạy test song song (`--maxWorkers=4`) gây xung đột khóa file SQLite (`SQLITE_BUSY: database is locked`) và giải pháp cấu hình `--runInBand` giúp 100% test suites vượt qua thành công.
-4. **Minh chứng 4: Script AI Log Triage phân tích lỗi**
-   - File: `screenshots/[Tên_file_anh_4]`
-   - Mô tả: `[Mô tả ảnh chụp màn hình 4]`
+4. **Minh chứng 4: Kiểm tra offline và dry run của AI Log Triage**
+   - Kiểm tra offline: [04_ai_triage_offline_tests.png](./screenshots/04_ai_triage_offline_tests.png).
+   - Log đầu vào: [04_ai_triage_input_log.png](./screenshots/04_ai_triage_input_log.png).
+   - Dry run: [04_ai_triage_dry_run_02.png](./screenshots/04_ai_triage_dry_run_02.png).
+   - Mô tả: Bộ kiểm tra offline đạt 6/6 test; script đọc được log coupon thực tế qua dry run. Chưa có kết quả phân tích thành công từ Gemini API thật.
+5. **Minh chứng 5: Flaky Test do async delay (Failure Mode 3)**
+   - Fast: [05_flaky_test_fast_pass.png](./screenshots/05_flaky_test_fast_pass.png).
+   - Slow: [05_flaky_test_slow_fail.png](./screenshots/05_flaky_test_slow_fail.png).
+   - Mô tả: Thành viên tự chạy tác vụ 20 ms và 200 ms với thời gian chờ sleep cố định 100 ms. Fast có 2 ca pass; slow có ca sleep fail, còn ca await pass. Đây là đối chứng có kiểm soát; chưa đo flake rate trên CI.
 
 ### 4.2. Video Demo minh chứng kết quả làm việc
 *(Lưu video clip quay màn hình thực tế vào thư mục `Weekly_Reports/Week05/videos/`)*
