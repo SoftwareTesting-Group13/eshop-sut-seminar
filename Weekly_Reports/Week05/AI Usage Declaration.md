@@ -24,11 +24,13 @@
 ## 2. NHẬT KÝ CHI TIẾT QUÁ TRÌNH SỬ DỤNG AI CỦA TỪNG THÀNH VIÊN
 
 ### 2.1. Sinh viên 1: Nguyễn Ngọc Minh Tuấn (MSSV: 23120102)
-- **Tình trạng sử dụng:** `[Có sử dụng / Tôi xác nhận không sử dụng AI trong tuần này]`
-- **Công cụ:** `[Tên công cụ AI hoặc ghi "Không có"]`
-- **Mục đích:** `[Mô tả mục đích sử dụng AI]`
+- **Tình trạng sử dụng:** Có sử dụng 
+- **Công cụ:** Claude (Anthropic)
+- **Mục đích:**
+  - Quét nhanh codebase eshop-sut-seminar để hiểu cấu trúc và các điểm lệch so với api_specification.md
+  - Hỗ trợ soạn backend/tests/coupon.test.js (Data-Driven Testing với test.each) cho POST /api/apply-coupon
 - **Câu Prompt tiêu biểu:**
-  > `[Dán prompt tiêu biểu tại đây]`
+  > *"Viết bộ kiểm thử hướng dữ liệu (Data-Driven Testing với test.each) trong file tests/coupon.test.js để kiểm thử toàn diện API POST /api/apply-coupon (các trường hợp coupon hợp lệ, coupon hết hạn, đơn hàng chưa đủ điều kiện tối thiểu)"*
 - **Đánh giá kết quả sinh ra:** `[Đánh giá tính chính xác, hữu ích của câu trả lời]`
 - **Kiểm chứng & Biên tập thủ công:** `[Mô tả cách thức bạn tự kiểm chứng, sửa lỗi của AI]`
 
@@ -40,8 +42,11 @@
 - **Mục đích:** `[Mô tả mục đích sử dụng AI]`
 - **Câu Prompt tiêu biểu:**
   > `[Dán prompt tiêu biểu tại đây]`
-- **Đánh giá kết quả sinh ra:** `[Đánh giá tính chính xác, hữu ích của câu trả lời]`
-- **Kiểm chứng & Biên tập thủ công:** `[Mô tả cách thức bạn tự kiểm chứng, sửa lỗi của AI]`
+- **Đánh giá kết quả sinh ra:**
+  - 21 test cases đã được tạo gồm: coupon hợp lệ (7), hết hạn (2), chưa đủ ngưỡng (4), mã không hợp lệ (4 + 1 ca is_active = 0), và nhóm Failure Mode 2 (3 ca kiểm tra bất biến 0 <= discount_amount <= total)
+- **Kiểm chứng & Biên tập thủ công:**
+  - Kiểm tra tính chính xác bằng cách tự chạy thực nghiệm *"npm test -- tests/coupon.test.js"*, xem log và đối chiếu lại với code 
+  - Chụp ảnh screenshots để lưu vào `screenshots/` và commit mã nguồn
 
 ---
 
