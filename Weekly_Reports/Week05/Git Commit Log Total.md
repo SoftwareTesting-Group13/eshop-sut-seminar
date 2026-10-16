@@ -18,7 +18,7 @@
 | **1** | nnmt2810 | **23120102** | **Nguyễn Ngọc Minh Tuấn** | `23120102@student.hcmus.edu.vn` | Lead Backend Testing & Logic Nghiệp vụ |
 | **2** | `[Điền Git Username]` | **23120223** | **Dương Nhật Cường** | `23120223@student.hcmus.edu.vn` | Lead CI/CD Pipeline & Tổng hợp Báo cáo |
 | **3** | trancuonG05 | **23120225** | **Trần Gia Cường** | `giacuong.0023@gmail.com` | Lead Đề cương & Cấu hình Test Engine |
-| **4** | `[Điền Git Username]` | **23120273** | **Nguyễn Gia Huy** | `23120273@student.hcmus.edu.vn` | Lead AI Log Triage & Phân tích Metrics |
+| **4** | GiaHuyHCMUS05 | **23120273** | **Nguyễn Gia Huy** | `giahuyst05@gmail.com` | Lead AI Log Triage & Phân tích Metrics |
 
 ---
 
@@ -62,6 +62,16 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
 - [9a328b4] 2026-10-16 09:26 | 23120102: test: add data-driven coupon tests for apply-coupon API
 - [098f447] 2026-10-16 09:30 | 23120102: docs: add coupon test screenshots
 - [6b7ddf0] 2026-10-16 09:44 | 23120102: test: move data-driven coupon tests to coupon.test.js, restore coupons.test.js
+- [01bdf02] 2026-10-16 10:05 | 23120102: docs(reports): update week 5 ai usage declaration and git commit log
+- [f3b4213] 2026-10-16 10:44 | cuogne: docs: Update AI usage declaration and chat logs for CI/CD workflow caching
+- [4e419af] 2026-10-16 10:46 | cuogne: docs: update commit log
+- [36cfdc7] 2026-10-16 10:49 | cừn: Merge pull request #5 from SoftwareTesting-Group13/ncuong
+- [fda4d1f] 2026-10-16 14:01 | 23120102: merge: sync latest main into coupon tests
+- [d9760c8] 2026-10-16 14:15 | 23120102: docs: update Claude chat log for coupon testing
+- [6129c98] 2026-10-16 14:23 | Nguyen Ngoc Minh Tuan: Merge pull request #6 from SoftwareTesting-Group13/test/tuan-coupon-test
+- [be4323d] 2026-10-16 22:16 | GiaHuyHCMUS05: feat: add Gemini log triage script with offline checks
+- [575e6be] 2026-10-16 22:17 | GiaHuyHCMUS05: test: add async delay flaky demo with await control
+- [5a13ad5] 2026-10-16 22:18 | GiaHuyHCMUS05: docs: record Gia Huy week 5 AI usage and test evidence
 ```
 
 ---
@@ -97,11 +107,15 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
   ```
 
 ### 4.4. Thành viên 4: Nguyễn Gia Huy (MSSV: 23120273)
-* **Tổng số commit:** `[...]`
+* **Tổng số commit trong bản trích xuất:** `3`.
+* **Mốc trích xuất:** `5a13ad5`, giờ Việt Nam (UTC+7); chưa gồm commit cập nhật nhật ký này.
 * **Danh sách commits thực tế:**
   ```text
-  [Dán kết quả commit log của Nguyễn Gia Huy vào đây]
+  - [be4323d] 2026-10-16 22:16 | GiaHuyHCMUS05: feat: add Gemini log triage script with offline checks
+  - [575e6be] 2026-10-16 22:17 | GiaHuyHCMUS05: test: add async delay flaky demo with await control
+  - [5a13ad5] 2026-10-16 22:18 | GiaHuyHCMUS05: docs: record Gia Huy week 5 AI usage and test evidence
   ```
+
 
 ---
 
@@ -114,7 +128,7 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
 | **Nguyễn Ngọc Minh Tuấn** | 3 | 303 | 151 | Data-Driven test coupon API, bắt lỗi server.js |
 | **Dương Nhật Cường** | | | | Workflow GitHub Actions, Cache setup, Gom báo cáo |
 | **Trần Gia Cường** | 3 | 6577 | 664 | Rà soát Proposal & toolSurvey, Cấu hình Jest --runInBand |
-| **Nguyễn Gia Huy** | | | | Script Python ai_triage.py, kịch bản Flaky test |
+| **Nguyễn Gia Huy** | 3 | 1012 | 15 | Script Python ai_triage.py, kịch bản Flaky test, báo cáo và minh chứng (đến 5a13ad5; không tính dòng của ảnh nhị phân) |
 | **TỔNG CỘNG** | | | | |
 
 ---
