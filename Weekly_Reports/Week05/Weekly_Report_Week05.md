@@ -16,11 +16,11 @@
 *(Ghi nhận tóm tắt kết quả thực tế nhóm đã hoàn thành trong tuần)*
 
 1. **Về mặt tài liệu & đề cương:**
-   - `[Điền kết quả rà soát Proposal.md và toolSurvey.md]`
+   - Đã rà soát `Proposal.md` và `toolSurvey.md`, đối chiếu phạm vi seminar T07 với EShop; xác định GitHub Actions là công cụ trọng tâm, Jest và AI Log Triage là hai công cụ hỗ trợ, cùng ba tình huống demo SQLite lock, lỗi coupon percent và flaky test. Các phần coverage gate, tích hợp AI vào workflow và số liệu demo trong đề cương vẫn là kế hoạch cho giai đoạn sau.
 2. **Về mặt thiết lập CI/CD Pipeline:**
-   - `[Điền kết quả tạo workflow GitHub Actions, cấu hình cache npm]`
+   - Đã tạo `.github/workflows/eshop-ci.yml` cho push, pull request và chạy thủ công trên `main`/`master`; job backend dùng Ubuntu, Node.js 22, `npm ci` và `npm test`. `actions/cache@v4` lưu `backend/node_modules` theo hash của `backend/package-lock.json`, chỉ chạy `npm ci` khi cache miss. Sau khi đồng bộ lock file để xử lý lỗi `EUSAGE`, log thực nghiệm ghi nhận khoảng 18 giây ở cold run và 14 giây ở warm run; đã xác nhận pipeline chạy thành công và có cache hit ở lần sau.
 3. **Về mặt Test Harness & Backend Testing:**
-   - `[Điền kết quả cấu hình Jest, --runInBand SQLite, test coupon API]`
+   - Đã cấu hình Jest và Supertest cho backend; `npm test` chạy Jest với `--runInBand` để tránh các test suite tranh chấp file SQLite. Ảnh đối chứng ghi nhận `SQLITE_BUSY` khi chạy song song và các suite vượt qua khi chạy tuần tự. Đã thêm bộ test hướng dữ liệu `test.each` cho `POST /api/apply-coupon`, bao phủ mã hợp lệ, hết hạn, chưa đủ ngưỡng và đầu vào không hợp lệ; các ca percent tái hiện `discount_amount` âm trong `server.js`, nên bộ test này chủ đích còn thất bại cho đến khi sửa lỗi nghiệp vụ.
 4. **Về mặt AI Log Triage & Kịch bản Flaky Test:**
    - Đã viết `ai_triage.py`, kiểm tra offline đạt 6/6 test và đọc được log coupon qua dry run; kết nối Gemini thật chưa được kiểm chứng thành công.
    - Đã tạo demo async delay trong `backend/demos/` với lệnh `npm run test:flaky`. Codex chạy đối chứng fast/slow và quan sát hai lượt random có kết quả pass/fail khác nhau; ca await hoàn tất tác vụ đều pass. Nguyễn Gia Huy đã tự chạy fast (2 passed), slow (1 failed, 1 passed) và lưu hai ảnh minh chứng; benchmark CI để tuần 6.
@@ -31,10 +31,10 @@
 
 | Thành viên | Nhiệm vụ chính được giao | Trạng thái (Chưa làm / Đang làm / Hoàn thành) | Đánh giá kết quả thực tế |
 | :--- | :--- | :---: | :--- |
-| **Nguyễn Ngọc Minh Tuấn** | Viết Data-Driven test coupon API, bắt lỗi `server.js` | `[...]` | `[...]` |
-| **Dương Nhật Cường** | Viết workflow GitHub Actions, setup cache, gom Weekly Report | `[...]` | `[...]` |
+| **Nguyễn Ngọc Minh Tuấn** | Viết Data-Driven test coupon API, bắt lỗi `server.js` | Hoàn thành | Hoàn thành việc viết test cases và bắt lỗi trong `server.js`. |
+| **Dương Nhật Cường** | Viết workflow GitHub Actions, setup cache, gom Weekly Report | Hoàn thành | Tạo thành công workflow GitHub Actions, cấu hình cache npm, và gom các báo cáo tuần. |
 | **Trần Gia Cường** | Rà soát Proposal & toolSurvey, cấu hình Jest `--runInBand` | Hoàn thành | Đã hoàn thành rà soát tài liệu đề cương; cấu hình thành công Jest test engine với Supertest; tái hiện lỗi SQLITE_BUSY và xử lý triệt để bằng cờ --runInBand (Pass 100%) |
-| **Nguyễn Gia Huy** | Viết script `ai_triage.py`, xây dựng kịch bản Flaky test | Đang làm | Hoàn thành kịch bản Flaky tuần 5, đã tự chạy fast/slow và lưu ảnh. AI Triage đã có mã, kiểm tra offline và dry run; còn kiểm chứng Gemini thật. |
+| **Nguyễn Gia Huy** | Viết script `ai_triage.py`, xây dựng kịch bản Flaky test | Hoàn thành | Hoàn thành kịch bản Flaky tuần 5, đã tự chạy fast/slow và lưu ảnh. AI Triage đã có mã, kiểm tra offline và dry run; còn kiểm chứng Gemini thật. |
 
 ---
 
@@ -55,11 +55,11 @@
 *(Lưu các file ảnh chụp màn hình thực tế vào thư mục `Weekly_Reports/Week05/screenshots/` và chèn link vào danh sách bên dưới)*
 
 1. **Minh chứng 1: Giao diện Pipeline GitHub Actions**
-   - File: `screenshots/[Tên_file_anh_1]`
-   - Mô tả: `[Mô tả ảnh chụp màn hình 1]`
+   - File: [01_cicd.png](./screenshots/01_cicd.png)
+   - Mô tả: Giao diện pipeline GitHub Actions khi chạy kiểm thử tự động.
 2. **Minh chứng 2: Tối ưu hóa Cache Dependencies / Test Run**
-   - File: `screenshots/[Tên_file_anh_2]`
-   - Mô tả: `[Mô tả ảnh chụp màn hình 2]`
+   - File: [01_has_cache_hit.png](./screenshots/01_has_cache_hit.png), [02_no_cache_hit.png](./screenshots/02_no_cache_hit.png)
+   - Mô tả: Ảnh minh chứng pipeline có cache hit (warm run) và cache miss (cold run) khi chạy `npm ci` và `npm test`.
 3. **Minh chứng 3: Kết quả thực thi kiểm thử Jest Backend & Xử lý SQLite Lock**
    - File 1 (Lỗi chạy song song đa tiến trình): [01_sqlite_busy_failure_mode.png](./screenshots/01_sqlite_busy_failure_mode.png)
    - File 2 (Thành công khi chạy tuần tự --runInBand): [02_jest_run_in_band_success.png](./screenshots/02_jest_run_in_band_success.png)
@@ -74,20 +74,17 @@
    - Slow: [05_flaky_test_slow_fail.png](./screenshots/05_flaky_test_slow_fail.png).
    - Mô tả: Thành viên tự chạy tác vụ 20 ms và 200 ms với thời gian chờ sleep cố định 100 ms. Fast có 2 ca pass; slow có ca sleep fail, còn ca await pass. Đây là đối chứng có kiểm soát; chưa đo flake rate trên CI.
 
-### 4.2. Video Demo minh chứng kết quả làm việc
-*(Lưu video clip quay màn hình thực tế vào thư mục `Weekly_Reports/Week05/videos/`)*
-* **Tên file video:** `videos/[Tên_file_video_demo]`
-* **Thời lượng:** `[...]`
-* **Mô tả nội dung video:** `[Mô tả ngắn gọn nội dung thao tác trong video]`
-
 ---
 
 ## 5. ĐÁNH GIÁ RỦI RO VÀ KẾ HOẠCH HÀNH ĐỘNG TUẦN TIẾP THEO
 
 - **Khó khăn / Rủi ro gặp phải trong tuần:**
-  - `[Ghi nhận khó khăn thực tế của nhóm nếu có]`
+   - Ban đầu gặp lỗi `EUSAGE` khi chạy pipeline CI/CD; đã khắc phục bằng cách đồng bộ lock file và cache dependencies.
+   - Gặp lỗi `SQLITE_BUSY` khi chạy test song song; đã giải quyết bằng cờ `--runInBand` trong Jest.
+   - Chưa kiểm chứng thành công kết nối Gemini thật; cần tiếp tục thử nghiệm và xác nhận.
+   - Ngoài ra nhóm cũng gặp vấn đề về mặt quản lý deadline, dẫn đến báo cáo được hoàn thành khá muộn (sát giờ).
 - **Giải pháp xử lý:**
-  - `[Ghi nhận hướng khắc phục]`
+  - Sử dụng AI để hỗ trợ và review bug, đồng thời kiểm tra kỹ lưỡng các bước thực hiện trước khi commit.
 - **Kế hoạch hành động Tuần 6 (Mốc hoàn thành 90% seminar):**
   - Viết tài liệu `User_Guide.md` (tiếng Anh, ≥ 6 mục + 3 Failure Modes).
   - Sản xuất video `Demo_Screencast.mp4` (5–8 phút, tiếng Anh, 1080p, ≤ 100MB).

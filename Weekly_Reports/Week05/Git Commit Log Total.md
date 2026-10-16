@@ -16,7 +16,7 @@
 | STT | Git / GitHub Username | Mã số sinh viên (MSSV) | Họ và tên đầy đủ | Email đăng ký Git | Vai trò chính trong dự án |
 | :---: | :--- | :---: | :--- | :--- | :--- |
 | **1** | nnmt2810 | **23120102** | **Nguyễn Ngọc Minh Tuấn** | `23120102@student.hcmus.edu.vn` | Lead Backend Testing & Logic Nghiệp vụ |
-| **2** | `[Điền Git Username]` | **23120223** | **Dương Nhật Cường** | `23120223@student.hcmus.edu.vn` | Lead CI/CD Pipeline & Tổng hợp Báo cáo |
+| **2** | cuogne | **23120223** | **Dương Nhật Cường** | `23120223@student.hcmus.edu.vn` | Lead CI/CD Pipeline & Tổng hợp Báo cáo |
 | **3** | trancuonG05 | **23120225** | **Trần Gia Cường** | `giacuong.0023@gmail.com` | Lead Đề cương & Cấu hình Test Engine |
 | **4** | GiaHuyHCMUS05 | **23120273** | **Nguyễn Gia Huy** | `giahuyst05@gmail.com` | Lead AI Log Triage & Phân tích Metrics |
 
@@ -79,7 +79,7 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
 ## 4. PHÂN LOẠI COMMIT LOG THEO TỪNG THÀNH VIÊN
 
 ### 4.1. Thành viên 1: Nguyễn Ngọc Minh Tuấn (MSSV: 23120102)
-* **Tổng số commit:** `[...]`
+* **Tổng số commit:** 3
 * **Danh sách commits thực tế:**
   ```text
    - [9a328b4] 2026-10-16 09:26 | 23120102: test: add data-driven coupon tests for apply-coupon API
@@ -88,9 +88,10 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
   ```
 
 ### 4.2. Thành viên 2: Dương Nhật Cường (MSSV: 23120223)
-* **Tổng số commit:** `4`
+* **Tổng số commit:** `5` (không tính 3 merge commit)
 * **Danh sách commits thực tế:**
   ```text
+  - [4e419af] 2026-10-16 10:46: docs: update commit log
   - [f3b4213] 2026-10-16 10:44: docs: Update AI usage declaration and chat logs for CI/CD workflow caching
   - [86bd9cd] 2026-10-16 02:35: fix: update dependencies and remove unnecessary peer flags in package-lock.json
   - [b1254cf] 2026-10-16 01:19: fix: update Node.js version in CI workflow to 22
@@ -126,19 +127,9 @@ Các thành viên chạy trực tiếp các câu lệnh sau trong terminal tại
 | Thành viên | Số commit | Số dòng code / tài liệu thêm (+) | Số dòng xóa (-) | Hạng mục đóng góp chính |
 | :--- | :---: | :---: | :---: | :--- |
 | **Nguyễn Ngọc Minh Tuấn** | 3 | 303 | 151 | Data-Driven test coupon API, bắt lỗi server.js |
-| **Dương Nhật Cường** | | | | Workflow GitHub Actions, Cache setup, Gom báo cáo |
+| **Dương Nhật Cường** | 5 | 416 | 24 | Workflow GitHub Actions, cache dependencies, đồng bộ lock file và tổng hợp báo cáo |
 | **Trần Gia Cường** | 3 | 6577 | 664 | Rà soát Proposal & toolSurvey, Cấu hình Jest --runInBand |
 | **Nguyễn Gia Huy** | 3 | 1012 | 15 | Script Python ai_triage.py, kịch bản Flaky test, báo cáo và minh chứng (đến 5a13ad5; không tính dòng của ảnh nhị phân) |
 | **TỔNG CỘNG** | | | | |
 
 ---
-
-## 6. HƯỚNG DẪN XUẤT TÀI LIỆU SANG PDF / HTML / SLIDE
-
-1. **Xuất sang PDF:**
-   - Dùng lệnh in (`Ctrl + P`) → chọn **Save as PDF**.
-   - Đặt tên file: `Git_Commit_Log_Total_Week05.pdf`.
-2. **Xuất sang HTML:**
-   - Sử dụng công cụ chuyển đổi Markdown sang HTML.
-3. **Đính kèm Slide:**
-   - Đưa ảnh chụp màn hình bảng đối chiếu định danh (mục 1) và biểu đồ đóng góp (mục 5) vào slide báo cáo tiến độ tuần.

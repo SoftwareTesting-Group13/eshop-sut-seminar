@@ -119,7 +119,7 @@
 
 Lưu các file xuất lịch sử trò chuyện (Chat Log / Prompt Log) chi tiết với các công cụ AI tại thư mục:
 * Thư mục lưu trữ: `Weekly_Reports/Week05/chat_logs/`
-  * `chatlog_tuan_prompt_theory.md` (Nguyễn Ngọc Minh Tuấn — Data-Driven Coupon Test & Tái hiện Failure Mode 2)
+  * `chatlog_tuan_prompt_theory.md` (Nguyễn Ngọc Minh Tuấn — Prompt Theory & Data-Driven Testing)
   * `chatlog_cuong_workflow_cache.md` (CI/CD Workflow & Dependency Cache — Dương Nhật Cường; gồm cả phiên điều tra & sửa lỗi pipeline `npm ci` EUSAGE)
   * `chatlog_giacuong_jest_sqlite_lock.md` (Trần Gia Cường — Cấu hình Jest & Xử lý SQLite Concurrency Lock với cờ --runInBand)
   * `chatlog_huy_ai_triage_script.md` (Nguyễn Gia Huy — Codex hỗ trợ xây dựng AI Log Triage; kết nối ban đầu OpenAI, hiện chuyển sang Gemini)
@@ -135,19 +135,9 @@ Chúng tôi cam đoan những thông tin kê khai trên là hoàn toàn trung th
 
 | Họ và tên | Chữ ký số / Xác nhận điện tử | Ngày ký |
 | :--- | :---: | :---: |
-| **Nguyễn Ngọc Minh Tuấn** | `[Chưa ký / Đã ký]` | `[dd/mm/yyyy]` |
+| **Nguyễn Ngọc Minh Tuấn** | `Đã ký` | `16/10/2026` |
 | **Dương Nhật Cường** | `Đã ký` | `16/10/2026` |
 | **Trần Gia Cường** | `Đã ký` | `15/10/2026` |
 | **Nguyễn Gia Huy** | `Đã ký` | `16/10/2026` |
 
 ---
-
-## 5. HƯỚNG DẪN XUẤT TÀI LIỆU SANG PDF / HTML / SLIDE
-
-1. **Xuất sang PDF:** 
-   - Mở file trên editor, dùng tính năng Print (`Ctrl + P`) → chọn **Save as PDF**.
-   - Đặt tên file: `AI_Usage_Declaration_Week05.pdf`.
-2. **Xuất sang HTML:**
-   - Dùng lệnh markdown converter hoặc preview editor Save as HTML.
-3. **Đính kèm Slide:**
-   - Đưa nội dung bảng kê khai mục 1 vào slide báo cáo tiến độ tuần của nhóm.
