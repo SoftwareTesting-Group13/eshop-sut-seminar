@@ -119,9 +119,9 @@
 
 Lưu các file xuất lịch sử trò chuyện (Chat Log / Prompt Log) chi tiết với các công cụ AI tại thư mục:
 * Thư mục lưu trữ: `Weekly_Reports/Week05/chat_logs/`
-  * `[Tên file chat log của thành viên 1]`
+  * `chatlog_tuan_prompt_theory.md` (Nguyễn Ngọc Minh Tuấn — Data-Driven Coupon Test & Tái hiện Failure Mode 2)
   * `chatlog_cuong_workflow_cache.md` (CI/CD Workflow & Dependency Cache — Dương Nhật Cường; gồm cả phiên điều tra & sửa lỗi pipeline `npm ci` EUSAGE)
-  * `[Tên file chat log của thành viên 3]`
+  * `chatlog_giacuong_jest_sqlite_lock.md` (Trần Gia Cường — Cấu hình Jest & Xử lý SQLite Concurrency Lock với cờ --runInBand)
   * `chatlog_huy_ai_triage_script.md` (Nguyễn Gia Huy — Codex hỗ trợ xây dựng AI Log Triage; kết nối ban đầu OpenAI, hiện chuyển sang Gemini)
   * `chatlog_huy_flaky_test.md` (Nguyễn Gia Huy — Flaky Test do async delay, ca đối chứng await và kết quả chạy của Codex)
 
