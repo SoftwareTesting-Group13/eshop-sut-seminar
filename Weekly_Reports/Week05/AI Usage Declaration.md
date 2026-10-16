@@ -98,8 +98,7 @@
   - Điều chỉnh phần kết nối từ OpenAI sang Gemini sau khi lần gọi OpenAI trả lỗi hết credits.
   - Hỗ trợ xây dựng kịch bản Flaky Test do chờ cố định bằng sleep, ca đối chứng dùng await và hướng dẫn tái hiện Failure Mode 3.
 - **Câu Prompt tiêu biểu:**
-  > "Bạn là một kỹ sư kiểm thử phần mềm có kinh nghiệm xây dựng công cụ AI hỗ trợ phân tích log lỗi trong CI/CD. Hãy đọc nhiệm vụ của Nguyễn Gia Huy trong `Plan/Week5Plan.md` và hỗ trợ viết `.github/scripts/ai_triage.py`: đọc log kiểm thử thất bại từ stdin hoặc file, gọi OpenAI API, xuất Cây giả thuyết gồm hiện tượng, nguyên nhân khả dĩ, bằng chứng, cách kiểm chứng và hướng khắc phục ra terminal hoặc Markdown. Đọc API key từ biến môi trường, bổ sung hướng dẫn chạy và kiểm tra offline. Thực hiện từng nhiệm vụ một, để phần Flaky Test và đẩy nhánh lên GitHub sau."
-  - *Prompt được biên soạn lại từ yêu cầu và lựa chọn trong hội thoại; các lời nhắn thực tế được lưu trong `chat_logs/chatlog_huy_ai_triage_script.md`.*
+  > "Bạn là một kỹ sư kiểm thử phần mềm có kinh nghiệm xây dựng công cụ AI hỗ trợ phân tích log lỗi trong CI/CD. Hãy đọc nhiệm vụ của tôi trong `Plan/Week5Plan.md` và hỗ trợ viết `.github/scripts/ai_triage.py`: đọc log kiểm thử thất bại từ stdin hoặc file, gọi OpenAI API, xuất Cây giả thuyết gồm hiện tượng, nguyên nhân khả dĩ, bằng chứng, cách kiểm chứng và hướng khắc phục ra terminal hoặc Markdown. Đọc API key từ biến môi trường, bổ sung hướng dẫn chạy và kiểm tra offline. Thực hiện từng nhiệm vụ một, để phần Flaky Test và đẩy nhánh lên GitHub sau."
   - **Prompt bổ sung:** "bắt đầu qua phần flaky test thôi".
 - **Đánh giá kết quả sinh ra:**
   - AI hỗ trợ tạo phần triển khai chính của script, bộ kiểm tra và hướng dẫn sử dụng. Script đọc được log Jest thực tế ở chế độ dry run; bộ kiểm tra offline đạt 6/6 test với phản hồi API giả lập.
@@ -139,7 +138,7 @@ Chúng tôi cam đoan những thông tin kê khai trên là hoàn toàn trung th
 | **Nguyễn Ngọc Minh Tuấn** | `[Chưa ký / Đã ký]` | `[dd/mm/yyyy]` |
 | **Dương Nhật Cường** | `Đã ký` | `16/10/2026` |
 | **Trần Gia Cường** | `Đã ký` | `15/10/2026` |
-| **Nguyễn Gia Huy** | `[Chưa ký / Đã ký]` | `[dd/mm/yyyy]` |
+| **Nguyễn Gia Huy** | `Đã ký` | `16/10/2026` |
 
 ---
 
