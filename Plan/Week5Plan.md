@@ -57,15 +57,15 @@
 
 | STT | Hạng mục công việc chi tiết | Người phụ trách | Hạn chót | Trạng thái | Sản phẩm nghiệm thu |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| 1 | Rà soát & hoàn tất Proposal.md + toolSurvey.md | T.G.Cường | Ngày 1 | [ ] | File Proposal & toolSurvey sạch sẽ, chuẩn rubric |
-| 2 | Setup Jest backend + cấu hình `--runInBand` | T.G.Cường | Ngày 2 | [ ] | `backend/package.json` & test run log không bị lock |
-| 3 | Viết Data-Driven tests cho Coupon API | N.N.M.Tuấn | Ngày 1 | [ ] | File `tests/coupon.test.js` trên backend |
-| 4 | Tái hiện & lưu log lỗi coupon percent trong `server.js` | N.N.M.Tuấn | Ngày 2 | [ ] | Log lỗi `discount_amount` âm (Failure Mode 2) |
-| 5 | Tạo workflow `eshop-ci.yml` chạy trên Ubuntu | D.N.Cường | Ngày 1 | [ ] | Workflow file trong `.github/workflows/` |
-| 6 | Cấu hình `actions/cache` & đo thời gian tối ưu | D.N.Cường | Ngày 2 | [ ] | Bảng đo thời gian (No-cache ~60s vs Cache ~5s) |
-| 7 | Viết script Python `ai_triage.py` | N.G.Huy | Ngày 1 | [ ] | File `.github/scripts/ai_triage.py` |
-| 8 | Tạo kịch bản mô phỏng Flaky Test bất đồng bộ | N.G.Huy | Ngày 2 | [ ] | Ca test delay mô phỏng lỗi chập chờn |
-| 9 | Thu thập minh chứng, hoàn thiện Weekly Report Tuần 5 | D.N.Cường | Cuối ngày 2 | [ ] | Thư mục `Weekly_Reports/Week05/` đầy đủ |
+| 1 | Rà soát & hoàn tất Proposal.md + toolSurvey.md | T.G.Cường | Ngày 1 | [x] | File Proposal & toolSurvey sạch sẽ, chuẩn rubric |
+| 2 | Setup Jest backend + cấu hình `--runInBand` | T.G.Cường | Ngày 2 | [x] | `backend/package.json` & test run log không bị lock |
+| 3 | Viết Data-Driven tests cho Coupon API | N.N.M.Tuấn | Ngày 1 | [x] | File `tests/coupon.test.js` trên backend |
+| 4 | Tái hiện & lưu log lỗi coupon percent trong `server.js` | N.N.M.Tuấn | Ngày 2 | [x] | Log lỗi `discount_amount` âm (Failure Mode 2) |
+| 5 | Tạo workflow `eshop-ci.yml` chạy trên Ubuntu | D.N.Cường | Ngày 1 | [x] | Workflow file trong `.github/workflows/` |
+| 6 | Cấu hình `actions/cache` & đo thời gian tối ưu | D.N.Cường | Ngày 2 | [x] | Bảng đo thời gian (No-cache ~60s vs Cache ~5s) |
+| 7 | Viết script Python `ai_triage.py` | N.G.Huy | Ngày 1 | [x] | File `.github/scripts/ai_triage.py` |
+| 8 | Tạo kịch bản mô phỏng Flaky Test bất đồng bộ | N.G.Huy | Ngày 2 | [x] | Ca test delay mô phỏng lỗi chập chờn |
+| 9 | Thu thập minh chứng, hoàn thiện Weekly Report Tuần 5 | D.N.Cường | Cuối ngày 2 | [x] | Thư mục `Weekly_Reports/Week05/` đầy đủ |
 
 ---
 
