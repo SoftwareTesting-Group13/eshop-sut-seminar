@@ -40,6 +40,9 @@
 * Khái niệm DevOps
 * Vòng đời DevOps (DevOps Lifecycle): Plan → Code → Build → Test → Release → Deploy → Operate → Monitor
 * Mối liên hệ kỹ thuật giữa DevOps và CI/CD
+* **Định vị trong môn Kiểm thử phần mềm (Testing vs. DevOps):** Khác với môn DevOps tập trung vào hạ tầng và triển khai (Build, Docker, Deploy, Kubernetes), trong phạm vi môn Kiểm thử phần mềm, **CI/CD đóng vai trò là hạ tầng điều phối kiểm thử tự động (Automated Test Harness Infrastructure)**. Hệ thống CI/CD tự động khởi tạo môi trường runner sạch, nạp dữ liệu kiểm thử (fixtures), cô lập môi trường và điều phối thực thi các bộ test.
+* **Unit Testing — Rào chắn chất lượng đầu tiên (First Quality Gate):** Unit Testing là nội dung kiểm thử thực thi cốt lõi (testing payload) được tích hợp trực tiếp vào CI/CD workflow theo nguyên lý *Shift-Left Testing*. Thay vì đợi kiểm thử thủ công ở giai đoạn sau, Unit Test đóng vai trò là rào chắn chất lượng tự động ngăn chặn lỗi phát sinh ngay từ từng commit/pull request của lập trình viên.
+
 
 ### 1.2. Nguyên lý hoạt động của CI/CD
 * Vấn đề thực tế: Bài toán "Integration Hell"
@@ -122,7 +125,8 @@
 ### 3.1. CÔNG CỤ TRỌNG TÂM: GITHUB ACTIONS (Nền tảng CI/CD Pipeline & Tự động hóa Unit Testing)
 
 * **Vai trò:** "Trung tâm chỉ huy" điều phối toàn bộ pipeline — khởi tạo runner sạch, cài đặt môi trường, chạy Unit Test tự động, áp đặt Quality Gates, upload artifacts và kích hoạt AI Log Triage khi pipeline thất bại.
-* **Thuật ngữ cốt lõi sẽ trình bày:** Workflow, Event/Trigger, Runner, Fail-Fast Mechanism, Test Coverage Gate (≥ 80% — đề xuất nhóm), PR Annotations.
+* **Cơ chế rào chắn Branch Protection & Pull Request Gate:** GitHub Actions không chỉ chạy script kiểm thử đơn thuần mà hoạt động như một chốt chặn bảo vệ mã nguồn qua cơ chế **Branch Protection Rules (Required Status Checks)**. Khi lập trình viên mở một Pull Request (PR), toàn bộ bộ Unit Test suites và ngưỡng kiểm tra Code Coverage (Quality Gate) bắt buộc phải vượt qua (Status: Green). Nếu có bất kỳ test case nào thất bại hoặc vi phạm độ bao phủ, nút `Merge Pull Request` sẽ bị **khóa cứng (Blocked)**, ngăn chặn triệt để mã nguồn lỗi được hòa trộn vào nhánh chính (`main`).
+* **Thuật ngữ cốt lõi sẽ trình bày:** Workflow, Event/Trigger, Runner, Fail-Fast Mechanism, Test Coverage Gate (≥ 80% — đề xuất nhóm), PR Annotations, Branch Protection Rules.
 * **Kế hoạch 3 kịch bản Demo:**
   * *Demo 1:* Khởi tạo workflow `eshop-ci.yml`, demo cache optimization (60s → 5s).
   * *Demo 2:* Commit lỗi Unit Test → pipeline chặn merge → sửa lỗi → pipeline xanh.

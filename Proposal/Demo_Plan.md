@@ -16,6 +16,7 @@
 - **Fail-Fast:** Ngắt pipeline ngay khi có ca Unit Test đầu tiên thất bại.
 - **Test Coverage Gate:** Chặn merge nếu Coverage < 80% (đề xuất nhóm).
 - **PR Annotations:** Gắn cờ trực tiếp dòng code lỗi trên giao diện Pull Request.
+- **Branch Protection Rules (Required Status Checks):** Cơ chế bảo vệ nhánh chính (`main`), bắt buộc toàn bộ Unit Test và rào chắn Coverage phải PASS thì nút Merge Pull Request trên GitHub UI mới được mở khóa.
 
 ### 1.2. Sơ đồ luồng pipeline
 ```
@@ -100,10 +101,12 @@ jobs:
 - Demo cache hit vs miss: lần đầu install ~60s → lần sau ~5s.
 - Minh chứng pipeline trigger khi push vào backend.
 
-**Demo 2 — Unit Test Failure chặn merge (Quality Gate):**
-- Commit code có ca Unit Test fail (sửa assertion sai).
-- Pipeline báo đỏ → nút Merge bị khóa trên GitHub UI.
-- Fix code → push lại → pipeline xanh → merge được.
+**Demo 2 — Unit Test Failure chặn merge (Quality Gate & Branch Protection qua PR):**
+- Lập trình viên mở Pull Request trên nhánh tính năng chứa commit lỗi nghiệp vụ coupon percent (`discount_amount` âm).
+- GitHub Actions tự động kích hoạt trên PR → Jest Unit Test fail (Exit Code 1) → Kích hoạt cơ chế Fail-Fast.
+- Nút "Merge Pull Request" trên giao diện GitHub UI bị **KHÓA CỨNG (Blocked)** do vi phạm Branch Protection Rules.
+- Bước AI Log Triage can thiệp: hiển thị Cây giả thuyết (Hypothesis Tree) tóm tắt lỗi trực tiếp trên GitHub Step Summary.
+- Sửa mã nguồn coupon → push commit mới lên PR → CI chạy lại pass 100% → Nút Merge được mở khóa màu xanh (Allowed).
 
 **Demo 3 — Matrix Testing & Branch Protection:**
 - Chạy song song trên Node 18 và Node 20.

@@ -9,9 +9,10 @@
 
 **Hệ thống được kiểm thử (SUT):** EShop System (Node.js/Express Backend, SQLite3, Jest Unit/API Testing)  
 **Bộ công cụ thực nghiệm:**
-* **Công cụ trọng tâm:** GitHub Actions CI/CD Pipeline (Tự động hóa runner, Fail-Fast, Quality Gates, Cache optimization).
-* **Công cụ hỗ trợ 1:** Jest Test Engine (Thực thi Unit Test backend, Data-Driven Testing `test.each`, cấu hình `--runInBand` xử lý xung đột khóa SQLite).
-* **Công cụ hỗ trợ 2:** AI-Augmented Log Triage (Script Python `ai_triage.py` đặt trong `.github/scripts/`, tự động phân tích log lỗi khi pipeline thất bại).
+* **Công cụ trọng tâm:** GitHub Actions CI/CD Pipeline đóng vai trò là **Hạ tầng kiểm thử tự động (Automated Test Harness)** — tự động khởi tạo runner sạch, tối ưu bộ nhớ đệm (`actions/cache`), áp đặt rào chắn **Quality Gates** (100% Pass, Coverage $\ge 80\%$, Fail-Fast) và bảo vệ nhánh thông qua cơ chế **Branch Protection Rules trên Pull Request**.
+* **Công cụ hỗ trợ 1 (Kiểm thử thực thi):** Jest Test Engine — Thực thi Unit Testing và Data-Driven Testing (`test.each`) cho backend, kiểm soát xung đột tài nguyên dùng chung của SQLite file-based qua cờ tuần tự `--runInBand` (giải quyết Failure Mode 1 & 2).
+* **Công cụ hỗ trợ 2:** AI-Augmented Log Triage (Script Python `ai_triage.py` trong `.github/scripts/`) — Được kích hoạt có điều kiện khi pipeline thất bại (`if: failure()`), tự động quét log lỗi, dựng Cây giả thuyết (Hypothesis Tree) và xuất báo cáo tóm tắt trên GitHub Step Summary hỗ trợ gỡ lỗi nhanh.
+
 
 ---
 
@@ -49,7 +50,7 @@ Toàn bộ quy trình 8 giai đoạn chuẩn (**Stage S1 → S8**) từ Đề c�
 2. **Dương Nhật Cường (Lead CI/CD Pipeline & Hạ tầng):**
    - **Task 1.4:** Khởi tạo thư mục `.github/workflows/` và xây dựng file cấu hình pipeline `eshop-ci.yml` trên runner Ubuntu với Node.js 20.
    - **Task 1.5:** Cấu hình bộ nhớ đệm `actions/cache` cho thư mục `backend/node_modules` dựa trên hash của `package-lock.json`; đo đạc thời gian tối ưu hóa (từ ~60s xuống ~5s).
-   - **Task 1.6:** Thiết lập rào chắn **Quality Gate**: Kiểm tra 100% Unit Test Pass (Exit Code 0), đo độ bao phủ mã nguồn LCOV (ngưỡng ≥ 80%), xuất báo cáo JUnit XML và áp dụng cơ chế Fail-Fast.
+   - **Task 1.6:** Thiết lập rào chắn **Quality Gate & Branch Protection**: Kiểm tra 100% Unit Test Pass (Exit Code 0), đo độ bao phủ mã nguồn LCOV (ngưỡng ≥ 80%), xuất báo cáo JUnit XML, áp dụng cơ chế Fail-Fast và cấu hình chặn merge PR (Required Status Checks) khi có vi phạm.
 3. **Trần Gia Cường (Lead Test Harness Engine & Backend Testing):**
    - **Task 1.7:** Cấu hình Jest Test Engine trong `backend/package.json`, xử lý biến môi trường và thiết lập chạy tuần tự `--runInBand` để khắc phục lỗi **Failure Mode 1: SQLite Concurrency Lock (`SQLITE_BUSY`)**.
    - **Task 1.8:** Viết bộ kiểm thử hướng dữ liệu (Data-Driven Testing với `test.each`) cho API mã giảm giá `POST /api/apply-coupon`.
@@ -78,17 +79,17 @@ Toàn bộ quy trình 8 giai đoạn chuẩn (**Stage S1 → S8**) từ Đề c�
 2. **Dương Nhật Cường (Lead Sản xuất Demo Screencast):**
    - **Task 2.3:** Lập kịch bản video chi tiết (Storyboard) độ dài đúng chuẩn **5 – 8 phút**, thao tác 100% trên terminal/IDE/GitHub (tuyệt đối không chiếu slide).
    - **Task 2.4:** Tiến hành quay màn hình (1080p, 60fps) và thu âm thuyết minh 100% bằng Tiếng Anh (English narration rõ ràng, không nhạc nền):
-     - `00:00 – 01:00`: Cấu trúc Monorepo EShop và workflow GitHub Actions.
-     - `01:00 – 03:00`: Commit lỗi coupon → Pipeline kích hoạt Fail-Fast tại Quality Gate (chặn merge).
-     - `03:00 – 05:30`: AI Triage hiển thị cây chẩn đoán lỗi trên Step Summary; demo lỗi Flaky SQLite concurrency.
-     - `05:30 – 07:30`: Thêm `--runInBand` & fix code coupon → Push commit mới → Pipeline xanh toàn bộ, upload coverage.
+     - `00:00 – 01:30` (1.5m): Cấu trúc Monorepo EShop, kiến trúc Test Harness và workflow GitHub Actions (`actions/cache` warm run vs cold run).
+     - `01:30 – 04:00` (2.5m): Developer mở Pull Request chứa lỗi nghiệp vụ coupon percent $\rightarrow$ CI pipeline tự động kích hoạt $\rightarrow$ Chạy Data-Driven Unit Tests $\rightarrow$ Kích hoạt Fail-Fast tại Quality Gate $\rightarrow$ Nút Merge PR bị **KHÓA CỨNG (Blocked)** do Branch Protection Rules.
+     - `04:00 – 05:15` (1.25m): AI Log Triage can thiệp (phụ trợ chuyên biệt): Step Summary hiển thị Cây giả thuyết (Hypothesis Tree) tóm tắt nguyên nhân lỗi coupon formula và gợi ý giải pháp sửa chữa.
+     - `05:15 – 07:30` (2.25m): Developer sửa lỗi coupon & xử lý xung đột khóa SQLite (`--runInBand`) $\rightarrow$ Push commit mới lên PR $\rightarrow$ CI re-run tự động, 100% Unit Test pass, Code Coverage đạt chuẩn $\ge 80\%$ $\rightarrow$ Upload LCOV coverage artifact $\rightarrow$ Nút Merge PR mở khóa màu xanh (Allowed).
    - **Task 2.5:** Biên tập và nén video tối ưu hóa dung lượng **≤ 100MB** bằng Handbrake/ffmpeg; lưu file `Demo_Screencast.mp4`.
 3. **Nguyễn Gia Huy (Lead Thiết kế Hoạt động Lớp học Worksheet):**
    - **Task 2.6:** Soạn thảo tài liệu `Activity_Worksheet.md` cho hoạt động lớp học mang tên **"Pipeline Postmortem: Triaging Flaky CI Runs & Root Cause Analysis"** (thời lượng 20–25 phút).
    - **Task 2.7:** Chuẩn bị sẵn đoạn trích xuất log lỗi CI thực tế và file `workflow.yml` mẫu cho các nhóm sinh viên trong lớp phân tích.
    - **Task 2.8:** Xây dựng phần **Answer Key & Scoring Rubric** (barem chấm điểm nhanh cho nhóm điều phối hoạt động).
 4. **Nguyễn Ngọc Minh Tuấn (Lead Slide Thuyết trình & Pre-share):**
-   - **Task 2.9:** Thiết kế bộ slide thuyết trình `Seminar_Slides.pptx` tuân thủ nghiêm ngặt quy định: **Tối đa 15 slides** (sử dụng template chuẩn môn học, ưu tiên sơ đồ kiến trúc, bảng biểu, ảnh chụp màn hình thực tế, không dùng nhiều chữ).
+   - **Task 2.9:** Thiết kế bộ slide thuyết trình song song cả 2 định dạng: `Seminar_Slides.pptx` (trình chiếu tại lớp) và `Seminar_Slides.md` (tra cứu trực tiếp trên GitHub), tuân thủ nghiêm ngặt quy định: **Tối đa 15 slides**, phong cách thiết kế **chữ đen nền trắng** trang nhã, tương phản cao, ưu tiên sơ đồ kiến trúc, bảng biểu và ảnh chụp thực tế. Đối với video demo, tạo slide tóm tắt các điểm then chốt kèm đường link gắn trực tiếp tới file video.
    - **Task 2.10:** Tổng hợp, kiểm tra tính nhất quán giữa Slide, User Guide, Demo Plan và Worksheet.
    - **Task 2.11:** Đóng gói toàn bộ 4 tài liệu vào link Google Drive / thư mục Moodle sẵn sàng cho việc Pre-share trước buổi báo cáo.
 
@@ -103,10 +104,11 @@ Toàn bộ quy trình 8 giai đoạn chuẩn (**Stage S1 → S8**) từ Đề c�
 #### 1. Khung chương trình báo cáo trực tiếp 45 phút (Stage S6):
 | Thời lượng | Nội dung thực hiện | Trách nhiệm phân vai |
 | :--- | :--- | :--- |
-| **00:00 – 10:00 (10m)** | **The Pitch:** Đặt vấn đề, phân biệt CI/CD vs Test Harness, tiêu chí Quality Gates tự động, tác hại của Flaky Tests. | **Chưa phân công (TBD)** |
-| **10:00 – 20:00 (10m)** | **Live Tool Demo:** Thao tác trực tiếp trên repo GitHub Actions (chạy test pass, test fail tại Quality Gate, kích hoạt script AI Log Triage, giải quyết lỗi SQLite lock). | **Chưa phân công (TBD)** |
+| **00:00 – 10:00 (10m)** | **The Pitch:** Đặt vấn đề, phân định CI/CD trong Kiểm thử (Test Harness) vs DevOps thông thường, Unit Test đóng vai trò Quality Gate trên Pull Request. | **Chưa phân công (TBD)** |
+| **10:00 – 20:00 (10m)** | **Live Tool Demo:** Thao tác trực tiếp trên PR GitHub: Cache hit $\rightarrow$ Unit Test fail $\rightarrow$ PR Blocked $\rightarrow$ AI Triage tóm tắt log $\rightarrow$ Sửa mã & giải quyết SQLite lock với `--runInBand` $\rightarrow$ PR Green & upload coverage. | **Chưa phân công (TBD)** |
 | **20:00 – 40:00 (20m)** | **Class Activity Facilitation:** Điều phối bài tập "Pipeline Postmortem", phát log lỗi cho các nhóm, hướng dẫn làm cây giả thuyết và đối chiếu AI. | **Chưa phân công (TBD)** |
 | **40:00 – 45:00 (05m)** | **Wrap-up & Q&A:** Tổng kết thông điệp, trả lời phản biện của Giảng viên và câu hỏi từ các nhóm sinh viên. | **Chưa phân công (TBD)** |
+
 
 > *Nguyên tắc phân công phần thuyết trình:* Chưa gán tên thành viên cụ thể ở thời điểm hiện tại. Toàn bộ 4 thành viên cùng tham gia chuẩn bị chuyên môn và sẽ họp thống nhất phân vai (người nói, người demo, người điều phối) trước ngày báo cáo chính thức.
 
@@ -137,7 +139,7 @@ Bảng checklist dưới đây được sử dụng xuyên suốt để theo dõ
 | 3 | `T1.3` | Nộp Moodle Stage S1 & nhận phê duyệt Stage S2 | N.N.M.Tuấn | Tuần 5 | [ ] | Đang chờ phản hồi phê duyệt chính thức |
 | 4 | `T1.4` | Khởi tạo workflow GitHub Actions `eshop-ci.yml` | D.N.Cường | Tuần 5 | [ ] | Chạy trên runner Ubuntu, Node.js 20 |
 | 5 | `T1.5` | Thiết lập npm cache optimization cho monorepo backend | D.N.Cường | Tuần 5 | [ ] | Đo thời gian chạy (target: rút ngắn từ ~60s xuống ~5s) |
-| 6 | `T1.6` | Cấu hình Quality Gate (100% Pass, Coverage ≥ 80%, LCOV) | D.N.Cường | Tuần 6 | [ ] | File XML/HTML coverage report |
+| 6 | `T1.6` | Cấu hình Quality Gate & Branch Protection (100% Pass, Coverage ≥ 80%, PR check) | D.N.Cường | Tuần 6 | [ ] | File XML/HTML coverage report & PR check |
 | 7 | `T1.7` | Cấu hình Jest backend, fix lỗi SQLite Concurrency Lock | T.G.Cường | Tuần 5 | [ ] | Failure Mode 1: Thêm `--runInBand` |
 | 8 | `T1.8` | Viết Data-Driven tests (`test.each`) cho coupon API | T.G.Cường | Tuần 5 | [ ] | Test suite `coupon.test.js` trên backend |
 | 9 | `T1.9` | Tái hiện & minh chứng lỗi coupon percent trong `server.js` | T.G.Cường | Tuần 6 | [ ] | Failure Mode 2: Bắt lỗi số tiền âm |
@@ -153,7 +155,7 @@ Bảng checklist dưới đây được sử dụng xuyên suốt để theo dõ
 | 18 | `T2.6` | Thiết kế bài tập lớp `Activity_Worksheet.md` (20–25m) | N.G.Huy | Tuần 6 | [ ] | Hoạt động "Pipeline Postmortem" |
 | 19 | `T2.7` | Chuẩn bị log lỗi CI mẫu và file workflow cho lớp làm | N.G.Huy | Tuần 6 | [ ] | Trích xuất log lỗi thực tế từ EShop |
 | 20 | `T2.8` | Xây dựng Answer Key & Barem chấm điểm Worksheet | N.G.Huy | Tuần 6 | [ ] | Tài liệu cho nhóm điều phối hoạt động |
-| 21 | `T2.9` | Soạn bộ slide `Seminar_Slides.pptx` (Tối đa 15 slides) | N.N.M.Tuấn | Tuần 6 | [ ] | Tuân thủ số trang, tập trung sơ đồ/hình ảnh |
+| 21 | `T2.9` | Soạn bộ slide song song Seminar_Slides (`.pptx` & `.md` ≤ 15 trang) | N.N.M.Tuấn | Tuần 6 | [ ] | Chữ đen nền trắng, tóm tắt & gán link video |
 | 22 | `T2.10`| Rà soát tính nhất quán giữa Slide, Guide và Demo | N.N.M.Tuấn | Tuần 6 | [ ] | Thống nhất thuật ngữ & số liệu đo đạc |
 | 23 | `T2.11`| Đóng gói gói tài liệu Pre-share (Moodle / Google Drive) | N.N.M.Tuấn | Tuần 6 | [ ] | Đạt mốc **90% hoàn thành seminar** |
 | **III**| **PHASE 3** | **BÁO CÁO TRỰC TIẾP & HOÀN TẤT HỒ SƠ** | | **Tuần 7–11** | | |

@@ -17,7 +17,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
 1. **Bộ tài liệu hướng dẫn chuyên sâu (`User_Guide.md`):** Viết hoàn toàn bằng tiếng Anh, tối thiểu 7 phần theo rubric, phân tích sâu sắc **3 Mandatory Failure Modes**.
 2. **Video Demo Screencast (`Demo_Screencast.mp4`):** Thời lượng chuẩn **5 – 8 phút**, độ phân giải 1080p, thuyết minh tiếng Anh, dung lượng **≤ 100MB**, thao tác trên terminal/IDE/GitHub Actions thật (không chiếu slide câu giờ).
 3. **Bài tập tương tác trên lớp (`Activity_Worksheet.md`):** Kịch bản "Pipeline Postmortem" (20 – 25 phút), có log lỗi mẫu và file đáp án chi tiết (`Activity_Worksheet_AnswerKey.md`).
-4. **Bộ slide thuyết trình (`Seminar_Slides.pptx` & `Seminar_Slides.md`):** Tối đa **15 slides** đúng quy định, **bắt buộc hoàn thiện đồng thời cả 2 phiên bản**:
+4. **Bộ slide thuyết trình (`Seminar_Slides.pptx` & `Seminar_Slides.md`):** Tối đa **15 slides** đúng quy định, phong cách thiết kế chuẩn mực **chữ đen nền trắng** trực quan, tương phản cao, dễ theo dõi; có slide tóm tắt các phân đoạn chính của video demo kèm đường link truy cập trực tiếp tới video. **Bắt buộc hoàn thiện đồng thời cả 2 phiên bản**:
    * Bản trình chiếu PowerPoint (`Seminar_Slides.pptx`) phục vụ báo cáo trực tiếp tại lớp.
    * Bản tài liệu Markdown (`Seminar_Slides.md`) hiển thị trực quan, tra cứu trực tiếp trên GitHub repository.
 5. **Bộ số liệu thực nghiệm đo đạc (Empirical Metrics):** Số liệu đo Cache speedup (cold vs warm), tỉ lệ Flake rate (chạy lặp 10 lần), hiệu quả AI Log Triage.
@@ -57,12 +57,12 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
 ### 3.1. Nguyễn Ngọc Minh Tuấn (Phụ trách Bộ Slide pptx/md & Kịch bản Nghiệp vụ SUT)
 
 * [ ] **Task Tuấn 1: Thiết kế cấu trúc & biên soạn bộ Slide song song (`Seminar_Slides.pptx` & `Seminar_Slides.md`)**
-  * **Task Description:** Xây dựng khung cấu trúc và nội dung bộ slide thuyết trình tuân thủ nghiêm ngặt quy định **tối đa 15 slides**. Hoàn thành đồng bộ cả **2 phiên bản**: file trình chiếu `Seminar_Slides.pptx` và file tài liệu hóa `Seminar_Slides.md` hiển thị trực tiếp trên GitHub repository. Tập trung sơ đồ kiến trúc trực quan, số liệu đo đạc thực tế, hạn chế tối đa text dày đặc.
+  * **Task Description:** Xây dựng khung cấu trúc và nội dung bộ slide thuyết trình tuân thủ nghiêm ngặt quy định **tối đa 15 slides**. Định dạng phong cách thiết kế chuẩn mực **chữ đen nền trắng (clean, high-contrast)** trang nhã, tập trung sơ đồ kiến trúc trực quan, biểu đồ số liệu thực nghiệm, hạn chế tối đa text dày đặc. Đối với video demo (`Demo_Screencast.mp4`), thiết kế slide tóm tắt ngắn gọn các mốc nội dung chính và đính kèm đường link dẫn trực tiếp tới video. Hoàn thành đồng bộ cả **2 phiên bản**: file trình chiếu `Seminar_Slides.pptx` và file tài liệu hóa `Seminar_Slides.md` hiển thị trực tiếp trên GitHub repository.
   * **Hours:** 4.0h
   * **Evidence:**
     * *Chat messages:* Ảnh chụp trao đổi thống nhất dàn ý 15 slides với nhóm trong Messenger/Discord.
     * *Git commits:* Commit thêm 2 file `Seminar_Slides.pptx` và `Seminar_Slides.md` kèm commit hash rõ ràng trên GitHub.
-    * *Artifacts:* Ảnh preview giao diện file `Seminar_Slides.md` trên GitHub và file PPTX hoàn chỉnh đúng 15 trang.
+    * *Artifacts:* Ảnh preview giao diện file `Seminar_Slides.md` trên GitHub và file PPTX hoàn chỉnh đúng 15 trang chữ đen nền trắng có link video.
 
 * [ ] **Task Tuấn 2: Soạn nội dung Slide chuyên sâu về Failure Mode 2 & Data-Driven Testing**
   * **Task Description:** Biên soạn 2 slide chi tiết phân tích lỗi nghiệp vụ coupon percent (`discount_amount` tính ra số âm khi số tiền giảm lớn hơn tổng đơn hàng trong `server.js`). Trình bày giải pháp Data-Driven Testing (`test.each`) với 21 ca kiểm thử bao phủ toàn bộ miền giá trị biên và trường hợp dị thường.
@@ -108,8 +108,8 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit file kịch bản `Video_Storyboard.md` lên repository kèm commit hash.
     * *Artifacts:* Bảng Storyboard chi tiết có 3 cột: Timecode, Screen Action (Thao tác màn hình), và English Narration (Lời đọc).
 
-* [ ] **Task D.N.Cường 2: Tích hợp bước Quality Gate vào workflow GitHub Actions (`eshop-ci.yml`)**
-  * **Task Description:** Hoàn thiện workflow `.github/workflows/eshop-ci.yml`: bổ sung bước Quality Gate kiểm soát bắt buộc 100% test suites phải pass, kiểm tra ngưỡng bao phủ mã nguồn (Coverage threshold check), tự động chặn và đánh fail workflow ngay khi có vi phạm để demo cơ chế Fail-Fast.
+* [ ] **Task D.N.Cường 2: Tích hợp bước Quality Gate & Branch Protection vào workflow GitHub Actions (`eshop-ci.yml`)**
+  * **Task Description:** Hoàn thiện workflow `.github/workflows/eshop-ci.yml`: bổ sung bước Quality Gate kiểm soát bắt buộc 100% test suites phải pass, kiểm tra ngưỡng bao phủ mã nguồn (Coverage threshold check $\ge 80\%$), xuất báo cáo LCOV và cấu hình cơ chế Branch Protection Rules (Required Status Checks) chặn merge PR ngay lập tức nếu vi phạm để demo cơ chế Fail-Fast.
   * **Hours:** 3.5h
   * **Evidence:**
     * *Chat messages:* Ảnh chụp thảo luận quy chuẩn Quality Gate với các thành viên trong nhóm.
@@ -117,7 +117,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Test logs / CI:* Link GitHub Actions run và ảnh chụp tab workflow execution hiển thị bước Quality Gate chạy thành công.
 
 * [ ] **Task D.N.Cường 3: Thực hiện quay video màn hình thực tế (Screen Recording 1080p, 60fps)**
-  * **Task Description:** Sử dụng phần mềm quay màn hình chuyên dụng (OBS Studio) ghi hình trực tiếp độ phân giải 1080p sắc nét (thao tác trực tiếp trên terminal/IDE/GitHub Actions, tuyệt đối không dùng slide): thực hiện luồng commit mã nguồn $\rightarrow$ trigger CI pipeline $\rightarrow$ kiểm tra cache HIT/MISS $\rightarrow$ kích hoạt AI Log Triage khi pipeline fail.
+  * **Task Description:** Sử dụng phần mềm quay màn hình chuyên dụng (OBS Studio) ghi hình trực tiếp độ phân giải 1080p sắc nét (thao tác trực tiếp trên terminal/IDE/GitHub Actions, tuyệt đối không dùng slide): thực hiện trọn vẹn luồng Pull Request thực tế: mở PR có lỗi coupon $\rightarrow$ trigger CI pipeline $\rightarrow$ cache HIT $\rightarrow$ Jest fail kích hoạt Fail-Fast $\rightarrow$ nút Merge bị KHÓA CỨNG trên GitHub UI $\rightarrow$ AI Log Triage can thiệp tóm tắt lỗi $\rightarrow$ push commit sửa lỗi $\rightarrow$ pipeline xanh $\rightarrow$ nút Merge được mở khóa.
   * **Hours:** 4.5h
   * **Evidence:**
     * *Chat messages:* Ảnh chụp chat thông báo tiến độ quay và chia sẻ file video thô cho nhóm xem trước.
@@ -212,8 +212,8 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit lưu trữ bộ file log mẫu vào repository đúng cấu trúc thư mục quy định.
     * *Artifacts:* Screenshot nội dung các file log mẫu được định dạng sạch sẽ, dễ đọc.
 
-* [ ] **Task Huy 4: Nâng cấp và kiểm chứng script AI Triage (`ai_triage.py`) với Gemini API thật**
-  * **Task Description:** Hoàn thiện mã nguồn Python script `.github/scripts/ai_triage.py`: tích hợp gọi trực tiếp Google Gemini API sử dụng API key thật, đọc file log lỗi test runner, tự động phân tích và sinh Cây giả thuyết (Hypothesis Tree) gồm: Root Cause Hypotheses, Evidence từ log, và Recommended Fix Actions.
+* [ ] **Task Huy 4: Nâng cấp và kiểm chứng script AI Triage (`ai_triage.py`) với Gemini API thật (Trợ lý gỡ lỗi chuyên biệt)**
+  * **Task Description:** Hoàn thiện mã nguồn Python script `.github/scripts/ai_triage.py` đóng vai trò công cụ hỗ trợ gỡ lỗi nhanh (Specialized Assistant) khi pipeline thất bại: tích hợp gọi trực tiếp Google Gemini API sử dụng API key thật, đọc file log lỗi test runner, tự động phân tích và sinh Cây giả thuyết (Hypothesis Tree) gồm: Root Cause Hypotheses, Evidence từ log, và Recommended Fix Actions.
   * **Hours:** 4.5h
   * **Evidence:**
     * *Chat messages:* Ảnh chụp thảo luận cấu trúc prompt kỹ thuật và định dạng JSON trả về từ Gemini với nhóm.
@@ -250,7 +250,7 @@ Mỗi task lớn nên được chia nhỏ thành các **Phase** và phân rã th
   * Push nhánh: `git push origin <ten-nhanh-cua-ban>`
 - **Bước X.4: Thu thập minh chứng (Evidence):**
   * Chụp ảnh màn hình terminal / chat / commit diff.
-  * Đặt tên ảnh có tiền tố thành viên: `giacuong_stepX_evidence.png`.
+  * Đặt tên ảnh có tiền tố thành viên: `gcuong_stepX_evidence.png`.
 ```
 
 ### Quy ước tiền tố Commit Message chuẩn:
@@ -272,7 +272,7 @@ Mỗi task lớn nên được chia nhỏ thành các **Phase** và phân rã th
 | **4** | `W6-04` | Hoàn thiện Step-by-Step Reproduction Guide | T.G.Cường | 3.0h | Chat log, Test logs, Git commit | Ngày 5 | [ ] | Các bước chạy demo có thể tái hiện 100% |
 | **5** | `W6-05` | Rà soát format Markdown & ngữ pháp tiếng Anh | T.G.Cường | 2.5h | Chat log, Link checker report, Git commit | Ngày 6 | [ ] | File `User_Guide.md` hoàn chỉnh |
 | **6** | `W6-06` | Soạn Storyboard chi tiết cho Video Screencast | D.N.Cường | 3.5h | Chat log, Git commit, Storyboard table | Ngày 2 | [ ] | Kịch bản phân cảnh 5–8 phút |
-| **7** | `W6-07` | Bổ sung Quality Gate vào workflow GitHub Actions | D.N.Cường | 3.5h | Chat log, Git commit, CI Run URL | Ngày 3 | [ ] | Workflow kiểm tra pass test & coverage |
+| **7** | `W6-07` | Bổ sung Quality Gate & Branch Protection vào CI | D.N.Cường | 3.5h | Chat log, Git commit, CI Run URL | Ngày 3 | [ ] | Workflow kiểm tra pass test, coverage & PR lock |
 | **8** | `W6-08` | Quay video screencast thao tác màn hình thật | D.N.Cường | 4.5h | Chat log, Video raw 1080p, OBS timeline | Ngày 4 | [ ] | Video thô 1080p, thao tác trực tiếp IDE |
 | **9** | `W6-09` | Thu âm tiếng Anh, biên tập & nén video MP4 | D.N.Cường | 4.0h | Chat log, ffmpeg log, File Properties | Ngày 5 | [ ] | File `Demo_Screencast.mp4` (≤ 100MB, 5-8m) |
 | **10**| `W6-10` | Đóng gói bộ sản phẩm Pre-share lên Drive/Releases | D.N.Cường | 2.5h | Chat log, Drive link, GitHub Release | Ngày 6 | [ ] | Link tải trọn gói tài liệu mốc 90% |
@@ -300,7 +300,7 @@ Mỗi task lớn nên được chia nhỏ thành các **Phase** và phân rã th
 > 
 > Hãy tự đối soát đầy đủ qua **5 Cổng kiểm soát (Quality Gates)**:
 > 1. **Cổng 1 (Code & Test):** Chạy `npm test` nội bộ pass 100%, không commit file rác (`node_modules/`, `coverage/`, `.env`, `database.sqlite` bẩn).
-> 2. **Cổng 2 (Minh chứng - Evidence):** Chụp ảnh màn hình có **tiền tố tên thành viên** (`giacuong_`, `ncuong_`, `tuan_`, `huy_`), lưu vào `Weekly_Reports/Week06/screenshots/`.
+> 2. **Cổng 2 (Minh chứng - Evidence):** Chụp ảnh màn hình có **tiền tố tên thành viên** (`gcuong_`, `ncuong_`, `mtuan_`, `ghuy_`), lưu vào `Weekly_Reports/Week06/screenshots/`.
 > 3. **Cổng 3 (Hồ sơ tuần):** Cập nhật đầy đủ 4 vị trí: `AI Usage Declaration.md`, file riêng trong `chat_logs/`, `Git Commit Log Total.md`, và `Weekly_Report_Week06.md`.
 > 4. **Cổng 4 (Git Workflow):** Làm việc trên nhánh riêng (`feature/...`, `test/...`, `docs/...`), tuyệt đối không push thẳng lên `main`. Khi tạo PR, chọn đúng `base repository: SoftwareTesting-Group13/eshop-sut-seminar` (không nhầm sang repo của giảng viên).
 > 5. **Cổng 5 (Quy tắc 5 phút):** Tự trả lời 5 câu hỏi nhanh trước khi thông báo hoàn thành với nhóm!
