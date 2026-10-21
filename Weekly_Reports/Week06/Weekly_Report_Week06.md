@@ -46,7 +46,7 @@
 | Thành viên | Nhiệm vụ chính được giao | Giờ (Hours) | Trạng thái | Đánh giá kết quả thực tế |
 | :--- | :--- | :---: | :---: | :--- |
 | **Nguyễn Ngọc Minh Tuấn** | Lead soạn bộ Slide (pptx & md ≤ 15 trang), mở rộng test suites coupon & cấu hình LCOV coverage | 17.0h | Đang làm | Thiết kế khung Slide pptx/md 15 trang; bổ sung 21 ca test Data-Driven cho coupon; cấu hình Jest HTML coverage. |
-| **Dương Nhật Cường** | Lead sản xuất Video Screencast (1080p, ≤ 100MB, English narration), Quality Gate CI, đóng gói Pre-share | 18.0h | Đang làm | Lập kịch bản Storyboard, quay màn hình thao tác thật, thu âm tiếng Anh, nén video ffmpeg ≤ 100MB, đóng gói Drive. |
+| **Dương Nhật Cường** | Lead sản xuất Video Screencast (1080p, ≤ 100MB, English narration), Quality Gate CI, đóng gói Pre-share | 18.0h | Đang làm | Lập kịch bản Storyboard, quay màn hình thao tác thật, thu âm tiếng Anh, nén video ffmpeg ≤ 100MB, đóng gói Drive. **Quality Gate CI (W6-07) đã xong**: workflow có job `Quality Gate (100% Tests & Coverage >= 80%)` kiểm tra 100% suite pass + ngưỡng coverage 80% + xuất LCOV, Branch Protection Rules đã bật trên `main` (PR #7 đang ở trạng thái `blocked` — đúng cơ chế Fail-Fast cần demo). |
 | **Trần Gia Cường** | Lead biên soạn `User_Guide.md` tiếng Anh, phân tích 3 Failure Modes, vẽ sơ đồ Mermaid, Step-by-Step Guide | 17.5h | Đang làm | Hoàn thành khung 7 mục User Guide tiếng Anh, phân tích sâu 3 Failure Modes, tích hợp sơ đồ Mermaid, kiểm tra liên kết. |
 | **Nguyễn Gia Huy** | Lead thiết kế `Activity_Worksheet.md` & Answer Key, nâng cấp AI Triage Gemini API, đo đạc Metrics Flake Rate | 18.0h | Đang làm | Soạn kịch bản Postmortem 20-25m, barem điểm chi tiết, trích xuất sample logs, kết nối Gemini API thật, chạy 10 runs Flake rate. |
 
@@ -84,6 +84,7 @@
 1. **Minh chứng ncuong-1: Kịch bản Storyboard & Quality Gate CI/CD**
    - File: `ncuong_01_video_storyboard.png`, `ncuong_02_ci_quality_gate.png`
    - Mô tả: Bảng phân cảnh video 5-8 phút và kết quả workflow GitHub Actions kiểm soát Quality Gate.
+   - *Ghi chú chụp ảnh:* ảnh `ncuong_02_ci_quality_gate.png` nên chụp ở tab **Checks** của PR #7 (job `Quality Gate (100% Tests & Coverage >= 80%)` đang đỏ) kèm nút **Merge** bị khoá mờ, và ảnh **Settings → Branches** hiển thị Required Status Check.
 2. **Minh chứng ncuong-2: Thông số kỹ thuật Video Demo Screencast**
    - File: `ncuong_04_mp4_properties.png`
    - Mô tả: File Properties của `Demo_Screencast.mp4` chứng minh dung lượng ≤ 100MB, thời lượng 5-8 phút, độ phân giải 1080p.
