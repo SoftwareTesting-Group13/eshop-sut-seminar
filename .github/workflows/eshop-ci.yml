@@ -1,36 +1,20 @@
-# =============================================================================
-# EShop CI — Continuous Integration Pipeline
-# -----------------------------------------------------------------------------
-# Chủ đề Seminar: T07 — CI/CD & Test-Harness Engineering
-# Hệ thống kiểm thử (SUT): EShop System Monorepo
-# Nhóm thực hiện: Nhóm 13 — Thành viên phụ trách workflow: Dương Nhật Cường
-# -----------------------------------------------------------------------------
-# Pipeline này chịu trách nhiệm:
-#   1. Cài đặt & kiểm thử tự động (automated test) cho backend Express + SQLite.
-#   2. Tối ưu thời gian chạy bằng `actions/cache` cho thư mục `backend/node_modules`.
-#   3. QUALITY GATE — bước chặn cứng (Fail-Fast):
-#        a. 100% test suites phải PASS,
-#        b. ngưỡng bao phủ mã nguồn >= 80% (statements/lines/functions/branches),
-#        c. báo cáo LCOV phải được sinh ra.
-#      Kết quả của job này được dùng làm Required Status Check trong
-#      Branch Protection Rules => PR vi phạm bị chặn merge ngay lập tức.
-#
-# HIỆU QUẢ CACHE ĐÃ GHI NHẬN (đo trên runner ubuntu-latest, Node.js 22):
-#   - Cold run  (cache miss — cài mới toàn bộ dependency): ~60s cho bước `npm ci`
-#   - Warm run  (cache hit  — khôi phục node_modules từ cache): ~5s
-#   => Tiết kiệm ~55s/bản chạy, giảm khoảng 90% thời gian cài dependency.
-# =============================================================================
+# EShop CI — chạy khi push mọi branch hoặc mở PR vào main/master.
+# Flow chính: Gitleaks → Backend Test → Quality Gate → Build.
+# Nhánh hỗ trợ: Backend Test fail → AI phân tích log (nếu có GEMINI_API_KEY).
+# Gitleaks fail thì bỏ qua các job sau. Quality Gate yêu cầu tất cả test pass,
+# line coverage > 70% và có LCOV. Pipeline Summary luôn ghi audit artifact.
+# Đây là CI + build artifact; workflow chưa triển khai ứng dụng lên môi trường.
 
 name: EShop CI
 
 on:
   push:
-    branches: [main, master]
+    branches: ['**']
   pull_request:
     branches: [main, master]
-  workflow_dispatch: # Cho phép chạy thủ công từ tab Actions để đo lại hiệu quả cache.
+  workflow_dispatch:
 
-# Hủy các lần chạy cũ trên cùng nhánh khi có commit mới (tránh lãng phí runner).
+# Commit mới trên cùng nhánh thay thế lần chạy cũ.
 concurrency:
   group: eshop-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -39,9 +23,40 @@ permissions:
   contents: read
 
 jobs:
+  # Quét lịch sử Git trước; phát hiện secret thì chặn Test và Build.
+  secret-scan:
+    name: Gitleaks Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v6
+        with:
+          # Gitleaks cần toàn bộ commit, không chỉ commit mới nhất.
+          fetch-depth: 0
+
+      - name: Scan Git history for leaked secrets
+        # Cùng UID với checkout để Git tin cậy repo; report đã che giá trị secret.
+        run: |
+          mkdir -p ci-artifacts
+          docker run --rm --user "$(id -u):$(id -g)" \
+            -v "$PWD:/repo" -w /repo \
+            ghcr.io/gitleaks/gitleaks:v8.30.1 git \
+            --redact=100 --report-format=json \
+            --report-path=ci-artifacts/gitleaks-report.json .
+
+      - name: Upload redacted security report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: eshop-gitleaks
+          path: ci-artifacts/gitleaks-report.json
+          if-no-files-found: warn
+
+  # Chỉ chạy khi Gitleaks xanh. Log và coverage được giữ lại cả khi Jest fail.
   backend-test:
     name: Backend Test (Node.js 22)
     runs-on: ubuntu-latest
+    needs: secret-scan
 
     defaults:
       run:
@@ -49,24 +64,17 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
 
-      # ---------------------------------------------------------------------
-      # BƯỚC CACHE TRỌNG TÂM — tăng tốc cài đặt dependency backend
-      # ---------------------------------------------------------------------
-      # Key được băm từ nội dung `backend/package-lock.json`:
-      #   - Lock file KHÔNG đổi  -> cache HIT  -> bỏ qua `npm ci` (~5s).
-      #   - Lock file THAY ĐỔI   -> cache MISS -> chạy `npm ci` rồi lưu cache mới.
-      # `restore-keys` giúp tận dụng cache cũ (gần đúng) khi lock file đổi,
-      # tránh tải lại hoàn toàn từ registry.
+      # Cache dựa trên package-lock; cache hit thì đã có node_modules.
       - name: Cache backend/node_modules
         id: cache-node-modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: backend/node_modules
           key: ${{ runner.os }}-node22-${{ hashFiles('backend/package-lock.json') }}
@@ -74,12 +82,11 @@ jobs:
             ${{ runner.os }}-node22-
 
       - name: Install dependencies (npm ci)
-        # Chỉ cài khi cache MISS. Khi cache HIT, node_modules đã sẵn sàng.
-        # Lưu ý: KHÔNG dùng `npm ci` khi cache HIT vì npm ci sẽ xóa node_modules.
+        # npm ci xóa node_modules, nên chỉ chạy khi không khôi phục đúng cache.
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Report dependency install time & cache status
+      - name: Report cache status
         run: |
           echo "### EShop CI — Cache Report :package:" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
@@ -92,86 +99,104 @@ jobs:
           echo "- Số dependency cấp 1 (dependencies): $(node -e "console.log(Object.keys(require('./package.json').dependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"
           echo "- Số dependency phát triển (devDependencies): $(node -e "console.log(Object.keys(require('./package.json').devDependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"
 
-      # ---------------------------------------------------------------------
-      # BƯỚC 1/2 — CHẠY TEST SUITE + THU THẬP COVERAGE
-      # ---------------------------------------------------------------------
-      # `npm run test:ci` = jest --runInBand --detectOpenHandles --forceExit
-      #                      --coverage --json --outputFile=coverage/jest-results.json --ci
-      #   --runInBand: chạy tuần tự, tránh lỗi SQLITE_BUSY: database is locked.
-      #   --coverage : sinh coverage/lcov.info + coverage-summary.json (đầu vào cho Quality Gate).
-      #   --json     : ghi kết quả test ra file để Quality Gate kiểm tra 100% suite pass.
-      # Job này CỐ TÌNH fail khi có test đỏ — đó là tín hiệu Fail-Fast đầu tiên,
-      # job `quality-gate` phía dưới sẽ báo cáo chi tiết vì sao bị chặn.
+      # pipefail giữ exit code của Jest khi tee đồng thời ghi log ra file.
       - name: Run backend test suite (Jest) with coverage
-        run: npm run test:ci
+        run: |
+          mkdir -p coverage
+          set -o pipefail
+          npm run test:ci 2>&1 | tee coverage/jest-console.log
 
-      # Upload artifact kể cả khi test fail (để Quality Gate vẫn đọc được
-      # lcov.info + jest-results.json và giải thích chính xác nguyên nhân).
+      # always() để dev, Quality Gate và AI đều đọc được kết quả khi test đỏ.
       - name: Upload coverage artifacts (LCOV + jest results)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: eshop-coverage
           path: backend/coverage
           retention-days: 14
           if-no-files-found: warn
 
-  # =============================================================================
-  # QUALITY GATE — bước chặn cứng (Fail-Fast), là Required Status Check của
-  # Branch Protection Rules trên nhánh `main`.
-  # =============================================================================
-  quality-gate:
-    # Tên job này CHÍNH LÀ tên status check được yêu cầu bắt buộc khi merge PR.
-    name: Quality Gate (100% Tests & Coverage >= 80%)
+  # Job hỗ trợ dev; chạy sau Test fail và không chặn Quality Gate.
+  ai-triage:
+    name: AI Failure Triage
     runs-on: ubuntu-latest
     needs: backend-test
-    # `always()`: job vẫn chạy (và báo cáo FAIL) kể cả khi job test vừa đỏ,
-    # để PR luôn nhận được 1 status check rõ ràng thay vì bị "Expected — Waiting".
-    if: always()
+    if: always() && needs.backend-test.result == 'failure'
+    steps:
+      - name: Checkout triage script
+        uses: actions/checkout@v6
+
+      - name: Download failed test log
+        uses: actions/download-artifact@v6
+        with:
+          name: eshop-coverage
+          path: backend/coverage
+        continue-on-error: true
+
+      - name: Analyze Jest failure with Gemini
+        if: hashFiles('backend/coverage/jest-console.log') != ''
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-3.5-flash-lite
+        run: |
+          if [ -n "$GEMINI_API_KEY" ]; then
+            python3 .github/scripts/ai_triage.py \
+              --log-file backend/coverage/jest-console.log \
+              --output backend/coverage/ai-triage.md
+          else
+            echo 'AI triage skipped: add GEMINI_API_KEY to repository secrets.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload AI analysis
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: eshop-ai-triage
+          path: backend/coverage/ai-triage.md
+          if-no-files-found: ignore
+
+  # Required check cho PR: test pass, line coverage > 70%, LCOV tồn tại.
+  quality-gate:
+    name: Quality Gate (Tests & Coverage > 70%)
+    runs-on: ubuntu-latest
+    needs: backend-test
+    # Test đỏ vẫn chạy gate để báo nguyên nhân; Test bị skip thì gate cũng skip.
+    if: always() && (needs.backend-test.result == 'success' || needs.backend-test.result == 'failure')
     permissions:
       contents: read
       pull-requests: write
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download coverage artifacts from test job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: eshop-coverage
           path: backend/coverage
-        continue-on-error: true # Thiếu artifact => gate tự báo FAIL, không crash CI
+        continue-on-error: true # Script gate sẽ báo thiếu artifact rõ ràng.
 
-      # ---------------------------------------------------------------------
-      # BƯỚC 2/2 — CHẤM ĐIỂM QUALITY GATE
-      # ---------------------------------------------------------------------
-      # Kiểm tra 3 tiêu chí bắt buộc:
-      #   1. 100% test suites PASS        (đọc coverage/jest-results.json)
-      #   2. Coverage >= 80%              (đọc coverage/coverage-summary.json)
-      #   3. Báo cáo LCOV đã được sinh    (kiểm tra coverage/lcov.info)
-      # Exit code 1 => job đỏ => Branch Protection chặn merge PR.
-      # Ngưỡng có thể chỉnh bằng Repository Variables (không cần sửa workflow):
-      #   COVERAGE_THRESHOLD, COVERAGE_BRANCHES_THRESHOLD.
-      - name: Run Quality Gate (tests 100% + coverage threshold + LCOV)
+      # Ngưỡng được cố định trong CI theo yêu cầu đồ án.
+      - name: Run Quality Gate (tests 100% + lines > 70% + LCOV)
         env:
-          COVERAGE_THRESHOLD: ${{ vars.COVERAGE_THRESHOLD || '80' }}
-          COVERAGE_BRANCHES_THRESHOLD: ${{ vars.COVERAGE_BRANCHES_THRESHOLD || vars.COVERAGE_THRESHOLD || '80' }}
+          COVERAGE_THRESHOLD: '70'
         run: node .github/scripts/quality-gate.js
 
       - name: Upload LCOV report artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: eshop-lcov-report
           path: backend/coverage
           retention-days: 14
           if-no-files-found: warn
 
-      # Ghim kết quả gate lên PR để reviewer thấy ngay mà không cần mở log CI.
+      # Comment là tiện ích; thiếu quyền comment trên fork không đổi kết quả gate.
       - name: Publish Quality Gate verdict on the Pull Request
         if: always() && github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
+        continue-on-error: true # Fork PRs can have a read-only GITHUB_TOKEN.
         with:
           script: |
             const fs = require('fs');
@@ -191,20 +216,91 @@ jobs:
               await github.rest.issues.createComment({ ...payload, issue_number });
             }
 
+  # Chỉ đóng gói khi cả kiểm thử lẫn quét secret đều đạt.
+  build:
+    name: Build (web, admin, backend package)
+    runs-on: ubuntu-latest
+    needs: [quality-gate, secret-scan]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            frontend-web/package-lock.json
+            frontend-admin/package-lock.json
+
+      - name: Build web storefront
+        working-directory: frontend-web
+        run: npm ci && npm run build
+
+      - name: Build admin UI
+        working-directory: frontend-admin
+        run: npm ci && npm run build
+
+      - name: Package backend source
+        run: |
+          mkdir -p ci-artifacts
+          tar -czf ci-artifacts/eshop-backend.tar.gz -C backend \
+            server.js database.js coupon-discount.js package.json package-lock.json
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: eshop-build
+          path: |
+            frontend-web/dist/
+            frontend-admin/dist/
+            ci-artifacts/eshop-backend.tar.gz
+
+  # Luôn ghi trạng thái mọi job, kể cả khi pipeline dừng ở Gitleaks.
   workflow-summary:
     name: Pipeline Summary
     runs-on: ubuntu-latest
-    needs: [backend-test, quality-gate]
+    needs: [backend-test, quality-gate, secret-scan, build, ai-triage]
     if: always()
     steps:
+      - name: Write CI audit record
+        env:
+          TEST_RESULT: ${{ needs.backend-test.result }}
+          GATE_RESULT: ${{ needs.quality-gate.result }}
+          SCAN_RESULT: ${{ needs.secret-scan.result }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          AI_RESULT: ${{ needs.ai-triage.result }}
+        run: |
+          jq -n \
+            --arg run_id "$GITHUB_RUN_ID" \
+            --arg attempt "$GITHUB_RUN_ATTEMPT" \
+            --arg commit "$GITHUB_SHA" \
+            --arg ref "$GITHUB_REF" \
+            --arg event "$GITHUB_EVENT_NAME" \
+            --arg recorded_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --arg test "$TEST_RESULT" \
+            --arg gate "$GATE_RESULT" \
+            --arg scan "$SCAN_RESULT" \
+            --arg build "$BUILD_RESULT" \
+            --arg ai "$AI_RESULT" \
+            '{run_id:$run_id, attempt:$attempt, commit:$commit, ref:$ref, event:$event, recorded_at:$recorded_at, jobs:{test:$test, quality_gate:$gate, gitleaks:$scan, build:$build, ai_triage:$ai}}' \
+            > ci-audit.json
+
+      - name: Upload CI audit record
+        uses: actions/upload-artifact@v6
+        with:
+          name: eshop-ci-audit
+          path: ci-audit.json
+
       - name: Final status
         run: |
           echo "### EShop CI Result" >> "$GITHUB_STEP_SUMMARY"
           echo "Backend test job: ${{ needs.backend-test.result }}" >> "$GITHUB_STEP_SUMMARY"
           echo "Quality Gate job: ${{ needs.quality-gate.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Gitleaks job: ${{ needs.secret-scan.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Build job: ${{ needs.build.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "AI triage job: ${{ needs.ai-triage.result }}" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          if [ "${{ needs.quality-gate.result }}" = "success" ]; then
-            echo "✅ Quality Gate PASSED — PR được phép merge." >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ needs.quality-gate.result }}" = "success" ] && [ "${{ needs.secret-scan.result }}" = "success" ] && [ "${{ needs.build.result }}" = "success" ]; then
+            echo "✅ Test, security scan and build passed." >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "❌ Quality Gate FAILED — PR bị Branch Protection chặn merge (Fail-Fast)." >> "$GITHUB_STEP_SUMMARY"
+            echo "❌ Pipeline failed; review test artifacts, quality gate and security scan." >> "$GITHUB_STEP_SUMMARY"
           fi

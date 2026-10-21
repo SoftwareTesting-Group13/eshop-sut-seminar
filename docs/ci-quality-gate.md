@@ -1,5 +1,7 @@
 # EShop CI — Quality Gate & Branch Protection
 
+> Tài liệu này ghi lại thiết kế seminar trước đó (ngưỡng 80%). Flow CI DevOps hiện hành, ngưỡng line coverage > 70% và kịch bản demo đỏ → xanh nằm trong [ci-devops-demo.md](ci-devops-demo.md).
+
 > **Chủ đề Seminar:** T07 — CI/CD & Test-Harness Engineering
 > **SUT:** EShop System Monorepo (backend Express + SQLite + Jest)
 > **Phụ trách:** Dương Nhật Cường (23120223) — Task W6-07

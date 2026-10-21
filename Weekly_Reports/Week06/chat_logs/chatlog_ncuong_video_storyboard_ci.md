@@ -5,6 +5,7 @@
 **Công cụ AI sử dụng:** OpenCode AI Coding Agent (mô hình MiniMax M3.1 Flash, provider OpenRouter)
 **Ngày thực hiện:** 21/10/2026
 **Task thuộc:** W6-06 (Soạn kịch bản Storyboard) + W6-07 (Quality Gate & Branch Protection)
+**Lưu ý cập nhật:** Mục 1–8 ghi lại phiên làm việc ban đầu với ngưỡng 80%. Mục 9 ghi phiên bổ sung CI DevOps ngày 21/10/2026; số liệu và tên check hiện hành nằm ở mục này.
 **File minh chứng sinh ra:**
 - `.github/workflows/eshop-ci.yml` (cập nhật — thêm job `quality-gate`)
 - `.github/scripts/quality-gate.js` (mới — logic chấm điểm 3 tiêu chí)
@@ -301,3 +302,63 @@ Nội dung trên được ghi lại trung thực trong quá trình làm việc v
 Các phần **chưa** làm trong phiên này (sửa bug coupon percent và bổ sung test để đạt coverage 80 %) đã được nêu rõ ở Mục 6, không được tính là kết quả của công việc này.
 
 **Người thực hiện:** Dương Nhật Cường — 23120223
+
+---
+
+## 9. PHỤ LỤC AUDIT — BỔ SUNG FLOW CI DEVOPS (21/10/2026)
+
+**Công cụ AI của phiên bổ sung:** Codex trong phiên chat này. Đây là phiên bổ sung sau bản ghi ở Mục 1–8; các khẳng định về CI Run #39623703799 và PR #7 ở trên chỉ phản ánh workflow cũ, không phải kết quả của workflow mới.
+
+### 9.1. Yêu cầu và các lần chỉnh hướng
+
+| Lượt | Yêu cầu của người dùng | Quyết định triển khai |
+| :--- | :--- | :--- |
+| 1 | “Cấu hình cho github action quét và chạy test trên từng branch. Pipeline cần có ít nhất 2 phase test và build… độ phủ > 70%… gitleak… nhớ audit log” | Mở trigger `push` cho mọi branch; giữ PR vào `main`/`master`; Test xuất kết quả Jest, coverage và log; Quality Gate yêu cầu 100% test pass, **line coverage > 70%**, LCOV; thêm Gitleaks và Build. |
+| 2 | Repo còn nhiều bug; mục tiêu demo CI phát hiện lỗi, AI gợi ý, dev tự sửa rồi commit lại | Giữ **một lỗi coupon percent** để lần đầu đỏ. Tách phép tính ra `backend/coupon-discount.js` và thêm unit test; sửa lỗi điều kiện biên khác để sau khi dev sửa một dòng công thức, pipeline có thể xanh. |
+| 3 | Hỏi thứ tự flow; sau đó yêu cầu Gitleaks chạy đầu để gặp secret thì fail ngay | Chốt thứ tự **Gitleaks → Test → Quality Gate → Build**. Test đỏ mở nhánh AI Triage; Gitleaks đỏ thì Test, Quality Gate và Build bị skip. |
+| 4 | Yêu cầu làm sạch `eshop-ci.yml`, ghi flow rõ ở đầu và comment dễ hiểu | Rút gọn header, comment theo lý do của từng job, giữ nguyên tên status check và quan hệ phụ thuộc. |
+| 5 | Chỉ ra audit log chưa được ghi vào file chat log Tuần 6 này | Bổ sung phụ lục này, phân biệt rõ kiểm chứng local với GitHub Actions chưa chạy. |
+
+### 9.2. Flow và file đã thay đổi
+
+```text
+Push branch / PR
+  Gitleaks Secret Scan
+    ├─ fail → dừng Test, Quality Gate, Build
+    └─ pass → Backend Test → upload eshop-coverage
+                ├─ Quality Gate (Tests & Coverage > 70%) → Build nếu pass
+                └─ AI Failure Triage nếu Test fail → eshop-ai-triage nếu có key
+  Pipeline Summary → eshop-ci-audit (luôn chạy)
+```
+
+- `.github/workflows/eshop-ci.yml`: thứ tự job, artifact test/build/security/AI/audit, trigger mọi branch. Gitleaks dùng CLI qua Docker và `--redact=100`; scan này phát hiện secret trong Git history, không quét mọi lỗ hổng ứng dụng.
+- `.github/scripts/quality-gate.js`: vẫn đọc JSON kết quả Jest và LCOV như bản cũ; chỉ **line coverage > 70%** là ngưỡng coverage bắt buộc. Statements, branches, functions vẫn xuất trong báo cáo để theo dõi.
+- `.github/scripts/configure-branch-protection.sh`: payload mới yêu cầu ba check `Gitleaks Secret Scan`, `Quality Gate (Tests & Coverage > 70%)` và `Build (web, admin, backend package)`.
+- `backend/coupon-discount.js`, `backend/server.js`, `backend/tests/coupon-discount.unit.test.js`, `backend/tests/shop-flows.test.js`, `backend/jest.config.js`: cô lập công thức coupon để test và demo; bổ sung test luồng nghiệp vụ; coverage tính cả module mới. `backend/database.js` dùng SQLite in-memory trong Jest để không reset file database được track.
+- `docs/ci-devops-demo.md`, `docs/ci-audit-log.md`: hướng dẫn thao tác và bản audit kỹ thuật ngắn. Phụ lục hiện tại là nơi lưu dấu vết phiên chat theo yêu cầu môn học.
+
+### 9.3. Kiểm chứng do Codex thực hiện trong phiên này
+
+| Kiểm tra | Kết quả |
+| :--- | :--- |
+| Source demo còn bug | **30/39 test pass, 9 fail** ở coupon; Quality Gate đỏ vì test. Line coverage **78.16% > 70%** và LCOV đạt. |
+| Bản sao tạm chỉ sửa công thức `totalAmount * coupon.discount_value / 100` | **39/39 test pass**, line coverage **78.16%**, Quality Gate xanh. Source trong repo vẫn giữ bug để dev tự sửa khi demo. |
+| Frontend build local | `frontend-web` và `frontend-admin` đều build pass sau `npm ci --ignore-scripts`. Workflow dùng `npm ci` đầy đủ; chưa có CI run mới để xác nhận build trên GitHub. |
+| Gitleaks CLI local trên Git history hiện có | 0 finding. Các file đang sửa chưa commit nên chưa được kết luận bằng Git-history scan. |
+| AI triage | 6/6 unit test Python pass; dry run đọc được Expected/Received từ log coupon. **Chưa gọi Gemini API thật** vì phiên này không có `GEMINI_API_KEY`. |
+| Cấu hình workflow | YAML parse thành công; kiểm tra dependency Gitleaks → Test → Gate → Build và `git diff --check` đều pass. |
+| Branch Protection | Chỉ kiểm tra `--dry-run` payload. **Chưa áp dụng cấu hình mới lên GitHub.** |
+
+**Việc còn cần kiểm chứng trước khi quay demo:** commit/push branch, xem run GitHub Actions thật; đặt `GEMINI_API_KEY` trong GitHub Secrets nếu muốn AI phân tích trực tiếp; cập nhật required checks trên `main` bằng quyền admin. Không dùng link PR #7 hay CI Run cũ làm bằng chứng cho flow mới.
+
+### 9.4. Preflight bổ sung trước khi push demo
+
+Theo yêu cầu “Rà lại thử xem ci.cd ổn áp chưa m để t push r làm demo thử”, Codex kiểm tra lại workflow và sửa hai điểm: cho Gitleaks container chạy cùng UID/GID với checkout để tránh lỗi Git `unsafe repository`, và sửa comment cũ “coverage ≥ 80%” trong `backend/jest.config.js` thành ngưỡng line coverage hiện hành **> 70%**.
+
+Kết quả: `actionlint` v1.7.12 pass; `npm run test:ci` vẫn đỏ đúng 9 test coupon (30/39 pass); Quality Gate fail do test và coverage đạt **78.16%**; bản sao tạm sửa một dòng đạt 39/39 và Gate pass; hai frontend pass với đúng `npm ci` + `npm run build`; AI triage offline 6/6 pass và dry run đọc được log; Gitleaks CLI quét Git history đã commit có 0 finding. Fixture Gate 70.00% bị chặn, 71.00% được pass.
+
+**Giới hạn kiểm chứng:** Docker daemon local không chạy nên chưa thực thi được chính lệnh Gitleaks container; chưa có Actions run hoặc branch protection mới trên GitHub. Các nhận xét về branch protection hiện tại dựa trên bản ghi cũ ở Mục 5.3, cần kiểm tra lại trên GitHub sau khi push.
+
+### 9.5. Chốt cấu hình Gemini cho demo
+
+Theo yêu cầu trước khi push, job `AI Failure Triage` dùng cố định `gemini-3.5-flash-lite`, đồng nhất với model mặc định trong `.github/scripts/ai_triage.py`. Chỉ cần tạo repository secret `GEMINI_API_KEY` nếu muốn gọi AI thật; không cần thêm repository variable `GEMINI_MODEL` hoặc key riêng cho Gitleaks/Test/Build. Job AI chỉ chạy khi Backend Test fail sau khi Gitleaks pass. Chưa gọi API thật trong phiên này vì không có key; sẽ kiểm chứng bằng Actions run sau khi push.

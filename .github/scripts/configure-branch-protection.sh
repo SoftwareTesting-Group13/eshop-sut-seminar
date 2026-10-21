@@ -5,7 +5,7 @@
 # Thành viên phụ trách: Dương Nhật Cường (23120223) — Seminar T07 CI/CD
 #
 # Mục đích: bảo vệ nhánh `main` của repo nhóm, bắt buộc mọi Pull Request phải
-# qua job "Quality Gate (100% Tests & Coverage >= 80%)" trước khi merge.
+# qua Quality Gate, Gitleaks và Build trước khi merge.
 # Vi phạm => nút Merge bị khoá cứng ngay lập tức (cơ chế Fail-Fast).
 #
 # CÁCH DÙNG
@@ -36,7 +36,9 @@ set -euo pipefail
 
 REPO="${REPO:-SoftwareTesting-Group13/eshop-sut-seminar}"
 BRANCH="${BRANCH:-main}"
-REQUIRED_CONTEXT="${REQUIRED_CONTEXT:-Quality Gate (100% Tests & Coverage >= 80%)}"
+REQUIRED_CONTEXT="${REQUIRED_CONTEXT:-Quality Gate (Tests & Coverage > 70%)}"
+SECURITY_CONTEXT="Gitleaks Secret Scan"
+BUILD_CONTEXT="Build (web, admin, backend package)"
 REQUIRED_APPROVALS="${REQUIRED_APPROVALS:-1}"
 REQUIRE_BRANCH_UP_TO_DATE="${REQUIRE_BRANCH_UP_TO_DATE:-true}"
 API="https://api.github.com"
@@ -96,7 +98,7 @@ cat > "$PAYLOAD_FILE" <<EOF
 {
   "required_status_checks": {
     "strict": $REQUIRE_BRANCH_UP_TO_DATE,
-    "contexts": ["$REQUIRED_CONTEXT"]
+    "contexts": ["$REQUIRED_CONTEXT", "$SECURITY_CONTEXT", "$BUILD_CONTEXT"]
   },
   "enforce_admins": true,
   $REVIEW_BLOCK

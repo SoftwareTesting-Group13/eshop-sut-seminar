@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const db = require("./database");
 const jwt = require("jsonwebtoken");
+const { calculateDiscount } = require("./coupon-discount");
 
 const app = express();
 const PORT = 3000;
@@ -376,7 +377,7 @@ app.post("/api/apply-coupon", (req, res) => {
           .json({ error: "Mã giảm giá không tồn tại hoặc đã bị vô hiệu hóa" });
       }
 
-      if (total_amount > coupon.min_order_amount) {
+      if (total_amount >= coupon.min_order_amount) {
         const now = new Date();
         const expiry = new Date(coupon.expired_at);
         if (expiry < now) {
@@ -394,14 +395,7 @@ app.post("/api/apply-coupon", (req, res) => {
                 });
               }
 
-              let discount_amount = 0;
-              if (coupon.type === "percent") {
-                discount_amount = Math.floor(
-                  total_amount * (1 - coupon.discount_value),
-                );
-              } else {
-                discount_amount = coupon.discount_value;
-              }
+              const discount_amount = calculateDiscount(total_amount, coupon);
 
               const final_amount = total_amount - discount_amount;
               return res.json({
@@ -414,14 +408,7 @@ app.post("/api/apply-coupon", (req, res) => {
             },
           );
         } else {
-          let discount_amount = 0;
-          if (coupon.type === "percent") {
-            discount_amount = Math.floor(
-              total_amount * (1 - coupon.discount_value),
-            );
-          } else {
-            discount_amount = coupon.discount_value;
-          }
+          const discount_amount = calculateDiscount(total_amount, coupon);
           const final_amount = total_amount - discount_amount;
           return res.json({
             success: true,

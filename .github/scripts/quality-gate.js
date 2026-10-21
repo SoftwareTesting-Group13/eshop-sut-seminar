@@ -10,8 +10,8 @@
  * ngưỡng chất lượng, kiểm tra 3 tiêu chí bắt buộc:
  *
  *   1. TEST GATE   — 100% test suites phải PASS (0 suite fail, 0 test fail).
- *   2. COVERAGE GATE — Ngưỡng bao phủ mã nguồn >= 80% (statements/lines/functions,
- *                     branches). Có thể nới lỏng qua biến môi trường.
+ *   2. COVERAGE GATE — line coverage phải lớn hơn 70%.
+ *                     Các metric khác vẫn có trong báo cáo để theo dõi.
  *   3. LCOV GATE   — Báo cáo LCOV phải được sinh ra (coverage/lcov.info).
  *
  * Nếu BẤT KỲ tiêu chí nào vi phạm => script thoát với exit code 1 => job
@@ -25,8 +25,7 @@
  *       node .github/scripts/quality-gate.js
  *
  * BIẾN MÔI TRƯỜNG (có thể ghi đè bằng Repository/Organization Variables):
- *   COVERAGE_THRESHOLD           — ngưỡng cho statements/lines/functions (mặc định 80)
- *   COVERAGE_BRANCHES_THRESHOLD  — ngưỡng cho branches (mặc định = COVERAGE_THRESHOLD)
+ *   COVERAGE_THRESHOLD           — ngưỡng line coverage (mặc định 70; CI cố định 70)
  *   COVERAGE_DIR                 — thư mục chứa coverage (mặc định backend/coverage)
  *
  * EXIT CODE: 0 = PASS, 1 = FAIL (quality gate chặn merge).
@@ -50,17 +49,13 @@ const JEST_RESULTS_FILE = path.join(COVERAGE_DIR, "jest-results.json");
 const LCOV_FILE = path.join(COVERAGE_DIR, "lcov.info");
 const REPORT_FILE = path.join(COVERAGE_DIR, "quality-gate-report.md");
 
-const DEFAULT_THRESHOLD = 80;
+const DEFAULT_THRESHOLD = 70;
 const COVERAGE_THRESHOLD = toNumber(process.env.COVERAGE_THRESHOLD, DEFAULT_THRESHOLD);
-const BRANCHES_THRESHOLD = toNumber(
-  process.env.COVERAGE_BRANCHES_THRESHOLD,
-  COVERAGE_THRESHOLD,
-);
 
 const METRICS = [
-  { key: "statements", label: "Statements", threshold: COVERAGE_THRESHOLD },
-  { key: "branches", label: "Branches", threshold: BRANCHES_THRESHOLD },
-  { key: "functions", label: "Functions", threshold: COVERAGE_THRESHOLD },
+  { key: "statements", label: "Statements" },
+  { key: "branches", label: "Branches" },
+  { key: "functions", label: "Functions" },
   { key: "lines", label: "Lines", threshold: COVERAGE_THRESHOLD },
 ];
 
@@ -83,13 +78,14 @@ function readJson(file) {
 
 function pct(metric) {
   if (!metric) return 0;
-  if (typeof metric.pct === "number") return metric.pct;
   if (metric.total > 0) return (metric.covered / metric.total) * 100;
+  if (typeof metric.pct === "number") return metric.pct;
   return 0;
 }
 
 function fmtPct(value) {
-  return `${value.toFixed(2)}%`;
+  // Jest truncates displayed percentages to two decimals; keep reports aligned.
+  return `${(Math.floor(value * 100) / 100).toFixed(2)}%`;
 }
 
 function relPath(file) {
@@ -191,7 +187,7 @@ function checkCoverageGate() {
     return {
       ...m,
       actual,
-      ok: actual + Number.EPSILON >= m.threshold,
+      ok: m.threshold === undefined || actual > m.threshold,
     };
   });
 
@@ -203,11 +199,10 @@ function checkCoverageGate() {
         actual: pct(summary[key][m.key]),
         threshold: m.threshold,
       }));
-      const worst = fileMetrics.reduce((min, cur) => (cur.actual < min.actual ? cur : min));
       return {
         file: path.relative(REPO_ROOT, key),
         metrics: fileMetrics,
-        belowThreshold: worst.actual + Number.EPSILON < worst.threshold,
+        belowThreshold: fileMetrics.some((m) => m.threshold !== undefined && m.actual <= m.threshold),
       };
     })
     .sort((a, b) => a.file.localeCompare(b.file));
@@ -217,7 +212,7 @@ function checkCoverageGate() {
     ok: failed.length === 0,
     available: true,
     reason: failed
-      .map((m) => `${m.label} ${fmtPct(m.actual)} < ngưỡng ${m.threshold}%`)
+      .map((m) => `${m.label} ${fmtPct(m.actual)} <= ngưỡng ${m.threshold}%`)
       .join("; "),
     metrics,
     perFile,
@@ -261,7 +256,7 @@ function buildMarkdown({ testGate, coverageGate, lcovGate, verdict }) {
   md.push("");
   md.push(
     verdict.ok
-      ? "> ✅ **VERDICT: PASS** — đã chạy qua 3 tiêu chí bắt buộc, PR được phép merge."
+      ? "> ✅ **VERDICT: PASS** — đã qua Quality Gate; PR còn cần Gitleaks và Build."
       : "> ❌ **VERDICT: FAIL (Fail-Fast)** — vi phạm Quality Gate, PR bị Branch Protection chặn merge.",
   );
   md.push("");
@@ -285,7 +280,7 @@ function buildMarkdown({ testGate, coverageGate, lcovGate, verdict }) {
     md.push("| :--- | ---: | ---: | :--- |");
     for (const m of coverageGate.metrics) {
       md.push(
-        `| ${m.label} | ${fmtPct(m.actual)} | ${m.threshold}% | ${m.ok ? "✅ PASS" : "❌ FAIL"} |`,
+        `| ${m.label} | ${fmtPct(m.actual)} | ${m.threshold === undefined ? "Theo dõi" : `> ${m.threshold}%`} | ${m.threshold === undefined ? "ℹ️ Theo dõi" : m.ok ? "✅ PASS" : "❌ FAIL"} |`,
       );
     }
     md.push("");
@@ -296,7 +291,7 @@ function buildMarkdown({ testGate, coverageGate, lcovGate, verdict }) {
     for (const f of coverageGate.perFile) {
       const cell = (key) => {
         const m = f.metrics.find((x) => x.key === key);
-        return `${fmtPct(m.actual)}${m.actual + Number.EPSILON < m.threshold ? " ⚠️" : ""}`;
+        return `${fmtPct(m.actual)}${m.threshold !== undefined && m.actual <= m.threshold ? " ⚠️" : ""}`;
       };
       md.push(
         `| \`${f.file}\` | ${cell("statements")} | ${cell("branches")} | ${cell("functions")} | ${cell("lines")} |`,
@@ -321,7 +316,7 @@ function buildMarkdown({ testGate, coverageGate, lcovGate, verdict }) {
   md.push("---");
   md.push("");
   md.push(
-    "_Quality Gate do `.github/scripts/quality-gate.js` thực thi; ngưỡng có thể chỉnh bằng Repository Variables `COVERAGE_THRESHOLD` / `COVERAGE_BRANCHES_THRESHOLD`._",
+    "_Quality Gate do `.github/scripts/quality-gate.js` thực thi; CI yêu cầu line coverage > 70%._",
   );
   md.push("");
   return md.join("\n");
@@ -329,7 +324,7 @@ function buildMarkdown({ testGate, coverageGate, lcovGate, verdict }) {
 
 function main() {
   out("=".repeat(78));
-  out("  EShop CI — QUALITY GATE  |  Tests 100% + Coverage >= 80% + LCOV");
+  out(`  EShop CI — QUALITY GATE  |  Tests 100% + Lines > ${COVERAGE_THRESHOLD}% + LCOV`);
   out("=".repeat(78));
 
   const testGate = checkTestGate();
@@ -352,11 +347,11 @@ function main() {
 
   // --- 2. Coverage gate ---------------------------------------------------
   out("");
-  out(`[2/3] COVERAGE GATE — ngưỡng statements/lines/functions >= ${COVERAGE_THRESHOLD}%, branches >= ${BRANCHES_THRESHOLD}%`);
+  out(`[2/3] COVERAGE GATE — line coverage > ${COVERAGE_THRESHOLD}%`);
   if (coverageGate.available) {
     for (const m of coverageGate.metrics) {
       out(
-        `      ${pad(m.label, 12)} ${padLeft(fmtPct(m.actual), 8)}  (ngưỡng ${m.threshold}%)  ${m.ok ? "PASS" : "FAIL"}`,
+        `      ${pad(m.label, 12)} ${padLeft(fmtPct(m.actual), 8)}  ${m.threshold === undefined ? "(theo dõi)" : `(phải > ${m.threshold}%)  ${m.ok ? "PASS" : "FAIL"}`}`,
       );
     }
   } else {
@@ -382,7 +377,7 @@ function main() {
   out("=".repeat(78));
   out(
     verdict.ok
-      ? "  VERDICT: ✅ QUALITY GATE PASSED — PR được phép merge."
+      ? "  VERDICT: ✅ QUALITY GATE PASSED — kiểm tra thêm Gitleaks và Build."
       : "  VERDICT: ❌ QUALITY GATE FAILED — PR bị chặn merge (Fail-Fast).",
   );
   out("=".repeat(78));
