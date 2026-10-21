@@ -5,7 +5,7 @@ Quy định lưu trữ các file chat log / prompt log trao đổi với AI củ
 * Danh sách file dự kiến:
   - `chatlog_mtuan_slides_coupon_tests.md`: Nguyễn Ngọc Minh Tuấn (Soạn Slide pptx/md, mở rộng coupon test suites)
   - `chatlog_ncuong_video_storyboard_ci.md`: Dương Nhật Cường (Storyboard video demo, Quality Gate CI)
-  - `chatlog_gcuong_user_guide_failure_modes.md`: Trần Gia Cường (Soạn thảo User Guide tiếng Anh, 3 Failure Modes, Mermaid diagrams)
+  - `chatlog_gcuong_user_guide.md`: Trần Gia Cường (Soạn thảo User Guide tiếng Anh, 3 Failure Modes, Mermaid diagrams)
   - `chatlog_ghuy_worksheet_ai_triage.md`: Nguyễn Gia Huy (Soạn Activity Worksheet, nâng cấp AI Triage Gemini API)
 
 ### Cấu trúc khuyến nghị cho mỗi file chat log:
