@@ -64,7 +64,7 @@
 * Các tiêu chí Quality Gates tiêu biểu trong CI/CD:
   * Code Quality & Linting
   * Unit Test Pass Rate (100% Pass)
-  * Code Coverage Threshold (≥ 80% Lines/Branches)
+  * Code Coverage Threshold (line coverage > 70% của module coupon trong CI demo)
   * Security Vulnerability Scan
 
 ### 1.5. Thách thức cốt lõi: Vấn nạn Flaky Test và chi phí gỡ lỗi (Triage)
@@ -126,7 +126,7 @@
 
 * **Vai trò:** "Trung tâm chỉ huy" điều phối toàn bộ pipeline — khởi tạo runner sạch, cài đặt môi trường, chạy Unit Test tự động, áp đặt Quality Gates, upload artifacts và kích hoạt AI Log Triage khi pipeline thất bại.
 * **Cơ chế rào chắn Branch Protection & Pull Request Gate:** GitHub Actions không chỉ chạy script kiểm thử đơn thuần mà hoạt động như một chốt chặn bảo vệ mã nguồn qua cơ chế **Branch Protection Rules (Required Status Checks)**. Khi lập trình viên mở một Pull Request (PR), toàn bộ bộ Unit Test suites và ngưỡng kiểm tra Code Coverage (Quality Gate) bắt buộc phải vượt qua (Status: Green). Nếu có bất kỳ test case nào thất bại hoặc vi phạm độ bao phủ, nút `Merge Pull Request` sẽ bị **khóa cứng (Blocked)**, ngăn chặn triệt để mã nguồn lỗi được hòa trộn vào nhánh chính (`main`).
-* **Thuật ngữ cốt lõi sẽ trình bày:** Workflow, Event/Trigger, Runner, Fail-Fast Mechanism, Test Coverage Gate (≥ 80% — đề xuất nhóm), PR Annotations, Branch Protection Rules.
+* **Thuật ngữ cốt lõi sẽ trình bày:** Workflow, Event/Trigger, Runner, Fail-Fast Mechanism, Test Coverage Gate (line coverage module coupon > 70%), PR Annotations, Branch Protection Rules.
 * **Kế hoạch 3 kịch bản Demo:**
   * *Demo 1:* Khởi tạo workflow `eshop-ci.yml`, demo cache optimization (60s → 5s).
   * *Demo 2:* Commit lỗi Unit Test → pipeline chặn merge → sửa lỗi → pipeline xanh.

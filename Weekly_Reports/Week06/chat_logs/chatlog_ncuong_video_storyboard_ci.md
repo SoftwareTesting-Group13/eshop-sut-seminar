@@ -398,3 +398,9 @@ Kiểm chứng local: nguồn còn bug cho **1/2 pass, 100% line coverage module
 Theo yêu cầu mới, Codex sửa công thức percent trên branch `ncuong` thành `Math.floor(totalAmount * coupon.discount_value / 100)` để PR #7 có thể xanh và merge. Kịch bản trình bày đổi thành: merge baseline đúng vào `main` → tạo branch demo mới từ `main` → cố ý đưa lại lỗi công thức → push/mở PR để CI đỏ và AI comment → dev sửa lại → push để CI xanh. `docs/ci-devops-demo.md` và `docs/ci-presentation-demo.md` được cập nhật theo thứ tự này.
 
 Preflight local trên source chuẩn bị push: `npm run test:ci:demo` **2/2 pass**, line coverage `backend/coupon-discount.js` **100%**; `npm run quality-gate` pass; `frontend-web` và `frontend-admin` build pass; `actionlint` và `git diff --check` pass. Chưa kết luận remote CI xanh cho đến khi GitHub Actions hoàn tất trên commit mới.
+
+### 9.11. Đồng bộ ngưỡng 70% trong tài liệu hiện hành (22/10/2026)
+
+Theo yêu cầu “Sửa lại là 70% hết”, Codex rà soát workflow và tài liệu: `.github/workflows/eshop-ci.yml` đã cố định `COVERAGE_THRESHOLD=70`; `.github/scripts/quality-gate.js` chặn khi **line coverage ≤ 70%**. Phạm vi đo của CI demo là `backend/coupon-discount.js`; cả **2/2 unit test được chọn** phải pass. Đây là điều kiện `>70%`, không phải `≥70%` hoặc độ phủ toàn backend.
+
+Đã đồng bộ mô tả hiện hành trong `Plan/Seminar_Phases_Plan.md`, `Plan/Week6Plan.md`, `Proposal/Proposal.md`, `Proposal/Demo_Plan.md` và `docs/ci-quality-gate.md`. Các nhắc đến 80% trong Mục 1–8 và những phần lịch sử phía trên được giữ nguyên để phản ánh quyết định tại thời điểm đó. Full backend suite kiểm tra riêng ngày 22/10/2026: **37/37 test pass, 78.16% line coverage**; số này không phải kết quả Quality Gate của hai test demo.

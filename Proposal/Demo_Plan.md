@@ -14,7 +14,7 @@
 - **Event & Triggers:** Sự kiện kích hoạt (`push`, `pull_request` → nhánh `main`).
 - **Runner:** Máy ảo Ubuntu sạch do GitHub khởi tạo cho mỗi lần chạy.
 - **Fail-Fast:** Ngắt pipeline ngay khi có ca Unit Test đầu tiên thất bại.
-- **Test Coverage Gate:** Chặn merge nếu Coverage < 80% (đề xuất nhóm).
+- **Test Coverage Gate:** Chặn merge nếu line coverage module coupon ≤ 70% trong CI demo.
 - **PR Annotations:** Gắn cờ trực tiếp dòng code lỗi trên giao diện Pull Request.
 - **Branch Protection Rules (Required Status Checks):** Cơ chế bảo vệ nhánh chính (`main`), bắt buộc toàn bộ Unit Test và rào chắn Coverage phải PASS thì nút Merge Pull Request trên GitHub UI mới được mở khóa.
 
@@ -34,7 +34,7 @@
                     │          └─ Xuất JUnit XML Report
                     ├─ Bước 5: Quality Gate Check
                     │          ├─ 100% Unit Tests Passed? (Exit Code 0)
-                    │          └─ Coverage >= 80%?
+                    │          └─ Coupon line coverage > 70%?
                     │               ├─ ĐẠT: Status check "Xanh" → cho phép merge
                     │               └─ KHÔNG ĐẠT: Exit Code 1, Fail-Fast, chặn merge
                     ├─ Bước 6: Upload Artifacts (LCOV HTML, JUnit XML)
