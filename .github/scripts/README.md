@@ -88,7 +88,12 @@ mới; file cũ có thể vẫn còn. Script không tự retry.
 Với HTTP 429, kiểm tra quota/rate limit trong AI Studio trước khi chạy lại.
 
 Nếu có biến `GITHUB_STEP_SUMMARY`, phân tích thật được nối vào file summary.
-Chưa tích hợp script vào workflow trong bước này.
+Workflow gọi script trong job `AI Failure Triage` chỉ khi PR có Test thất bại
+và repo có `GEMINI_API_KEY` trong GitHub Actions Secrets. Kết quả được comment
+trực tiếp trên PR (cập nhật cùng một comment qua các run) và lưu ở artifact
+`eshop-ai-triage/ai-triage.md`. Push thông thường không gọi AI. Không có key
+thì log Jest và Quality Gate vẫn hoạt động bình thường. Job AI không chặn
+Quality Gate hoặc Build.
 
 Lưu ảnh trong `Weekly_Reports/Week05/screenshots/`:
 

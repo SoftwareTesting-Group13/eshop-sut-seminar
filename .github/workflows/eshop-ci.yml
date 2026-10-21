@@ -1,30 +1,22 @@
-# =============================================================================
-# EShop CI — Continuous Integration Pipeline
-# -----------------------------------------------------------------------------
-# Chủ đề Seminar: T07 — CI/CD & Test-Harness Engineering
-# Hệ thống kiểm thử (SUT): EShop System Monorepo
-# Nhóm thực hiện: Nhóm 13 — Thành viên phụ trách workflow: Dương Nhật Cường
-# -----------------------------------------------------------------------------
-# Pipeline này chịu trách nhiệm:
-#   1. Cài đặt & kiểm thử tự động (automated test) cho backend Express + SQLite.
-#   2. Tối ưu thời gian chạy bằng `actions/cache` cho thư mục `backend/node_modules`.
-#
-# HIỆU QUẢ CACHE ĐÃ GHI NHẬN (đo trên runner ubuntu-latest, Node.js 22):
-#   - Cold run  (cache miss — cài mới toàn bộ dependency): ~60s cho bước `npm ci`
-#   - Warm run  (cache hit  — khôi phục node_modules từ cache): ~5s
-#   => Tiết kiệm ~55s/bản chạy, giảm khoảng 90% thời gian cài dependency.
-# =============================================================================
+# EShop CI — chạy khi push mọi branch hoặc mở PR vào main/master.
+# Flow chính: Gitleaks → Backend Test → Quality Gate → Build.
+# Nhánh hỗ trợ: PR có Backend Test fail → AI phân tích log và comment lên PR
+# (nếu có GEMINI_API_KEY). Push thông thường không chạy AI.
+# Gitleaks fail thì bỏ qua các job sau. CI demo chạy 2 unit test coupon;
+# Quality Gate yêu cầu cả 2 pass, line coverage của coupon-discount.js > 70%
+# và có LCOV. Pipeline Summary luôn ghi audit artifact.
+# Đây là CI + build artifact; workflow chưa triển khai ứng dụng lên môi trường.
 
 name: EShop CI
 
 on:
   push:
-    branches: [main, master]
+    branches: ['**']
   pull_request:
     branches: [main, master]
-  workflow_dispatch: # Cho phép chạy thủ công từ tab Actions để đo lại hiệu quả cache.
+  workflow_dispatch:
 
-# Hủy các lần chạy cũ trên cùng nhánh khi có commit mới (tránh lãng phí runner).
+# Commit mới trên cùng nhánh thay thế lần chạy cũ.
 concurrency:
   group: eshop-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -33,9 +25,40 @@ permissions:
   contents: read
 
 jobs:
+  # Quét lịch sử Git trước; phát hiện secret thì chặn Test và Build.
+  secret-scan:
+    name: Gitleaks Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v6
+        with:
+          # Gitleaks cần toàn bộ commit, không chỉ commit mới nhất.
+          fetch-depth: 0
+
+      - name: Scan Git history for leaked secrets
+        # Cùng UID với checkout để Git tin cậy repo; report đã che giá trị secret.
+        run: |
+          mkdir -p ci-artifacts
+          docker run --rm --user "$(id -u):$(id -g)" \
+            -v "$PWD:/repo" -w /repo \
+            ghcr.io/gitleaks/gitleaks:v8.30.1 git \
+            --redact=100 --report-format=json \
+            --report-path=ci-artifacts/gitleaks-report.json .
+
+      - name: Upload redacted security report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: eshop-gitleaks
+          path: ci-artifacts/gitleaks-report.json
+          if-no-files-found: warn
+
+  # Chỉ chạy khi Gitleaks xanh. Hai test được chọn cho demo, không chạy toàn suite.
   backend-test:
     name: Backend Test (Node.js 22)
     runs-on: ubuntu-latest
+    needs: secret-scan
 
     defaults:
       run:
@@ -43,24 +66,17 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
 
-      # ---------------------------------------------------------------------
-      # BƯỚC CACHE TRỌNG TÂM — tăng tốc cài đặt dependency backend
-      # ---------------------------------------------------------------------
-      # Key được băm từ nội dung `backend/package-lock.json`:
-      #   - Lock file KHÔNG đổi  -> cache HIT  -> bỏ qua `npm ci` (~5s).
-      #   - Lock file THAY ĐỔI   -> cache MISS -> chạy `npm ci` rồi lưu cache mới.
-      # `restore-keys` giúp tận dụng cache cũ (gần đúng) khi lock file đổi,
-      # tránh tải lại hoàn toàn từ registry.
+      # Cache dựa trên package-lock; cache hit thì đã có node_modules.
       - name: Cache backend/node_modules
         id: cache-node-modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: backend/node_modules
           key: ${{ runner.os }}-node22-${{ hashFiles('backend/package-lock.json') }}
@@ -68,12 +84,11 @@ jobs:
             ${{ runner.os }}-node22-
 
       - name: Install dependencies (npm ci)
-        # Chỉ cài khi cache MISS. Khi cache HIT, node_modules đã sẵn sàng.
-        # Lưu ý: KHÔNG dùng `npm ci` khi cache HIT vì npm ci sẽ xóa node_modules.
+        # npm ci xóa node_modules, nên chỉ chạy khi không khôi phục đúng cache.
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Report dependency install time & cache status
+      - name: Report cache status
         run: |
           echo "### EShop CI — Cache Report :package:" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
@@ -86,18 +101,237 @@ jobs:
           echo "- Số dependency cấp 1 (dependencies): $(node -e "console.log(Object.keys(require('./package.json').dependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"
           echo "- Số dependency phát triển (devDependencies): $(node -e "console.log(Object.keys(require('./package.json').devDependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Run backend test suite (Jest)
-        # `npm test` = jest --runInBand --detectOpenHandles --forceExit
-        # --runInBand: chạy tuần tự, tránh lỗi SQLITE_BUSY: database is locked.
-        run: npm test
+      # pipefail giữ exit code của Jest khi tee đồng thời ghi log ra file.
+      - name: Run selected coupon unit tests (Jest) with coverage
+        run: |
+          mkdir -p coverage
+          set -o pipefail
+          npm run test:ci:demo 2>&1 | tee coverage/jest-console.log
 
+      # always() để dev, Quality Gate và AI đều đọc được kết quả khi test đỏ.
+      - name: Upload coverage artifacts (LCOV + jest results)
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: eshop-coverage
+          path: backend/coverage
+          retention-days: 14
+          if-no-files-found: warn
+
+  # AI chỉ chạy khi PR có test fail; push thông thường không gọi Gemini.
+  ai-triage:
+    name: AI Failure Triage
+    runs-on: ubuntu-latest
+    needs: backend-test
+    if: always() && github.event_name == 'pull_request' && needs.backend-test.result == 'failure'
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout triage script
+        uses: actions/checkout@v6
+
+      - name: Download failed test log
+        uses: actions/download-artifact@v6
+        with:
+          name: eshop-coverage
+          path: backend/coverage
+        continue-on-error: true
+
+      - name: Analyze Jest failure with Gemini
+        if: hashFiles('backend/coverage/jest-console.log') != ''
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-3.5-flash-lite
+        run: |
+          if [ -n "$GEMINI_API_KEY" ]; then
+            python3 .github/scripts/ai_triage.py \
+              --log-file backend/coverage/jest-console.log \
+              --output backend/coverage/ai-triage.md
+          else
+            echo 'AI triage skipped: add GEMINI_API_KEY to repository secrets.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload AI analysis
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: eshop-ai-triage
+          path: backend/coverage/ai-triage.md
+          if-no-files-found: ignore
+
+      # Một comment cố định trên PR; run sau cập nhật comment thay vì tạo thêm.
+      - name: Publish AI diagnosis on the Pull Request
+        if: hashFiles('backend/coverage/ai-triage.md') != ''
+        uses: actions/github-script@v8
+        continue-on-error: true # PR từ fork có GITHUB_TOKEN chỉ đọc.
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- eshop-ai-triage -->';
+            const report = fs.readFileSync('backend/coverage/ai-triage.md', 'utf8');
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const headSha = context.payload.pull_request.head.sha.slice(0, 7);
+            const body = `${marker}\n> 🤖 Phân tích AI từ commit \`${headSha}\`. Đây là gợi ý để dev kiểm chứng bằng test và source.\n\n${report}`;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number, per_page: 100
+            });
+            const existing = comments.find((comment) =>
+              comment.user?.type === 'Bot' && comment.body?.includes(marker)
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+
+  # Required check cho PR: 2 unit test pass, coupon line coverage > 70%, LCOV.
+  quality-gate:
+    name: Quality Gate (Tests & Coverage > 70%)
+    runs-on: ubuntu-latest
+    needs: backend-test
+    # Test đỏ vẫn chạy gate để báo nguyên nhân; Test bị skip thì gate cũng skip.
+    if: always() && (needs.backend-test.result == 'success' || needs.backend-test.result == 'failure')
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Download coverage artifacts from test job
+        uses: actions/download-artifact@v6
+        with:
+          name: eshop-coverage
+          path: backend/coverage
+        continue-on-error: true # Script gate sẽ báo thiếu artifact rõ ràng.
+
+      # Ngưỡng được cố định trong CI theo yêu cầu đồ án.
+      - name: Run Quality Gate (tests 100% + lines > 70% + LCOV)
+        env:
+          COVERAGE_THRESHOLD: '70'
+        run: node .github/scripts/quality-gate.js
+
+      - name: Upload LCOV report artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: eshop-lcov-report
+          path: backend/coverage
+          retention-days: 14
+          if-no-files-found: warn
+
+      # Comment là tiện ích; thiếu quyền comment trên fork không đổi kết quả gate.
+      - name: Publish Quality Gate verdict on the Pull Request
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v8
+        continue-on-error: true # Fork PRs can have a read-only GITHUB_TOKEN.
+        with:
+          script: |
+            const fs = require('fs');
+            const reportPath = 'backend/coverage/quality-gate-report.md';
+            const marker = '<!-- eshop-quality-gate -->';
+            const body = fs.existsSync(reportPath)
+              ? fs.readFileSync(reportPath, 'utf8')
+              : `${marker}\n> ❌ Quality Gate không tạo được báo cáo (thiếu artifact coverage).`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.rest.issues.listComments({ owner, repo, issue_number });
+            const existing = comments.data.find((c) => c.body && c.body.includes(marker));
+            const payload = { owner, repo, body: `${marker}\n${body}` };
+            if (existing) {
+              await github.rest.issues.updateComment({ ...payload, comment_id: existing.id });
+            } else {
+              await github.rest.issues.createComment({ ...payload, issue_number });
+            }
+
+  # Chỉ đóng gói khi cả kiểm thử lẫn quét secret đều đạt.
+  build:
+    name: Build (web, admin, backend package)
+    runs-on: ubuntu-latest
+    needs: [quality-gate, secret-scan]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            frontend-web/package-lock.json
+            frontend-admin/package-lock.json
+
+      - name: Build web storefront
+        working-directory: frontend-web
+        run: npm ci && npm run build
+
+      - name: Build admin UI
+        working-directory: frontend-admin
+        run: npm ci && npm run build
+
+      - name: Package backend source
+        run: |
+          mkdir -p ci-artifacts
+          tar -czf ci-artifacts/eshop-backend.tar.gz -C backend \
+            server.js database.js coupon-discount.js package.json package-lock.json
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: eshop-build
+          path: |
+            frontend-web/dist/
+            frontend-admin/dist/
+            ci-artifacts/eshop-backend.tar.gz
+
+  # Luôn ghi trạng thái mọi job, kể cả khi pipeline dừng ở Gitleaks.
   workflow-summary:
     name: Pipeline Summary
     runs-on: ubuntu-latest
-    needs: backend-test
+    needs: [backend-test, quality-gate, secret-scan, build, ai-triage]
     if: always()
     steps:
+      - name: Write CI audit record
+        env:
+          TEST_RESULT: ${{ needs.backend-test.result }}
+          GATE_RESULT: ${{ needs.quality-gate.result }}
+          SCAN_RESULT: ${{ needs.secret-scan.result }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          AI_RESULT: ${{ needs.ai-triage.result }}
+        run: |
+          jq -n \
+            --arg run_id "$GITHUB_RUN_ID" \
+            --arg attempt "$GITHUB_RUN_ATTEMPT" \
+            --arg commit "$GITHUB_SHA" \
+            --arg ref "$GITHUB_REF" \
+            --arg event "$GITHUB_EVENT_NAME" \
+            --arg recorded_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --arg test "$TEST_RESULT" \
+            --arg gate "$GATE_RESULT" \
+            --arg scan "$SCAN_RESULT" \
+            --arg build "$BUILD_RESULT" \
+            --arg ai "$AI_RESULT" \
+            '{run_id:$run_id, attempt:$attempt, commit:$commit, ref:$ref, event:$event, recorded_at:$recorded_at, jobs:{test:$test, quality_gate:$gate, gitleaks:$scan, build:$build, ai_triage:$ai}}' \
+            > ci-audit.json
+
+      - name: Upload CI audit record
+        uses: actions/upload-artifact@v6
+        with:
+          name: eshop-ci-audit
+          path: ci-audit.json
+
       - name: Final status
         run: |
           echo "### EShop CI Result" >> "$GITHUB_STEP_SUMMARY"
           echo "Backend test job: ${{ needs.backend-test.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Quality Gate job: ${{ needs.quality-gate.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Gitleaks job: ${{ needs.secret-scan.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Build job: ${{ needs.build.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "AI triage job: ${{ needs.ai-triage.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ needs.quality-gate.result }}" = "success" ] && [ "${{ needs.secret-scan.result }}" = "success" ] && [ "${{ needs.build.result }}" = "success" ]; then
+            echo "✅ Test, security scan and build passed." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "❌ Pipeline failed; review test artifacts, quality gate and security scan." >> "$GITHUB_STEP_SUMMARY"
+          fi

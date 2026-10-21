@@ -115,7 +115,7 @@ describe('POST /api/apply-coupon — Data-Driven (test.each)', () => {
 });
 
 // ======================================================================
-// FAILURE MODE 2 — Tái hiện lỗi công thức percent (server.js dòng 398-401)
+// FAILURE MODE 2 — Tái hiện lỗi công thức percent (coupon-discount.js)
 //
 //   discount_amount = Math.floor(total_amount * (1 - coupon.discount_value));
 //
@@ -123,7 +123,7 @@ describe('POST /api/apply-coupon — Data-Driven (test.each)', () => {
 //   total = 1,000,000 → discount_amount = -9,000,000, final_amount = 10,000,000 (SAI)
 //   Đúng theo FR-09:    discount_amount =    100,000, final_amount =    900,000
 //
-// Cùng công thức bị lặp ở nhánh KHÔNG có user_id (dòng 419-422), nên test cả 2 nhánh.
+// Cả hai nhánh API dùng chung hàm tính discount, nên test cả 2 nhánh.
 // Các test dưới đây kiểm tra BẤT BIẾN (invariant) thay vì một con số cụ thể:
 //   0 <= discount_amount <= total  và  0 <= final_amount <= total
 // ======================================================================
@@ -131,8 +131,8 @@ describe('Failure Mode 2 — discount_amount âm với coupon percent', () => {
   const total = 1000000;
 
   test.each([
-    { branch: 'không có user_id (server.js 417-432)', body: { code: 'SAVE10', total_amount: total } },
-    { branch: 'có user_id (server.js 386-415)', body: { code: 'SAVE10', total_amount: total, user_id: 2 } },
+    { branch: 'không có user_id', body: { code: 'SAVE10', total_amount: total } },
+    { branch: 'có user_id', body: { code: 'SAVE10', total_amount: total, user_id: 2 } },
   ])('SAVE10 — nhánh $branch: discount_amount không được âm', async ({ body }) => {
     const res = await applyCoupon(body);
 

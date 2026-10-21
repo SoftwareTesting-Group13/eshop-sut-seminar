@@ -9,9 +9,11 @@
 
 **Hệ thống được kiểm thử (SUT):** EShop System (Node.js/Express Backend, SQLite3, Jest Unit/API Testing)  
 **Bộ công cụ thực nghiệm:**
-* **Công cụ trọng tâm:** GitHub Actions CI/CD Pipeline đóng vai trò là **Hạ tầng kiểm thử tự động (Automated Test Harness)** — tự động khởi tạo runner sạch, tối ưu bộ nhớ đệm (`actions/cache`), áp đặt rào chắn **Quality Gates** (100% Pass, Coverage $\ge 80\%$, Fail-Fast) và bảo vệ nhánh thông qua cơ chế **Branch Protection Rules trên Pull Request**.
+* **Công cụ trọng tâm:** GitHub Actions CI/CD Pipeline đóng vai trò là **Hạ tầng kiểm thử tự động (Automated Test Harness)** — tự động khởi tạo runner sạch, tối ưu bộ nhớ đệm (`actions/cache`), áp đặt rào chắn **Quality Gates** (100% test được chọn pass, line coverage module coupon > 70%, Fail-Fast) và bảo vệ nhánh thông qua cơ chế **Branch Protection Rules trên Pull Request**.
 * **Công cụ hỗ trợ 1 (Kiểm thử thực thi):** Jest Test Engine — Thực thi Unit Testing và Data-Driven Testing (`test.each`) cho backend, kiểm soát xung đột tài nguyên dùng chung của SQLite file-based qua cờ tuần tự `--runInBand` (giải quyết Failure Mode 1 & 2).
 * **Công cụ hỗ trợ 2:** AI-Augmented Log Triage (Script Python `ai_triage.py` trong `.github/scripts/`) — Được kích hoạt có điều kiện khi pipeline thất bại (`if: failure()`), tự động quét log lỗi, dựng Cây giả thuyết (Hypothesis Tree) và xuất báo cáo tóm tắt trên GitHub Step Summary hỗ trợ gỡ lỗi nhanh.
+
+> **Phạm vi CI demo đã thống nhất:** PR chạy 2 unit test của `coupon-discount.js`; Quality Gate yêu cầu 2/2 pass, **line coverage > 70% của module này** và LCOV. `npm run test:ci` vẫn chạy full backend suite riêng (lần kiểm tra 22/10/2026: 37/37 pass, 78.16% line coverage toàn backend). AI Triage chỉ chạy khi PR có Backend Test fail và comment gợi ý trên PR. Không trình bày 100% coverage module coupon như độ phủ toàn backend.
 
 
 ---
@@ -50,7 +52,7 @@ Toàn bộ quy trình 8 giai đoạn chuẩn (**Stage S1 → S8**) từ Đề c�
 2. **Dương Nhật Cường (Lead CI/CD Pipeline & Hạ tầng):**
    - **Task 1.4:** Khởi tạo thư mục `.github/workflows/` và xây dựng file cấu hình pipeline `eshop-ci.yml` trên runner Ubuntu với Node.js 20.
    - **Task 1.5:** Cấu hình bộ nhớ đệm `actions/cache` cho thư mục `backend/node_modules` dựa trên hash của `package-lock.json`; đo đạc thời gian tối ưu hóa (từ ~60s xuống ~5s).
-   - **Task 1.6:** Thiết lập rào chắn **Quality Gate & Branch Protection**: Kiểm tra 100% Unit Test Pass (Exit Code 0), đo độ bao phủ mã nguồn LCOV (ngưỡng ≥ 80%), xuất báo cáo JUnit XML, áp dụng cơ chế Fail-Fast và cấu hình chặn merge PR (Required Status Checks) khi có vi phạm.
+   - **Task 1.6:** Thiết lập rào chắn **Quality Gate & Branch Protection**: Kiểm tra 100% unit test được chọn pass (Exit Code 0), đo line coverage module coupon bằng LCOV (ngưỡng > 70%), xuất kết quả Jest JSON và LCOV, áp dụng cơ chế Fail-Fast và cấu hình chặn merge PR (Required Status Checks) khi có vi phạm.
 3. **Trần Gia Cường (Lead Test Harness Engine & Backend Testing):**
    - **Task 1.7:** Cấu hình Jest Test Engine trong `backend/package.json`, xử lý biến môi trường và thiết lập chạy tuần tự `--runInBand` để khắc phục lỗi **Failure Mode 1: SQLite Concurrency Lock (`SQLITE_BUSY`)**.
    - **Task 1.8:** Viết bộ kiểm thử hướng dữ liệu (Data-Driven Testing với `test.each`) cho API mã giảm giá `POST /api/apply-coupon`.
@@ -71,7 +73,7 @@ Toàn bộ quy trình 8 giai đoạn chuẩn (**Stage S1 → S8**) từ Đề c�
      1. Introduction (CI/CD & Test Harness trong EShop).
      2. Prerequisites & Setup (Node.js 20, Git, GitHub Secrets).
      3. First Test Walkthrough (Hướng dẫn từng bước chạy pipeline Jest).
-     4. Advanced Usage & CI Integration (Quality Gate ≥ 80%, Matrix Testing, AI Triage).
+     4. Advanced Usage & CI Integration (Quality Gate line coverage > 70% cho module coupon, AI Triage; nêu rõ full suite chạy riêng).
      5. Troubleshooting (Cache miss, SQLite permission, Timeout).
      6. **Mandatory Failure Modes:** Phân tích chuyên sâu 3 lỗi kỹ thuật thực tế (SQLite concurrency, Coupon logic, Flaky test race condition).
      7. References & AI Disclosure Statement.
@@ -82,7 +84,7 @@ Toàn bộ quy trình 8 giai đoạn chuẩn (**Stage S1 → S8**) từ Đề c�
      - `00:00 – 01:30` (1.5m): Cấu trúc Monorepo EShop, kiến trúc Test Harness và workflow GitHub Actions (`actions/cache` warm run vs cold run).
      - `01:30 – 04:00` (2.5m): Developer mở Pull Request chứa lỗi nghiệp vụ coupon percent $\rightarrow$ CI pipeline tự động kích hoạt $\rightarrow$ Chạy Data-Driven Unit Tests $\rightarrow$ Kích hoạt Fail-Fast tại Quality Gate $\rightarrow$ Nút Merge PR bị **KHÓA CỨNG (Blocked)** do Branch Protection Rules.
      - `04:00 – 05:15` (1.25m): AI Log Triage can thiệp (phụ trợ chuyên biệt): Step Summary hiển thị Cây giả thuyết (Hypothesis Tree) tóm tắt nguyên nhân lỗi coupon formula và gợi ý giải pháp sửa chữa.
-     - `05:15 – 07:30` (2.25m): Developer sửa lỗi coupon & xử lý xung đột khóa SQLite (`--runInBand`) $\rightarrow$ Push commit mới lên PR $\rightarrow$ CI re-run tự động, 100% Unit Test pass, Code Coverage đạt chuẩn $\ge 80\%$ $\rightarrow$ Upload LCOV coverage artifact $\rightarrow$ Nút Merge PR mở khóa màu xanh (Allowed).
+     - `05:15 – 07:30` (2.25m): Developer sửa lỗi coupon (giải pháp SQLite `--runInBand` trình bày riêng) → Push commit mới lên PR → CI chạy lại, 2/2 unit test pass, line coverage module coupon > 70% → Upload LCOV artifact → Required Status Checks xanh; PR còn cần 1 review approve để merge.
    - **Task 2.5:** Biên tập và nén video tối ưu hóa dung lượng **≤ 100MB** bằng Handbrake/ffmpeg; lưu file `Demo_Screencast.mp4`.
 3. **Nguyễn Gia Huy (Lead Thiết kế Hoạt động Lớp học Worksheet):**
    - **Task 2.6:** Soạn thảo tài liệu `Activity_Worksheet.md` cho hoạt động lớp học mang tên **"Pipeline Postmortem: Triaging Flaky CI Runs & Root Cause Analysis"** (thời lượng 20–25 phút).
@@ -139,7 +141,7 @@ Bảng checklist dưới đây được sử dụng xuyên suốt để theo dõ
 | 3 | `T1.3` | Nộp Moodle Stage S1 & nhận phê duyệt Stage S2 | N.N.M.Tuấn | Tuần 5 | [ ] | Đang chờ phản hồi phê duyệt chính thức |
 | 4 | `T1.4` | Khởi tạo workflow GitHub Actions `eshop-ci.yml` | D.N.Cường | Tuần 5 | [ ] | Chạy trên runner Ubuntu, Node.js 20 |
 | 5 | `T1.5` | Thiết lập npm cache optimization cho monorepo backend | D.N.Cường | Tuần 5 | [ ] | Đo thời gian chạy (target: rút ngắn từ ~60s xuống ~5s) |
-| 6 | `T1.6` | Cấu hình Quality Gate & Branch Protection (100% Pass, Coverage ≥ 80%, PR check) | D.N.Cường | Tuần 6 | [ ] | File XML/HTML coverage report & PR check |
+| 6 | `T1.6` | Cấu hình Quality Gate & Branch Protection (2/2 unit test pass, coupon line coverage > 70%, PR check) | D.N.Cường | Tuần 6 | [ ] | Jest JSON, LCOV artifact & PR check |
 | 7 | `T1.7` | Cấu hình Jest backend, fix lỗi SQLite Concurrency Lock | T.G.Cường | Tuần 5 | [ ] | Failure Mode 1: Thêm `--runInBand` |
 | 8 | `T1.8` | Viết Data-Driven tests (`test.each`) cho coupon API | T.G.Cường | Tuần 5 | [ ] | Test suite `coupon.test.js` trên backend |
 | 9 | `T1.9` | Tái hiện & minh chứng lỗi coupon percent trong `server.js` | T.G.Cường | Tuần 6 | [ ] | Failure Mode 2: Bắt lỗi số tiền âm |
