@@ -276,6 +276,10 @@ function buildMarkdown({ testGate, coverageGate, lcovGate, verdict }) {
   md.push("#### 2️⃣ Coverage Gate — ngưỡng bao phủ mã nguồn");
   md.push("");
   if (coverageGate.available) {
+    if (coverageGate.perFile.length) {
+      md.push(`- Phạm vi đo: ${coverageGate.perFile.map((f) => `\`${f.file}\``).join(", ")}.`);
+      md.push("");
+    }
     md.push("| Metric | Actual | Threshold | Status |");
     md.push("| :--- | ---: | ---: | :--- |");
     for (const m of coverageGate.metrics) {

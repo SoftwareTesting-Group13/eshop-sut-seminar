@@ -4,8 +4,8 @@
  * Lý do tách file cấu hình riêng (thay vì nhét `jest` vào `package.json`):
  *   - `package.json` đang được thành viên khác chỉnh sửa (task cấu hình LCOV),
  *     giữ cấu hình ở file riêng giảm rủi ro conflict khi merge.
- *   - Cùng một cấu hình được dùng cho lệnh `npm test` (local) và `npm run test:ci`
- *     (GitHub Actions) => số liệu coverage luôn khớp với nhau.
+ *   - `npm test` và `npm run test:ci` dùng cấu hình này cho toàn bộ backend.
+ *     CI demo dùng `jest.demo.config.js` để chọn riêng hai unit test coupon.
  *
  * Ngưỡng line coverage (> 70%) KHÔNG đặt ở đây mà do script
  * `.github/scripts/quality-gate.js` kiểm soát — một nơi duy nhất quyết định

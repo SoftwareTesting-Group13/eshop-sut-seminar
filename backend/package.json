@@ -9,6 +9,7 @@
     "test:flaky": "jest --config demos/jest.flaky.config.cjs --runInBand",
     "test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
     "test:ci": "jest --runInBand --detectOpenHandles --forceExit --coverage --json --outputFile=coverage/jest-results.json --ci",
+    "test:ci:demo": "jest --config jest.demo.config.js --runInBand --coverage --json --outputFile=coverage/jest-results.json --ci",
     "quality-gate": "node ../.github/scripts/quality-gate.js"
   },
   "keywords": [],

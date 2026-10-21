@@ -49,3 +49,29 @@ Quality Gate xanh. Audit Summary ghi đủ trạng thái, gồm cả `ai_triage`
 - Branch Protection trên GitHub chưa được đọc hoặc cập nhật trong phiên này.
   Bản ghi cũ của nhóm dùng tên check 80%; trước khi demo nút Merge mở khóa,
   cần xác nhận required checks đã đổi sang ba tên mới trong script cấu hình.
+
+## Điều chỉnh phạm vi CI demo ngày 22/10/2026
+
+Theo yêu cầu demo ngắn, workflow chuyển sang `npm run test:ci:demo`: chỉ chạy 2
+unit test của `coupon-discount.js` (percent 10% và fixed 50.000). Jest demo
+chỉ đo coverage của module coupon, không đo toàn backend; full suite vẫn có ở
+`npm run test:ci` để kiểm tra riêng.
+
+Kiểm chứng local khi công thức còn sai: **1/2 test pass**, line coverage coupon
+**100%**, Quality Gate fail do test. Bản sao tạm sửa duy nhất công thức percent:
+**2/2 pass**, coverage coupon **100%**, Quality Gate pass. `actionlint` và
+`git diff --check` pass. Chưa có PR run mới cho phạm vi 2-test này; số liệu
+30/39 và 78.16% phía trên thuộc run full-suite trước đó.
+
+## Baseline xanh để merge trước demo
+
+Theo yêu cầu mới, công thức percent trong `backend/coupon-discount.js` được sửa
+đúng (`totalAmount * coupon.discount_value / 100`) trên branch `ncuong` trước
+khi merge. Kịch bản demo chuyển sang tạo branch mới từ `main` đã merge, cố ý
+đưa lại lỗi một dòng, mở PR để thấy CI đỏ/AI comment, rồi sửa về công thức
+đúng để CI xanh. Không đưa lỗi demo vào baseline `main`.
+
+Preflight local trên source chuẩn bị push: 2/2 unit test demo pass, line coverage
+coupon 100%, Quality Gate pass, cả `frontend-web` và `frontend-admin` build pass,
+`actionlint` và `git diff --check` pass. Kết quả GitHub Actions cần xác nhận sau
+khi push commit này.
