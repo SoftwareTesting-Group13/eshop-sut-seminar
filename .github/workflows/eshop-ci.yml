@@ -8,6 +8,12 @@
 # Pipeline này chịu trách nhiệm:
 #   1. Cài đặt & kiểm thử tự động (automated test) cho backend Express + SQLite.
 #   2. Tối ưu thời gian chạy bằng `actions/cache` cho thư mục `backend/node_modules`.
+#   3. QUALITY GATE — bước chặn cứng (Fail-Fast):
+#        a. 100% test suites phải PASS,
+#        b. ngưỡng bao phủ mã nguồn >= 80% (statements/lines/functions/branches),
+#        c. báo cáo LCOV phải được sinh ra.
+#      Kết quả của job này được dùng làm Required Status Check trong
+#      Branch Protection Rules => PR vi phạm bị chặn merge ngay lập tức.
 #
 # HIỆU QUẢ CACHE ĐÃ GHI NHẬN (đo trên runner ubuntu-latest, Node.js 22):
 #   - Cold run  (cache miss — cài mới toàn bộ dependency): ~60s cho bước `npm ci`
@@ -86,18 +92,119 @@ jobs:
           echo "- Số dependency cấp 1 (dependencies): $(node -e "console.log(Object.keys(require('./package.json').dependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"
           echo "- Số dependency phát triển (devDependencies): $(node -e "console.log(Object.keys(require('./package.json').devDependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Run backend test suite (Jest)
-        # `npm test` = jest --runInBand --detectOpenHandles --forceExit
-        # --runInBand: chạy tuần tự, tránh lỗi SQLITE_BUSY: database is locked.
-        run: npm test
+      # ---------------------------------------------------------------------
+      # BƯỚC 1/2 — CHẠY TEST SUITE + THU THẬP COVERAGE
+      # ---------------------------------------------------------------------
+      # `npm run test:ci` = jest --runInBand --detectOpenHandles --forceExit
+      #                      --coverage --json --outputFile=coverage/jest-results.json --ci
+      #   --runInBand: chạy tuần tự, tránh lỗi SQLITE_BUSY: database is locked.
+      #   --coverage : sinh coverage/lcov.info + coverage-summary.json (đầu vào cho Quality Gate).
+      #   --json     : ghi kết quả test ra file để Quality Gate kiểm tra 100% suite pass.
+      # Job này CỐ TÌNH fail khi có test đỏ — đó là tín hiệu Fail-Fast đầu tiên,
+      # job `quality-gate` phía dưới sẽ báo cáo chi tiết vì sao bị chặn.
+      - name: Run backend test suite (Jest) with coverage
+        run: npm run test:ci
+
+      # Upload artifact kể cả khi test fail (để Quality Gate vẫn đọc được
+      # lcov.info + jest-results.json và giải thích chính xác nguyên nhân).
+      - name: Upload coverage artifacts (LCOV + jest results)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eshop-coverage
+          path: backend/coverage
+          retention-days: 14
+          if-no-files-found: warn
+
+  # =============================================================================
+  # QUALITY GATE — bước chặn cứng (Fail-Fast), là Required Status Check của
+  # Branch Protection Rules trên nhánh `main`.
+  # =============================================================================
+  quality-gate:
+    # Tên job này CHÍNH LÀ tên status check được yêu cầu bắt buộc khi merge PR.
+    name: Quality Gate (100% Tests & Coverage >= 80%)
+    runs-on: ubuntu-latest
+    needs: backend-test
+    # `always()`: job vẫn chạy (và báo cáo FAIL) kể cả khi job test vừa đỏ,
+    # để PR luôn nhận được 1 status check rõ ràng thay vì bị "Expected — Waiting".
+    if: always()
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Download coverage artifacts from test job
+        uses: actions/download-artifact@v4
+        with:
+          name: eshop-coverage
+          path: backend/coverage
+        continue-on-error: true # Thiếu artifact => gate tự báo FAIL, không crash CI
+
+      # ---------------------------------------------------------------------
+      # BƯỚC 2/2 — CHẤM ĐIỂM QUALITY GATE
+      # ---------------------------------------------------------------------
+      # Kiểm tra 3 tiêu chí bắt buộc:
+      #   1. 100% test suites PASS        (đọc coverage/jest-results.json)
+      #   2. Coverage >= 80%              (đọc coverage/coverage-summary.json)
+      #   3. Báo cáo LCOV đã được sinh    (kiểm tra coverage/lcov.info)
+      # Exit code 1 => job đỏ => Branch Protection chặn merge PR.
+      # Ngưỡng có thể chỉnh bằng Repository Variables (không cần sửa workflow):
+      #   COVERAGE_THRESHOLD, COVERAGE_BRANCHES_THRESHOLD.
+      - name: Run Quality Gate (tests 100% + coverage threshold + LCOV)
+        env:
+          COVERAGE_THRESHOLD: ${{ vars.COVERAGE_THRESHOLD || '80' }}
+          COVERAGE_BRANCHES_THRESHOLD: ${{ vars.COVERAGE_BRANCHES_THRESHOLD || vars.COVERAGE_THRESHOLD || '80' }}
+        run: node .github/scripts/quality-gate.js
+
+      - name: Upload LCOV report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eshop-lcov-report
+          path: backend/coverage
+          retention-days: 14
+          if-no-files-found: warn
+
+      # Ghim kết quả gate lên PR để reviewer thấy ngay mà không cần mở log CI.
+      - name: Publish Quality Gate verdict on the Pull Request
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const reportPath = 'backend/coverage/quality-gate-report.md';
+            const marker = '<!-- eshop-quality-gate -->';
+            const body = fs.existsSync(reportPath)
+              ? fs.readFileSync(reportPath, 'utf8')
+              : `${marker}\n> ❌ Quality Gate không tạo được báo cáo (thiếu artifact coverage).`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.rest.issues.listComments({ owner, repo, issue_number });
+            const existing = comments.data.find((c) => c.body && c.body.includes(marker));
+            const payload = { owner, repo, body: `${marker}\n${body}` };
+            if (existing) {
+              await github.rest.issues.updateComment({ ...payload, comment_id: existing.id });
+            } else {
+              await github.rest.issues.createComment({ ...payload, issue_number });
+            }
 
   workflow-summary:
     name: Pipeline Summary
     runs-on: ubuntu-latest
-    needs: backend-test
+    needs: [backend-test, quality-gate]
     if: always()
     steps:
       - name: Final status
         run: |
           echo "### EShop CI Result" >> "$GITHUB_STEP_SUMMARY"
           echo "Backend test job: ${{ needs.backend-test.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Quality Gate job: ${{ needs.quality-gate.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ needs.quality-gate.result }}" = "success" ]; then
+            echo "✅ Quality Gate PASSED — PR được phép merge." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "❌ Quality Gate FAILED — PR bị Branch Protection chặn merge (Fail-Fast)." >> "$GITHUB_STEP_SUMMARY"
+          fi
