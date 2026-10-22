@@ -13,7 +13,9 @@ Môn Kiểm thử phần mềm – lớp Testing-CQ2023-3-LQVu
 
 Giảng viên: TS. Lâm Quang Vũ, TS. Trần Duy Hoàng, ThS. Trương Phước Lộc, ThS. Hồ Tuấn Thanh
 
-> Bộ slide gồm 15 slide, đồng bộ với `Seminar_Slides.pptx`.
+## Slide 1 – CI/CD & Test Harness Engineering
+
+Seminar T07 – Kiểm thử tự động trên hệ thống EShop.
 
 ---
 
@@ -47,29 +49,33 @@ flowchart TD
 | Thành phần | Vai trò | Trong EShop |
 |---|---|---|
 | 1. Test Execution Engine | Điều phối và thực thi bộ test | Jest (`--runInBand`) |
-| 2. Test Data & Fixtures | Dữ liệu và trạng thái ban đầu cho mỗi lần chạy | `initDatabase()`, `beforeAll` / `afterAll` |
-| 3. Stubs & Mocks | Giả lập các phụ thuộc để test cô lập, lặp lại được | Giả lập thành phần bên ngoài backend |
-| 4. Results Logging & Reporting | Ghi nhận kết quả và xuất báo cáo | Log CI, JUnit XML, coverage LCOV / HTML |
+| 2. Test Data & Fixtures | Dữ liệu và trạng thái ban đầu | DB được khởi tạo khi load module; hooks dùng ở full suite |
+| 3. Stubs & Mocks | Giả lập phụ thuộc khi cần test cô lập | Coupon CI: unit test hàm thuần, không dùng mock |
+| 4. Results Logging & Reporting | Ghi nhận kết quả và báo cáo | Log CI, LCOV và JSON; không cấu hình JUnit XML/HTML |
 
----
-
-## Slide 5 – Pipeline CI/CD và Quality Gates
+## Slide 5 – Pipeline CI và Quality Gates
 
 ```mermaid
 flowchart LR
-  P["Push / Pull Request"] --> R["Runner sạch"] --> I["Cài đặt + cache"] --> T["Jest Unit Test"] --> G{"Quality Gate"}
-  G -->|Pass| M["Merge vào main"]
-  G -->|Fail| X["Merge bị khóa<br/>+ AI Log Triage"]
+  P[Push / Pull Request] --> S[Gitleaks]
+  S --> R[Runner Ubuntu · Node.js 22]
+  R --> I[Cài dependency + cache]
+  I --> T[23 unit test coupon]
+  T --> G{Quality Gate}
+  G -->|Pass| B[Build web/admin/backend package]
+  G -->|Fail| X[Merge checks fail]
+  T -. PR Backend Test fail .-> A[AI triage · chỉ PR]
+  S -.-> W[Pipeline Summary · luôn chạy]
+  B -.-> W
+  X -.-> W
 ```
 
-**Tiêu chí Quality Gate**
+**Quality Gate:**
 
-- 100% test pass
-- Line coverage module coupon > 70%
-- Branch Protection: status xanh mới được Merge
-- Tiêu chí khác (lý thuyết): Lint, Security scan
-
----
+- 100% test của suite được chọn phải pass.
+- Line coverage của `coupon-discount.js` phải > 70%; cần LCOV.
+- Repo có script cấu hình required checks cho Branch Protection; trạng thái áp dụng trên GitHub cần kiểm tra tại repo.
+- Workflow hiện chạy test và build, chưa deploy ứng dụng.
 
 ## Slide 6 – Lựa chọn công cụ
 
@@ -89,125 +95,110 @@ flowchart LR
 
 | GitHub Actions (trọng tâm) | Jest (hỗ trợ) | AI Log Triage (hỗ trợ) |
 |---|---|---|
-| 1. Workflow `eshop-ci.yml`, tối ưu cache | 1. `--runInBand`, `beforeAll` / `afterAll` để cô lập test | 1. `if: failure()` và GitHub Secrets |
-| 2. Commit lỗi: pipeline chặn merge, sửa lỗi, xanh lại | 2. `test.each` phát hiện lỗi coupon | 2. Tóm tắt lỗi coupon từ log |
-| 3. Matrix Node 18 / 20 và Branch Protection | 3. Tái hiện flaky test `SQLITE_BUSY` | 3. Chẩn đoán `SQLITE_BUSY`, đánh giá độ chính xác |
-
----
+| 1. Workflow `eshop-ci.yml`, cache dependencies | 1. `--runInBand`; `beforeAll` / `afterAll` có ở full suite | 1. Chạy khi PR có Backend Test fail; dùng `GEMINI_API_KEY` trong Secrets |
+| 2. Commit lỗi: Quality Gate fail; sửa lỗi rồi chạy lại | 2. `test.each` kiểm tra coupon | 2. Tóm tắt lỗi test coupon từ log |
+| 3. Node.js 22; repo có script cấu hình Branch Protection | 3. Demo flaky async-delay (fast / slow / random), không phải SQLite_BUSY | 3. AI đưa giả thuyết để developer đối chiếu với test và source |
 
 ## Slide 8 – Ba trụ cột kiểm thử tự động
 
 | Trụ cột | Áp dụng trong EShop |
 |---|---|
-| **Record & Playback** | Log và artifacts của mỗi lần chạy CI, re-run với debug logging để tái hiện lỗi; Jest Snapshot (`.snap`) so khớp cấu trúc response API |
-| **Data-Driven** | Tách logic test khỏi bộ dữ liệu tham số hóa; `test.each` cho `POST /api/apply-coupon`, lộ lỗi công thức `discount_amount` |
-| **Checkpoints** | API: `expect(status)` và response body; Database: bảng `coupon_usage`, `orders`; CI/CD: Quality Gate chặn toàn bộ pipeline khi vi phạm |
-
----
+| **Record & Playback** | CI lưu log/artifacts; có thể re-run để đối chiếu. SUT hiện không có Jest Snapshot (`.snap`). |
+| **Data-Driven** | API test ở `backend/tests/coupon.test.js`; CI demo chọn unit test `backend/tests/coupon-discount.unit.test.js`. |
+| **Checkpoints** | API: kiểm tra status/body; DB coupon: `coupon_usage` (orders thuộc suite khác); Gate fail làm Build dừng, Pipeline Summary vẫn chạy. |
 
 ## Slide 9 – Failure Mode 2: lỗi công thức coupon
 
-**Trước khi sửa (`server.js`)**
+**Fault injection mô phỏng trong comment test (`backend/tests/coupon.test.js`):**
 
 ```js
 discount_amount =
-  total_amount * (1 - discount_value);
+  Math.floor(total_amount * (1 - coupon.discount_value));
 ```
 
-**Sau khi sửa**
+**Implementation hiện tại (`backend/coupon-discount.js`):**
 
 ```js
 discount_amount =
-  total_amount * discount_value / 100;
+  Math.floor(totalAmount * (coupon.discount_value / 100));
 ```
 
 | SAVE10 (10%), đơn 500,000 ₫ | discount_amount | final_amount |
 |---|---:|---:|
-| Trước khi sửa | -4,500,000 | 5,000,000 |
-| **Sau khi sửa** | **50,000** | **450,000** |
+| Fault injection | -4,500,000 | 5,000,000 |
+| Implementation hiện tại | 50,000 | 450,000 |
 
-**Nguyên nhân:** với `discount_value = 10` thì (1 − 10) = −9, nên tiền giảm âm và thành tiền lớn hơn tổng đơn.
+Với `discount_value = 10`, công thức fault injection tạo mức giảm âm. Công thức hiện tại chia cho 100 và làm tròn xuống. Test kỳ vọng mức giảm 50,000 ₫; fault injection làm test fail và Quality Gate chặn merge.
 
----
+## Slide 10 – Bộ test coupon: 21 ca API và 23 unit test CI
 
-## Slide 10 – Data-Driven Testing: 21 ca test.each
+**API suite riêng:** `backend/tests/coupon.test.js` dùng Supertest, có 21 scenario. Bảng tóm tắt bộ ca hiện có:
 
-| Nhóm biên | Số ca | Giá trị kiểm thử | Kết quả mong đợi |
-|---|---:|---|---|
-| Ngưỡng tổng đơn (C3) | 6 | SAVE10: 299,999 / 300,000 / 300,001<br>BIGBUY: 499,999 / 500,000 / 500,001 | Dưới ngưỡng bị từ chối; từ ngưỡng trở lên áp được |
-| Hạn dùng (C2) | 3 | hôm qua / hôm nay / ngày mai | Chỉ ngày mai áp được |
-| Giá trị percent | 4 | 0 / 99 / 100 / 101 | Giảm = total × % / 100; 101%: từ chối hoặc final ≥ 0 |
-| Fixed so với tổng đơn | 3 | 99,999 / 100,000 / 100,001 (mã fixed 100,000) | final không âm |
-| Tổng đơn bất thường | 3 | -1 / 0 / 1 | -1 và 0 bị từ chối; 1 giảm theo công thức |
-| Giới hạn int32 | 2 | 2,147,483,647 / 2,147,483,648 | Không lỗi 500, NaN hay số âm |
-| **Tổng** | **21** | | |
+| Nhóm | Số ca | Nội dung |
+|---|---:|---|
+| Coupon hợp lệ | 7 | SAVE10 ở 1,000,000 / 500,000 / 300,000; BIGBUY ở 600,000 / 500,000; VIP100 ở 400,000 / 300,000 |
+| Coupon hết hạn | 2 | EXPIRED ở 200,000 và 5,000,000; mong đợi HTTP 400 |
+| Dưới ngưỡng | 4 | SAVE10: 299,999 / 0; BIGBUY: 499,999; VIP100: 100,000 |
+| Mã không hợp lệ | 5 | Thiếu code, code rỗng, NOPE, sai chữ hoa/thường, coupon inactive |
+| Bất biến percent | 3 | Hai nhánh có/không `user_id`; discount trong `[0, total]`; `final_amount < total` |
 
-Giá trị biên theo đặc tả FR-09 (C2, C3) và các trường hợp dị thường của tổng đơn, giá trị giảm.
+**Suite CI khác:** `backend/jest.demo.config.js` chọn `backend/tests/coupon-discount.unit.test.js`, gồm 23 unit test và chỉ đo coverage `coupon-discount.js`. CI demo không chạy API suite 21 scenario ở trên. Endpoint `POST /api/apply-coupon` hiện không gắn `authenticateToken`.
 
----
-
-## Slide 11 – AI Log Triage khi pipeline thất bại
+## Slide 11 – AI Log Triage khi PR có Backend Test fail
 
 ```mermaid
 flowchart LR
-  F["Pipeline thất bại"] --> C["if: failure()"] --> S["ai_triage.py<br/>100 dòng log cuối"] --> L["LLM API"] --> H["Hypothesis Tree"] --> Y["GitHub Step Summary"]
+  P[PR có Backend Test fail] --> S[ai_triage.py · tối đa 100 dòng log]
+  S --> G[Gemini API]
+  G --> H[Hypothesis Tree]
+  H --> Y[GitHub Step Summary]
 ```
 
-| Cách điều tra | Thời gian (ước tính theo kế hoạch demo) |
+| Cách điều tra | Thời gian |
+|---|---:|
+| Đọc log thủ công | ~2 phút (ước tính) |
+| AI Log Triage | ~15 giây (ước tính) |
+
+Script: `.github/scripts/ai_triage.py`; khóa `GEMINI_API_KEY` lưu trong GitHub Secrets. Workflow chỉ gọi triage khi PR có Backend Test fail và có API key. Các số thời gian là ước tính theo kế hoạch demo, chưa được xác nhận bằng phép đo trong source.
+
+## Slide 12 – Ước tính thời gian cache và AI triage
+
+![Thời gian ước tính trước và sau](images/time_chart.png)
+
+- Cache: khoảng 60 giây xuống khoảng 5 giây.
+- AI Log Triage: khoảng 2 phút xuống khoảng 15 giây.
+- Đây là số liệu ước tính theo kế hoạch demo, không phải kết quả đo được xác nhận trong source SUT.
+
+## Slide 13 – Coverage và hành vi endpoint coupon
+
+- Quality Gate yêu cầu line coverage của module `coupon-discount.js` **> 70%**.
+- Kết quả coverage thực tế: xem artifact CI của đúng commit.
+- Báo cáo LCOV: `backend/coverage/lcov.info`.
+
+| Vai trò/request | Hành vi hiện tại trong SUT |
 |---|---|
-| Đọc log thủ công | ~2 phút |
-| AI Log Triage | ~15 giây |
+| Guest, không token | Token không bắt buộc; coupon hợp lệ vẫn được áp dụng. |
+| Guest, token sai | Token không được kiểm tra; coupon hợp lệ vẫn có thể áp dụng. |
+| Request có JWT hợp lệ | JWT không được endpoint kiểm tra; C5 dùng `user_id` do client gửi trong body. |
 
-- Hypothesis Tree: Hiện tượng → Nguyên nhân → Hướng khắc phục.
-- Log bị cắt thiếu ngữ cảnh: AI có thể đoán sai (hallucination).
-- Script: `.github/scripts/ai_triage.py`; API key lưu trong GitHub Secrets.
-
----
-
-## Slide 12 – Kết quả thực nghiệm: tối ưu thời gian
-
-![Thời gian trước và sau](images/time_chart.png)
-
-- Cache rút bước cài đặt từ khoảng 60 giây xuống khoảng 5 giây.
-- AI Log Triage rút thời gian điều tra từ khoảng 2 phút xuống khoảng 15 giây.
-- *Số liệu ước tính theo kế hoạch demo, cập nhật bằng số đo thực tế.*
-
----
-
-## Slide 13 – Độ bao phủ mã và phân quyền coupon
-
-**Ngưỡng Quality Gate:** line coverage module coupon **> 70%**
-
-**Kết quả thực tế:** [điền % coverage]
-
-Báo cáo LCOV + HTML: `backend/coverage/lcov-report/index.html`
-
-| Vai trò | Điều kiện | Kết quả mong đợi |
-|---|---|---|
-| **Guest** | Không có token | Từ chối (C4) |
-| **Guest** | Token sai | Từ chối |
-| **User** | JWT hợp lệ | Áp mã nếu đạt C1, C2, C3, C5 |
-
----
+`POST /api/apply-coupon` hiện không gắn `authenticateToken`; đây là mô tả hành vi thực tế của SUT, không phải hành vi bảo mật mong muốn.
 
 ## Slide 14 – Demo video
 
-1. Khởi tạo workflow `eshop-ci.yml` và tối ưu cache
-2. Commit lỗi: Quality Gate chặn merge, sửa lỗi, pipeline xanh
-3. Matrix Node 18 / 20 và Branch Protection
-4. Jest `test.each` phát hiện lỗi coupon
-5. AI Log Triage chẩn đoán lỗi pipeline
+1. Workflow `eshop-ci.yml`: Gitleaks, cache, test, Quality Gate và build.
+2. Commit lỗi: Quality Gate fail; sửa lỗi và chạy lại.
+3. Node.js 22; repo có script cấu hình Branch Protection.
+4. Jest `test.each` kiểm thử coupon; CI demo chạy unit suite riêng.
+5. AI triage chỉ chạy khi PR có Backend Test fail.
 
-**Video:** `Demo_Screencast.mp4` – [dán link tại đây]
-
----
+**Video:** chưa có file demo trong repo; bổ sung URL khi có video.
 
 ## Slide 15 – Kết luận và bài học
 
-1. Pipeline xanh là rào chắn chất lượng đầu tiên: CI/CD là hạ tầng Test Harness.
-2. Data-Driven Testing với `test.each` lộ lỗi coupon mà ca đơn lẻ dễ bỏ sót.
-3. AI Log Triage tăng tốc điều tra nhưng cần kiểm chứng với log đủ ngữ cảnh.
+1. CI chạy test và build; workflow hiện chưa deploy ứng dụng.
+2. `test.each` giúp kiểm tra nhiều ca coupon; cần phân biệt API suite và unit suite mà CI chọn.
+3. AI Log Triage đưa giả thuyết để developer kiểm chứng với log, test và source.
 
-**Hạn chế:** phụ thuộc hạ tầng GitHub; runner miễn phí 2 vCPU, 7GB RAM; log thiếu ngữ cảnh làm AI đoán sai.
+**Giới hạn:** phụ thuộc GitHub; workflow dùng runner `ubuntu-latest` do GitHub-hosted; thời gian cache/triage trong slide là ước tính; log thiếu ngữ cảnh có thể dẫn tới chẩn đoán sai.
 
 **Mã nguồn:** [github.com/SoftwareTesting-Group13/eshop-sut-seminar](https://github.com/SoftwareTesting-Group13/eshop-sut-seminar)
