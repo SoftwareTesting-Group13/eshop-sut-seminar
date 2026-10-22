@@ -12,14 +12,6 @@
 
 ---
 
-> [!IMPORTANT]
-> **Team Cross-Review Checklist (To finalize once other members complete their tasks):**
-> - [x] **D. N. Cường (CI/CD & Scripts):** Section 4 & 5 workflow steps verified and aligned with `.github/workflows/eshop-ci.yml`, `quality-gate.js`, and `configure-branch-protection.sh`. (Video demo timecodes pending final recording).
-> - [ ] **N. N. M. Tuấn (Slides & Coupon Tests):** Confirm Section 6.2 code diffs and 21 Data-Driven test cases match `Seminar_Slides.pptx` / `Seminar_Slides.md`.
-> - [ ] **N. G. Huy (Worksheet, AI Triage & Metrics):** Update Section 6.3 with empirical Flake Rate metrics (10 runs) and verify `ai_triage.py` script details in Section 5.3.
-
----
-
 ## Table of Contents
 
 - [1. Introduction & SUT Architecture Overview](#1-introduction--sut-architecture-overview)
@@ -49,7 +41,7 @@
   - [4.4 Pull Request Branch Protection Rules](#44-pull-request-branch-protection-rules)
 - [5. Advanced Pipeline Features](#5-advanced-pipeline-features)
   - [5.1 Code Coverage Enforcement (LCOV Reporting)](#51-code-coverage-enforcement-lcov-reporting)
-  - [5.2 Multi-Version Runtime Compatibility & Matrix Builds](#52-multi-version-runtime-compatibility--matrix-builds)
+  - [5.2 Runtime Compatibility (Current Scope)](#52-runtime-compatibility-current-scope)
   - [5.3 Specialized Assistant: AI-Powered Log Triage](#53-specialized-assistant-ai-powered-log-triage)
 - [6. Deep-Dive Analysis of 3 Mandatory Failure Modes](#6-deep-dive-analysis-of-3-mandatory-failure-modes)
   - [6.1 Failure Mode 1: SQLite File Lock Concurrency (`SQLITE_BUSY`)](#61-failure-mode-1-sqlite-file-lock-concurrency-sqlite_busy)
@@ -89,14 +81,14 @@ In modern software engineering, automated unit and integration tests only delive
 │                     TEST HARNESS & QUALITY GATE ARCHITECTURE                    │
 ├─────────────────────┬───────────────────────────┬───────────────────────────────┤
 │ Pull Request (PR)   │ CI Automated Test Harness │ Branch Protection Gate        │
-│ Developer submits   │ • Restore package cache   │ • Quality Gate check (>= 80%) │
+│ Developer submits   │ • Restore package cache   │ • Quality Gate check (> 70%)  │
 │ incremental commit  │ • Run Jest Test Suites    │ • PASS  → Unlock PR Merge     │
 │ to topic branch     │ • Generate LCOV report    │ • FAIL  → HARD BLOCK Merge    │
 └─────────────────────┴───────────────────────────┴───────────────────────────────┘
 ```
 
 1. **Deterministic Test Harness:** The CI runner acts as a clean-room test harness. It spins up a pristine Ubuntu virtual environment, downloads dependencies, initializes a temporary test database, and runs unit tests in isolation from local developer machine quirks.
-2. **Quality Gate via Branch Protection:** Pull Requests cannot be merged into the `main` branch unless the automated test suite reports a 100% pass rate and satisfies minimum code coverage thresholds (≥ 80%). If a regression is introduced, the Quality Gate triggers a **Fail-Fast** shutdown, locking the GitHub merge button.
+2. **Quality Gate via Branch Protection:** Pull Requests cannot be merged into the `main` branch unless the CI test job reports a 100% pass rate, line coverage is greater than 70%, and the LCOV report is present. If a regression is introduced, the Quality Gate triggers a **Fail-Fast** shutdown, locking the GitHub merge button.
 
 ### 1.3 SUT System Architecture & Monorepo Structure
 The target System Under Test is **EShop**, an e-commerce platform organized as a modular repository with a Node.js/Express backend, SQLite relational persistence, Jest test runner, and multiple client interfaces.
@@ -155,8 +147,8 @@ flowchart TB
     subgraph CIInfrastructure ["<span style='font-size:24px; font-weight:600;'>4. CI/CD (GitHub Actions)</span>"]
         GHAWorkflow["<b><span style='font-size:28px;'>Workflow Automation</span></b><br/><span style='font-size:22px;'>(.github/workflows/eshop-ci.yml)</span>"]
         RunnerEnv["<b><span style='font-size:28px;'>Clean-Room Runner</span></b><br/><span style='font-size:22px;'>(ubuntu-latest Container)</span>"]
-        CacheStore["<b><span style='font-size:28px;'>Dependency Cache</span></b><br/><span style='font-size:22px;'>(actions/cache for ~/.npm)</span>"]
-        QualityGate{"<b><span style='font-size:28px;'>Quality Gate Check</span></b><br/><span style='font-size:22px;'>Pass 100% & Coverage ≥ 80%</span>"}
+        CacheStore["<b><span style='font-size:28px;'>Dependency Cache</span></b><br/><span style='font-size:22px;'>(backend/node_modules)</span>"]
+        QualityGate{"<b><span style='font-size:28px;'>Quality Gate Check</span></b><br/><span style='font-size:22px;'>Pass 100% & Lines > 70%</span>"}
         BranchProtection["<b><span style='font-size:28px;'>Branch Protection Rules</span></b><br/><span style='font-size:22px;'>(Hard-Lock Merge Button)</span>"]
         AITriageService["<b><span style='font-size:24px;'>AI Log Triage Assistant</span></b><br/><span style='font-size:20px;'>(ai_triage.py + Gemini API)</span>"]
 
@@ -226,7 +218,7 @@ To replicate the local test harness and execute all test suites, the following t
 - **Node.js Runtime:** Version `20.x` or `22.x LTS` (GitHub Actions CI runner uses Node.js 22 LTS; minimum supported: `18.16.0`).
 - **Package Manager:** `npm` version `9.x` or `10.x`.
 - **Git Version Control:** Git `2.40+`.
-- **Python (For AI Triage Assistant):** Python `3.10+` with `requests` or `google-generativeai`.
+- **Python (optional, for AI Triage Assistant):** Python `3.10+`. The repository script uses only the Python standard library; a local Gemini API key is required to call the external service.
 
 ### 2.2 Repository Cloning
 Clone the official team repository from the GitHub Organization:
@@ -271,18 +263,16 @@ node database.js
 ### 2.5 Environment Variables & GitHub Secrets
 The application supports configuration via environment variables. For local testing, copy the example template:
 
-```bash
-cp .env.example .env
-```
+The current repository does not include an `.env.example` file and the normal test commands do not require a local `.env` file. The relevant CI variables are:
 
 | Variable Name | Default Value | Purpose |
 | :--- | :--- | :--- |
 | `PORT` | `3000` | Port for Express HTTP listener (bypassed during in-memory Supertest execution) |
-| `NODE_ENV` | `development` | Set to `test` when running Jest test suites to activate `:memory:` SQLite |
+| `NODE_ENV` | Set by Jest | Jest test runs use `:memory:` SQLite; development runs use `backend/database.sqlite` |
 | `COVERAGE_THRESHOLD` | `70` | Enforced minimum line coverage percentage evaluated by `quality-gate.js` |
 | `GEMINI_API_KEY` | *(Secret)* | Required for GitHub Actions step running `ai_triage.py` on test failure |
 | `GEMINI_MODEL` | `gemini-3.5-flash-lite` | Google Gemini model identifier used for automated failure triage |
-| `GITHUB_TOKEN` | *(Secret)* | Personal Access Token with admin repo permissions for `configure-branch-protection.sh` |
+| `GITHUB_TOKEN` | *(GitHub Actions token)* | Used by GitHub Actions integrations; branch-protection configuration may require a separately authorized token |
 
 ---
 
@@ -301,8 +291,11 @@ Jest discovers and executes all test files matching the pattern `tests/**/*.test
 2. **Authentication Tests (`auth.test.js`):** Exercises user registration, password hashing with bcrypt, and JWT token issuance.
 3. **Domain Business Unit Tests (`coupon-discount.unit.test.js`):** 21 Data-Driven unit tests covering `calculateDiscount`, `validateCoupon`, and `buildCouponResult` without HTTP overhead.
 4. **Coupon REST API Integration Tests (`coupon.test.js`):** Exercises the `/api/apply-coupon` endpoint against boundary conditions and demonstrates Failure Mode 2.
-5. **End-to-End Shop Flow Tests (`shop-flows.test.js`):** Validates full user purchase lifecycles: adding products to cart, applying discounts, checking out, and verifying order records.
-6. **Synthetic Flakiness Demo (`demos/flaky-delay.demo.js`):** Demonstrates non-deterministic race conditions between `setTimeout` and `await` (Failure Mode 3).
+5. **Order Tests (`orders.test.js`):** Covers order creation and related API behavior.
+6. **Coupon API Tests (`coupons.test.js`):** Covers coupon usage and API-level coupon behavior.
+7. **End-to-End Shop Flow Tests (`shop-flows.test.js`):** Validates full user purchase lifecycles: adding products to cart, applying discounts, checking out, and verifying order records.
+
+The synthetic flakiness demo (`demos/flaky-delay.demo.js`) is a separate demonstration suite and is not included in the default `npm test` run.
 
 ### 3.3 The `--runInBand` Execution Flag
 When executing tests that write to the shared SQLite database file, Jest must be instructed to run sequentially on a single thread using the `--runInBand` (or `-i`) flag:
@@ -329,19 +322,21 @@ Running `npm run test:coverage` compiles an execution summary and an LCOV covera
  PASS  tests/auth.test.js
  PASS  tests/coupon-discount.unit.test.js
  PASS  tests/coupon.test.js
- PASS  tests/shop-flows.test.js
+PASS  tests/orders.test.js
+PASS  tests/coupons.test.js
+PASS  tests/shop-flows.test.js
 
 --------------------|---------|----------|---------|---------|-------------------
 File                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 --------------------|---------|----------|---------|---------|-------------------
-All files           |   86.42 |    78.26 |   91.17 |   86.42 |                   
- coupon-discount.js |  100.00 |    95.45 |  100.00 |  100.00 |                   
- database.js        |   82.35 |    66.66 |   80.00 |   82.35 | 9-10              
- server.js          |   84.61 |    76.92 |   88.23 |   84.61 | 142-148,215-218   
+All files           |   74.52 |    57.44 |   77.92 |   78.81 |                   
+ coupon-discount.js |  100.00 |   100.00 |  100.00 |  100.00 |                   
+ database.js        |   97.77 |    50.00 |  100.00 |   97.77 | 10                
+ server.js          |   68.65 |    50.42 |   76.05 |   73.56 |                   
 --------------------|---------|----------|---------|---------|-------------------
 
-Test Suites: 5 passed, 5 total
-Tests:       47 passed, 47 total
+Test Suites: 7 passed, 7 total
+Tests:       61 passed, 61 total
 Snapshots:   0 total
 Time:        4.128 s
 Ran all test suites.
@@ -352,7 +347,7 @@ Ran all test suites.
 ## 4. CI/CD Pipeline Architecture & GitHub Actions Engineering
 
 ### 4.1 Pipeline Design Principles
-The automated continuous testing pipeline in EShop is codified in `.github/workflows/eshop-ci.yml`. Rather than a simple build-and-deploy script, the pipeline is engineered around key testing and reliability principles:
+The automated CI pipeline in EShop is codified in `.github/workflows/eshop-ci.yml`. It runs security scanning, a focused unit-test job, a quality gate, and frontend/backend build packaging. The current workflow creates downloadable build artifacts; it does not deploy the application to a hosting or production environment.
 
 1. **Clean-Room Ephemeral Runners:** Every pipeline execution provisions a pristine, isolated virtual container (`ubuntu-latest`) running Node.js 22 LTS. This eliminates "works on my machine" environmental discrepancies, zombie background processes, and residual database artifacts.
 2. **Event-Driven Triggers & Concurrency Throttling:**
@@ -360,9 +355,9 @@ The automated continuous testing pipeline in EShop is codified in `.github/workf
    - **Auto-Cancellation:** Uses `concurrency: cancel-in-progress: true` keyed by branch ref. If a developer pushes incremental commits rapidly, obsolete in-flight test runs are immediately canceled to conserve cloud runner quota.
 3. **Defense-in-Depth Phased Execution:**
    - **Stage 1 (Secret Scanning):** Gitleaks performs static analysis on full Git history (`fetch-depth: 0`) to detect leaked tokens or keys before running any application code.
-   - **Stage 2 (Automated Test Harness):** Runs the Jest unit test suite with LCOV coverage collection and console output capture.
+   - **Stage 2 (Automated Test Harness):** Runs the focused `coupon-discount.unit.test.js` Jest suite with LCOV coverage collection and console output capture.
    - **Stage 3 (Quality Gate Enforcement):** Executes `quality-gate.js` to evaluate test outcomes and coverage thresholds.
-   - **Stage 4 (Artifact Packaging):** Builds frontend bundles and packages backend archives only after all tests and security checks succeed.
+   - **Stage 4 (Artifact Packaging):** Builds frontend bundles and packages backend archives only after the quality gate and security scan succeed. This is packaging, not deployment.
    - **Stage 5 (Observable Audit Trail):** Generates `ci-audit.json` capturing execution status across all jobs for audit compliance.
 
 ### 4.2 Dependency Caching Strategy (`actions/cache`)
@@ -392,8 +387,8 @@ To prevent network bottlenecks and accelerate developer feedback loops, the CI p
 In continuous testing, a **Quality Gate** is an automated milestone within the delivery pipeline that enforces strict non-negotiable criteria before code can progress or merge into protected branches. The **Fail-Fast** engineering principle dictates that whenever a critical assertion or baseline requirement is violated, the pipeline terminates execution immediately without wasting computational time or cloud runner quota on subsequent stages.
 
 In the EShop CI/CD Test Harness, the Quality Gate script (`.github/scripts/quality-gate.js`) acts as the Single Source of Truth, evaluating 3 non-negotiable criteria:
-1. **Zero-Defect Unit Criterion (Test Gate):** 100% of all unit and integration test suites and test cases must terminate with `Exit Code 0`. Even a single failed assertion aborts the run immediately.
-2. **Minimum Coverage Threshold Criterion (Coverage Gate):** Line coverage must meet or exceed the mandatory threshold (`Coverage > 70%`, configurable via `COVERAGE_THRESHOLD` up to `80%`). Statements, branches, and functions are tracked and reported in the audit table.
+1. **Test Criterion (Test Gate):** 100% of the test suites and test cases executed by the CI demo job must terminate with `Exit Code 0`. The local `npm test` command runs the broader backend suite; the workflow currently gates the focused coupon unit-test suite.
+2. **Minimum Coverage Threshold Criterion (Coverage Gate):** Line coverage must be greater than the mandatory threshold (`> 70%`, configured through `COVERAGE_THRESHOLD`). Statements, branches, and functions are tracked and reported in the audit table.
 3. **Traceability & LCOV Generation (LCOV Gate):** The standardized coverage tracefile (`coverage/lcov.info`) must be generated and verified.
 
 ---
@@ -424,7 +419,7 @@ flowchart TB
         DevAction["<b><span style='font-size:24px;'>Developer Git Action</span></b><br/><span style='font-size:20px;'>(git push / open Pull Request)</span>"]
         GHAEvent["<b><span style='font-size:24px;'>GitHub Actions Event Trigger</span></b><br/><span style='font-size:20px;'>(on: pull_request, push to main)</span>"]
         CleanRunner["<b><span style='font-size:24px;'>Clean-Room Runner VM</span></b><br/><span style='font-size:20px;'>(ubuntu-latest Isolated Container)</span>"]
-        RepoCheckout["<b><span style='font-size:24px;'>Source Code Checkout</span></b><br/><span style='font-size:20px;'>(actions/checkout@v4)</span>"]
+        RepoCheckout["<b><span style='font-size:24px;'>Source Code Checkout</span></b><br/><span style='font-size:20px;'>(actions/checkout@v6)</span>"]
 
         DevAction --> GHAEvent
         GHAEvent --> CleanRunner
@@ -434,10 +429,10 @@ flowchart TB
     %% Stage 2: Cache & Execution
     subgraph ExecutionStage ["<span style='font-size:20px; font-weight:600;'>2. Dependency Cache & Test Harness Execution</span>"]
         CacheEval{"<b><span style='font-size:24px;'>Dependency Cache Check</span></b><br/><span style='font-size:20px;'>hashFiles('**/package-lock.json')</span>"}
-        CacheHit["<b><span style='font-size:24px;'>Cache HIT (~8s)</span></b><br/><span style='font-size:20px;'>(Restore ~/.npm from Cache)</span>"]
+        CacheHit["<b><span style='font-size:24px;'>Cache HIT (~8s)</span></b><br/><span style='font-size:20px;'>(Restore backend/node_modules)</span>"]
         CacheMiss["<b><span style='font-size:24px;'>Cache MISS (~45s)</span></b><br/><span style='font-size:20px;'>(Fresh npm ci from Registry)</span>"]
-        JestRun["<b><span style='font-size:24px;'>Jest Test Runner Execution</span></b><br/><span style='font-size:20px;'>(npm test -- --runInBand --coverage)</span>"]
-        ArtifactGen["<b><span style='font-size:24px;'>Test Reports Generated</span></b><br/><span style='font-size:20px;'>(JUnit XML & LCOV lcov.info)</span>"]
+        JestRun["<b><span style='font-size:24px;'>Jest Test Runner Execution</span></b><br/><span style='font-size:20px;'>(npm run test:ci:demo)</span>"]
+        ArtifactGen["<b><span style='font-size:24px;'>Test Reports Generated</span></b><br/><span style='font-size:20px;'>(JSON results & LCOV lcov.info)</span>"]
 
         RepoCheckout --> CacheEval
         CacheEval -->|Cache Hit| CacheHit
@@ -449,14 +444,14 @@ flowchart TB
 
     %% Stage 3: Quality Gate Decision
     subgraph QualityGateStage ["<span style='font-size:22px; font-weight:600;'>3. Quality Gate Evaluation (Dual Check)</span>"]
-        GateEngine{"<b><span style='font-size:24px;'>Quality Gate Decision Engine</span></b><br/><span style='font-size:20px;'>100% Tests Pass (Exit 0) AND Coverage ≥ 80%?</span>"}
+        GateEngine{"<b><span style='font-size:24px;'>Quality Gate Decision Engine</span></b><br/><span style='font-size:20px;'>100% Demo Tests Pass AND Lines > 70%?</span>"}
         ArtifactGen --> GateEngine
     end
 
     %% Stage 4A: Success Path
     subgraph SuccessPath ["<span style='font-size:22px; font-weight:600;'>4A. Success Pathway (Green Check)</span>"]
         StatusPass["<b><span style='font-size:24px;'>Status Check: SUCCESS</span></b><br/><span style='font-size:20px;'>(ci/eshop-unit-test: PASS)</span>"]
-        UploadArt["<b><span style='font-size:24px;'>Upload Artifacts</span></b><br/><span style='font-size:20px;'>(actions/upload-artifact@v4)</span>"]
+        UploadArt["<b><span style='font-size:24px;'>Upload Artifacts</span></b><br/><span style='font-size:20px;'>(actions/upload-artifact@v6)</span>"]
         BranchUnlock["<b><span style='font-size:24px;'>Branch Protection Satisfied</span></b><br/><span style='font-size:20px;'>(All Required Status Checks Green)</span>"]
         MergeEnabled["<b><span style='font-size:24px;'>PR Merge Button Unlocked</span></b><br/><span style='font-size:20px;'>(Pull Request Approved for main)</span>"]
 
@@ -467,7 +462,7 @@ flowchart TB
 
     %% Stage 4B: Fail-Fast Path
     subgraph FailFastPath ["<span style='font-size:22px; font-weight:600;'>4B. Fail-Fast Pathway (Red Cross)</span>"]
-        StatusFail["<b><span style='font-size:24px;'>Fail-Fast Triggered</span></b><br/><span style='font-size:20px;'>(Exit Code = 1 | Coverage < 80%)</span>"]
+        StatusFail["<b><span style='font-size:24px;'>Fail-Fast Triggered</span></b><br/><span style='font-size:20px;'>(Exit Code = 1 | Lines ≤ 70%)</span>"]
         AbortJob["<b><span style='font-size:24px;'>Abort Downstream Tasks</span></b><br/><span style='font-size:20px;'>(Halt execution to save compute)</span>"]
         BranchLock["<b><span style='font-size:24px;'>Branch Protection Hard-Lock</span></b><br/><span style='font-size:20px;'>(Merge pull request' button disabled)</span>"]
         AIAssistant["<b><span style='font-size:24px;'>AI Log Triage Assistant</span></b><br/><span style='font-size:20px;'>(ai_triage.py + Google Gemini API)</span>"]
@@ -480,8 +475,8 @@ flowchart TB
     end
 
     %% Decision Route Connections
-    GateEngine ==>|PASS: Zero Errors & Coverage ≥ 80%| StatusPass
-    GateEngine ==>|FAIL: Assertion Error or Coverage < 80%| StatusFail
+    GateEngine ==>|PASS: Zero Errors & Lines > 70%| StatusPass
+    GateEngine ==>|FAIL: Assertion Error or Lines ≤ 70%| StatusFail
 ```
 
 ---
@@ -491,14 +486,14 @@ flowchart TB
 | Stage | Action / Component | Operational Mechanism & Verification |
 | :--- | :--- | :--- |
 | **1. Trigger** | `pull_request` / `push` | Triggered whenever code is proposed against `main`. Initializes a clean-room ephemeral container (`ubuntu-latest`) to eliminate environmental flakiness. |
-| **2. Caching** | `actions/cache@v4` | Evaluates checksum hash `hashFiles('**/package-lock.json')`. On a cache hit, dependency restoration drops from ~45 seconds to ~8 seconds, saving 82% runner time. |
-| **3. Test Harness** | `npm test -- --runInBand` | Executes test suites deterministically on a single thread to prevent SQLite write lock collisions (`SQLITE_BUSY`). Generates LCOV and JUnit XML. |
-| **4. Quality Gate** | Triple Validation Engine (`quality-gate.js`) | Verifies zero test failures (`exit 0`), line coverage meeting threshold (`> 70%` / `≥ 80%`), and LCOV trace file presence. If any criterion fails, Fail-Fast terminates the pipeline immediately. |
+| **2. Caching** | `actions/cache@v5` | Evaluates the lockfile-based cache key. On a cache hit, dependency restoration is faster than a fresh install. |
+| **3. Test Harness** | `npm run test:ci:demo` | Executes the focused coupon unit-test suite with coverage and JSON results. The local `npm test` command runs the broader 7-suite backend test set. |
+| **4. Quality Gate** | Triple Validation Engine (`quality-gate.js`) | Verifies zero test failures, line coverage `> 70%`, and LCOV trace file presence. If any criterion fails, the Quality Gate job fails and the dependent build job is skipped. |
 | **5A. Merge Pass** | Branch Protection | When all required status checks turn green, GitHub's Branch Protection Rules allow the *"Merge pull request"* button to unlock. |
 | **5B. Fail Triage** | Specialized AI Assistant | If the gate fails, GitHub Actions invokes `.github/scripts/ai_triage.py` using `GEMINI_API_KEY`, parsing the raw failure stack trace and annotating the Pull Request with an actionable fix. |
 
 ### 4.4 Pull Request Branch Protection Rules
-To enforce software quality defensively, GitHub's Branch Protection Rules are configured on the primary integration branch (`main`). This ensures that no individual contributor — including repository administrators — can bypass the automated Quality Gate.
+To enforce software quality defensively, GitHub's Branch Protection Rules should be configured on the primary integration branch (`main`). The rules described below are the intended repository policy; their active status must be verified in GitHub repository settings.
 
 #### 4.4.1 Protected Branch Policies & Configuration
 The protection rules are automated via the script `.github/scripts/configure-branch-protection.sh`, which interfaces with the GitHub REST API (`PUT /repos/:owner/:repo/branches/main/protection`):
@@ -546,25 +541,25 @@ Code coverage provides quantitative visibility into which lines, statements, fun
    - Every CI run uploads `backend/coverage` as a workflow artifact (`eshop-coverage`) with 14-day retention via `actions/upload-artifact@v6`.
    - The Quality Gate script generates a formatted Markdown audit table (`quality-gate-report.md`) and automatically posts or updates it as a comment on the corresponding Pull Request.
 
-### 5.2 Multi-Version Runtime Compatibility & Matrix Builds
-Enterprise test harnesses must ensure that applications operate deterministically across diverse Node.js LTS runtimes.
+### 5.2 Runtime Compatibility (Current Scope)
+The current workflow runs on Node.js 22 only. A multi-version matrix is a possible extension, but it is not configured in `.github/workflows/eshop-ci.yml` and should not be presented as an executed CI capability.
 
 1. **Target Runtime Environment:**
-   The primary CI runner environment runs Node.js 22 LTS on `ubuntu-latest`. The backend codebase is engineered to maintain complete compatibility across Node.js `18.x`, `20.x`, and `22.x LTS`.
-2. **Cross-Version Matrix Strategy:**
-   To test multi-version runtime matrix compatibility in GitHub Actions, workflows define a matrix strategy:
+   The CI runner uses Node.js 22 LTS on `ubuntu-latest`. Local development may use Node.js 20 or 22 LTS.
+2. **Possible future matrix strategy:**
+   If cross-version compatibility becomes a requirement, add a matrix explicitly to the workflow. The following is an example design, not the current configuration:
    ```yaml
    strategy:
      matrix:
        node-version: [18.x, 20.x, 22.x]
    steps:
-     - uses: actions/setup-node@v4
+     - uses: actions/setup-node@v7
        with:
          node-version: ${{ matrix.node-version }}
          cache: 'npm'
    ```
-3. **Preventing Deprecated API Drift:**
-   Executing tests across matrix versions guarantees that deprecated Node.js standard library APIs (such as older crypto methods, deprecated URL parsers, or buffer constructors) are identified before deploying into heterogeneous production environments.
+3. **Scope limitation:**
+   Because the matrix is not currently enabled, this guide makes no claim that Node.js 18, 20, and 22 have been verified by GitHub Actions.
 
 ### 5.3 Specialized Assistant: AI-Powered Log Triage
 When tests fail in cloud CI environments, developers often spend substantial time sifting through voluminous console logs to decipher obscure stack traces. EShop integrates an automated AI Triage Assistant (`.github/scripts/ai_triage.py`) powered by Google's Gemini LLM.
@@ -711,9 +706,10 @@ flowchart TB
 ---
 
 #### 6.1.3 Reproducing Code Snippet & Command
-This failure mode can be reliably reproduced in EShop by running Jest across multiple workers while executing test suites that perform write operations without serialization.
+This failure mode is analyzed as a concurrency risk. In the current repository, Jest tests use an in-memory SQLite database under `NODE_ENV=test`, and the dedicated concurrency fixture is not checked in; therefore the failure is not claimed as a guaranteed one-command reproduction.
 
-##### A. Reproducing Test Scenario (`backend/tests/concurrency.demo.js`)
+##### A. Illustrative Test Scenario (not checked in)
+The repository does not currently contain `backend/tests/concurrency.demo.js`. The following fixture is illustrative only; it must be added as a separate demo before claiming that this failure mode is reproducible from the repository.
 ```javascript
 const request = require('supertest');
 const app = require('../server');
@@ -739,14 +735,14 @@ describe('Concurrent DB Write Collision Demo', () => {
 });
 ```
 
-##### B. Reproduction Command
-To force Jest to spawn multiple parallel worker processes and provoke the lock contention:
+##### B. Reproduction Command (after adding the fixture)
+To force Jest to spawn multiple parallel worker processes, run the fixture from `backend/`:
 ```bash
 # Navigate to backend directory
 cd backend
 
 # Execute Jest with 4 parallel worker threads (bypassing in-band execution)
-npx jest --maxWorkers=4 --no-cache
+npx jest --maxWorkers=4 --no-cache tests/concurrency.demo.js
 ```
 
 ---
@@ -1130,7 +1126,7 @@ Tests:       1 failed, 1 passed, 2 total
 ```
 
 **Impact on CI/CD Infrastructure:**
-- **Flake Rate Metric:** Running the random profile across 10 iterations produces an empirical Flake Rate of approximately 40% to 50% for the sleep-based suite, compared to a 0% Flake Rate for the await-based suite.
+- **Flake Rate Demonstration:** The random profile injects a 20 ms or 200 ms delay with equal probability. It is a controlled demonstration of intermittent behavior, not a measurement of the real CI runner's flake rate.
 - **Resource Wastage:** When a flaky test fails, developers must either restart the entire CI pipeline (wasting 3–5 minutes of runner quota) or merge unstable code without confidence.
 
 ---
@@ -1199,8 +1195,8 @@ This section provides an end-to-end, deterministic experimental manual for cours
 | :--- | :--- | :--- | :--- |
 | **Step A** | Environment Inspection | `node -v && npm -v && git --version` | Node.js ≥ 18.16.0 (20.x/22.x LTS), npm ≥ 9.x |
 | **Step B** | Install Dependencies & Seed DB | `npm install && node database.js` | Zero missing packages, SQLite seeded cleanly |
-| **Step C** | Baseline Test Suite Execution | `npm test` | 7 test suites PASS (61/61 tests), Coverage ~78.8% |
-| **Step D** | Reproduce SQLite Lock Contention | `npx jest --maxWorkers=4 --no-cache` | `SQLITE_BUSY: database is locked` collision |
+| **Step C** | Baseline Test Suite Execution | `npm test` | 7 test suites PASS (61/61 tests), line coverage 78.81% |
+| **Step D** | Analyze SQLite Lock Contention | See Section 6.1.3 | Requires the illustrative fixture; not included in the current checkout |
 | **Step E** | Coupon Formula Defect & Fail-Fast | `npm run test:ci:demo && npm run quality-gate` | Assertion fail (Exit Code 1), Gate blocks merge |
 | **Step F** | Reproduce Async Flaky Timing | `npm run test:flaky` (Fast vs Slow profile) | Slow profile fails sleep test; await test passes |
 | **Step G** | GitHub Actions CI & PR Gating | Open PR on GitHub | Required Status Checks block/unlock PR merge |
@@ -1224,12 +1220,11 @@ git --version
 # Expected: git version 2.40.0 or higher
 ```
 
-Clone the repository and check out the active seminar branch:
+Clone the repository. Use the repository's default branch unless your instructor provides a specific commit or branch:
 
 ```bash
 git clone https://github.com/SoftwareTesting-Group13/eshop-sut-seminar.git
 cd eshop-sut-seminar
-git checkout gcuong
 ```
 
 ---
@@ -1264,7 +1259,7 @@ cd ../backend
 ---
 
 ### 7.4 Step C: Baseline Automated Test Suite Execution
-Execute the entire automated test harness locally to establish a baseline of 100% passing tests:
+Execute the entire automated backend test harness locally to establish a baseline:
 
 ```bash
 npm test
@@ -1272,7 +1267,7 @@ npm test
 
 *Verification Metrics:*
 - **Sequential In-Band Execution:** Jest executes serially on a single process via `--runInBand`, preventing SQLite lock collisions.
-- **Suite Pass Rate:** All 7 test suites pass unconditionally (`7 passed, 7 total`).
+- **Suite Pass Rate:** All 7 test suites pass in the verified run (`7 passed, 7 total`).
 - **Test Case Pass Rate:** 61 test cases pass (`61 passed, 61 total`).
 - **Coverage Baseline:** Line coverage on business logic (`coupon-discount.js`) reaches 100%, and overall backend line coverage reaches ~78.81%, exceeding the 70% Quality Gate requirement.
 
@@ -1302,11 +1297,11 @@ Time:        ~25-30 s
 ---
 
 ### 7.5 Step D: Reproducing Failure Mode 1 (SQLite Lock Concurrency Collision)
-To provoke the race condition between parallel worker processes and the SQLite single-writer constraint, execute Jest with multi-threaded worker allocation:
+The current checkout does not include the dedicated concurrency fixture. To reproduce the failure mode, first add the illustrative fixture described in Section 6.1.3, then execute Jest with multi-threaded worker allocation:
 
 ```bash
 # Bypass sequential execution and force 4 concurrent worker processes
-npx jest --maxWorkers=4 --no-cache
+npx jest --maxWorkers=4 --no-cache tests/concurrency.demo.js
 ```
 
 *Observed Failure Symptoms:*
@@ -1390,7 +1385,7 @@ npm run quality-gate
 The script exits with `Exit Code 1`. In GitHub Actions, this immediately blocks downstream build jobs and hard-locks the Pull Request merge button.
 
 #### 4. Restore the Verified Fix
-Revert `backend/coupon-discount.js` back to the defensive, clamped implementation:
+Restore `backend/coupon-discount.js` to the verified percent formula:
 ```javascript
 function calculateDiscount(totalAmount, coupon) {
   if (coupon.type === 'percent') {
@@ -1444,7 +1439,7 @@ Run with randomized timing delays to observe non-deterministic pipeline results 
 $env:FLAKY_PROFILE = 'random'
 npm run test:flaky
 ```
-Repeating this command 10 times yields an empirical Flake Rate of ~40%–50% for the sleep-based test, proving why `sleep` is an anti-pattern in automated test engineering.
+The `random` profile chooses a 20 ms or 200 ms delay with equal probability for each run. This is a controlled fault-injection demonstration, not an empirical measurement of the CI runner's real flake rate. Repeat the command to observe intermittent PASS/FAIL behavior in the sleep-based test.
 
 ---
 
@@ -1464,13 +1459,14 @@ Repeating this command 10 times yields an empirical Flake Rate of ~40%–50% for
 3. **Observe Automated Workflow Execution:**
    - Under the PR's **Checks** tab, watch the `EShop CI` workflow trigger automatically.
    - Stage 1: `Gitleaks Secret Scan` executes first.
-   - Stage 2: `Backend Test (Node.js 22)` restores cache and runs Jest.
-   - Stage 3: `Quality Gate (Tests & Coverage > 70%)` evaluates outcomes.
+    - Stage 2: `Backend Test (Node.js 22)` restores cache and runs `npm run test:ci:demo`.
+    - Stage 3: `Quality Gate (Tests & Coverage > 70%)` evaluates test results, line coverage, and LCOV.
+    - Stage 4: `Build (web, admin, backend package)` produces downloadable build artifacts after the gate passes; no deployment is performed.
 
 4. **Verify Branch Protection Hard-Lock:**
    - If tests fail, the Quality Gate reports a red cross `❌`. GitHub's Branch Protection Rules disable the *"Merge pull request"* button, displaying:
      `"Required statuses must pass before merging. Quality Gate (Tests & Coverage > 70%) failed."`
-   - The automated AI Triage Assistant posts a comment with a Hypothesis Tree and suggested fix code diff.
+    - On a failed PR test job, the optional AI Triage Assistant posts a comment when `GEMINI_API_KEY` is configured.
    - If tests pass and line coverage > 70%, the gate reports green `✅`, and the merge button unlocks.
 
 ---
