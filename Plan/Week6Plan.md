@@ -109,7 +109,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Artifacts:* Bảng Storyboard chi tiết có 3 cột: Timecode, Screen Action (Thao tác màn hình), và English Narration (Lời đọc).
 
 * [ ] **Task D.N.Cường 2: Tích hợp bước Quality Gate & Branch Protection vào workflow GitHub Actions (`eshop-ci.yml`)**
-  * **Task Description:** Hoàn thiện workflow `.github/workflows/eshop-ci.yml`: Quality Gate yêu cầu 2/2 unit test coupon được chọn pass, line coverage của `coupon-discount.js` > 70% (full backend suite chạy riêng), xuất báo cáo LCOV và cấu hình Branch Protection Required Status Checks chặn merge PR khi vi phạm để demo Fail-Fast.
+  * **Task Description:** Hoàn thiện workflow `.github/workflows/eshop-ci.yml`: Quality Gate yêu cầu 23/23 unit test nghiệp vụ coupon được chọn pass, line coverage của `coupon-discount.js` > 70% (full backend suite chạy riêng), xuất báo cáo LCOV và cấu hình Branch Protection Required Status Checks chặn merge PR khi vi phạm để demo Fail-Fast.
   * **Hours:** 3.5h
   * **Evidence:**
     * *Chat messages:* Ảnh chụp thảo luận quy chuẩn Quality Gate với các thành viên trong nhóm.

@@ -5,7 +5,7 @@
  *   - `package.json` đang được thành viên khác chỉnh sửa (task cấu hình LCOV),
  *     giữ cấu hình ở file riêng giảm rủi ro conflict khi merge.
  *   - `npm test` và `npm run test:ci` dùng cấu hình này cho toàn bộ backend.
- *     CI demo dùng `jest.demo.config.js` để chọn riêng hai unit test coupon.
+ *     CI demo dùng `jest.demo.config.js` để chọn riêng bộ unit test coupon.
  *
  * Ngưỡng line coverage (> 70%) KHÔNG đặt ở đây mà do script
  * `.github/scripts/quality-gate.js` kiểm soát — một nơi duy nhất quyết định
@@ -21,5 +21,5 @@ module.exports = {
 
   // Đầu ra: bảng text trong log CI, báo cáo LCOV và JSON cho Quality Gate.
   coverageDirectory: "<rootDir>/coverage",
-  coverageReporters: ["text", "text-summary", "lcov", "json-summary", "json"],
+  coverageReporters: ["text", "text-summary", "lcov", "html", "json-summary", "json"],
 };

@@ -2,8 +2,8 @@
 # Flow chính: Gitleaks → Backend Test → Quality Gate → Build.
 # Nhánh hỗ trợ: PR có Backend Test fail → AI phân tích log và comment lên PR
 # (nếu có GEMINI_API_KEY). Push thông thường không chạy AI.
-# Gitleaks fail thì bỏ qua các job sau. CI demo chạy 2 unit test coupon;
-# Quality Gate yêu cầu cả 2 pass, line coverage của coupon-discount.js > 70%
+# Gitleaks fail thì bỏ qua các job sau. CI demo chạy unit test nghiệp vụ coupon;
+# Quality Gate yêu cầu mọi test pass, line coverage của coupon-discount.js > 70%
 # và có LCOV. Pipeline Summary luôn ghi audit artifact.
 # Đây là CI + build artifact; workflow chưa triển khai ứng dụng lên môi trường.
 
@@ -54,7 +54,7 @@ jobs:
           path: ci-artifacts/gitleaks-report.json
           if-no-files-found: warn
 
-  # Chỉ chạy khi Gitleaks xanh. Hai test được chọn cho demo, không chạy toàn suite.
+  # Chỉ chạy khi Gitleaks xanh. Chọn bộ unit test nghiệp vụ coupon, không chạy toàn suite.
   backend-test:
     name: Backend Test (Node.js 22)
     runs-on: ubuntu-latest
@@ -102,7 +102,7 @@ jobs:
           echo "- Số dependency phát triển (devDependencies): $(node -e "console.log(Object.keys(require('./package.json').devDependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"
 
       # pipefail giữ exit code của Jest khi tee đồng thời ghi log ra file.
-      - name: Run selected coupon unit tests (Jest) with coverage
+      - name: Run coupon business-rule unit tests (Jest) with coverage
         run: |
           mkdir -p coverage
           set -o pipefail
@@ -132,7 +132,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download failed test log
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: eshop-coverage
           path: backend/coverage
@@ -147,6 +147,8 @@ jobs:
           if [ -n "$GEMINI_API_KEY" ]; then
             python3 .github/scripts/ai_triage.py \
               --log-file backend/coverage/jest-console.log \
+              --source-file backend/coupon-discount.js \
+              --test-command 'cd backend && npm run test:ci:demo' \
               --output backend/coverage/ai-triage.md
           else
             echo 'AI triage skipped: add GEMINI_API_KEY to repository secrets.' >> "$GITHUB_STEP_SUMMARY"
@@ -186,7 +188,7 @@ jobs:
               await github.rest.issues.createComment({ owner, repo, issue_number, body });
             }
 
-  # Required check cho PR: 2 unit test pass, coupon line coverage > 70%, LCOV.
+  # Required check cho PR: mọi unit test demo pass, coupon line coverage > 70%, LCOV.
   quality-gate:
     name: Quality Gate (Tests & Coverage > 70%)
     runs-on: ubuntu-latest
@@ -202,7 +204,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download coverage artifacts from test job
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: eshop-coverage
           path: backend/coverage

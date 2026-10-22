@@ -1,5 +1,9 @@
 # CI implementation audit log
 
+> Các mục cũ ghi lại quyết định và kết quả **tại thời điểm thực hiện**. Trạng
+> thái chuẩn bị merge hiện hành nằm ở mục cuối; không dùng số 2/2 hay 37/37
+> của các lần chạy cũ để mô tả workflow 23 unit test mới.
+
 Ngày: 2026-10-21. Phạm vi: cấu hình CI và demo lỗi coupon trên branch hiện tại.
 
 | Thay đổi | Lý do / bằng chứng |
@@ -75,3 +79,35 @@ Preflight local trên source chuẩn bị push: 2/2 unit test demo pass, line co
 coupon 100%, Quality Gate pass, cả `frontend-web` và `frontend-admin` build pass,
 `actionlint` và `git diff --check` pass. Kết quả GitHub Actions cần xác nhận sau
 khi push commit này.
+
+## Cập nhật unit test nghiệp vụ coupon và CI ngày 22/10/2026
+
+- Branch làm việc: `ncuong`. Giữ công thức percent đúng
+  `Math.floor(totalAmount * coupon.discount_value / 100)` cho baseline xanh;
+  không đưa lỗi cố ý vào branch chuẩn bị merge.
+- Tách rule kiểm mã còn hoạt động, hạn dùng, ngưỡng đơn, lượt dùng và kết quả
+  `discount_amount`/`final_amount` từ route `server.js` vào module
+  `backend/coupon-discount.js` đang có sẵn. Route tiếp tục lo HTTP và SQLite,
+  gọi cùng các hàm mà unit test kiểm tra.
+- Mở rộng `backend/tests/coupon-discount.unit.test.js` thành **23 ca**, trong đó
+  có `test.each` cho percent/fixed và các điều kiện biên. CI demo vẫn chỉ chọn
+  file unit test này; Quality Gate yêu cầu tất cả pass, không có ca skip, line
+  coverage module coupon >70% và LCOV. Báo cáo Gate liệt kê từng test case.
+- Kiểm chứng local trên baseline: **23/23 unit test pass**, line và branch
+  coverage của module coupon **100%**, Quality Gate pass. Full backend suite
+  dùng SQLite `:memory:`: **58/58 pass**, line coverage toàn backend **78.81%**.
+  Hai frontend `npm run build` pass; Gitleaks CLI quét 31 commit đã có và báo
+  **0 leak**; `git diff --check` pass.
+- Bản sao tạm với đúng một công thức percent sai cho **5 fail/23 test** và
+  Quality Gate fail. Bản sao được xóa sau kiểm tra; source `ncuong` vẫn đúng.
+- Phạm vi còn thiếu so với FR-09: endpoint áp coupon hiện chưa yêu cầu JWT và
+  có nhánh không có `user_id`; 100% coverage module không bao phủ điều kiện
+  xác thực này. Không thay đổi hành vi API trong lượt làm việc này.
+- Chưa commit/push các thay đổi của lượt này và chưa có run GitHub Actions mới
+  cho cấu hình 23 test. Kết quả xanh/đỏ trên GitHub và khả năng merge phải xem
+  lại sau khi user review, commit và push. File
+  `docs/ci-cd-flow-and-demo.md` đang untracked, cần chủ động chọn khi `git add`.
+- Đã đồng bộ tài liệu demo, kế hoạch CI hiện hành, bản kê khai AI của Dương Nhật
+  Cường và mục mới trong
+  `Weekly_Reports/Week06/chat_logs/chatlog_ncuong_video_storyboard_ci.md`.
+  Các số liệu 2-test/39-test ở những mục lịch sử vẫn giữ theo thời điểm cũ.
