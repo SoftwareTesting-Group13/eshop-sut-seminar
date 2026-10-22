@@ -67,9 +67,9 @@ git log --oneline --graph -n 20
 
 ### 3.4. Thành viên 4: Nguyễn Gia Huy (`GiaHuyHCMUS05`)
 *Nhánh tài liệu: `feature/giahuy-week6-worksheet`; nhánh demo riêng:
-`test/giahuy-sqlite-lock-demo`.*
+`test/giahuy-sqlite-lock-demo`; nhánh đo W6-20: `test/giahuy-week6-metrics`.*
 
-**Snapshot 5 commit đến `a15d7c6`, giờ Việt Nam (UTC+7):**
+**Snapshot 8 commit đến `68051e3`, giờ Việt Nam (UTC+7):**
 
 * **[a2cb8c4]** 22/10/2026 11:46 — `docs(worksheet): draft Pipeline Postmortem classroom activity`.
   Phạm vi: 2 file mới, 226 dòng thêm, 0 dòng xóa; bản nháp W6-16.
@@ -89,14 +89,25 @@ git log --oneline --graph -n 20
   hướng dẫn và hồ sơ. Barem vẫn là đề xuất chưa được nhóm duyệt; commit local,
   chưa push nhánh tài liệu.
 
-Tổng snapshot 5 commit: 5189 dòng thêm, 218 dòng xóa. Chưa tính commit cập
+* **[c63f346]** 22/10/2026 — `docs(reports): record reviewed week 6 evidence package commit`.
+  Phạm vi: 2 file, 35 dòng thêm, 10 dòng xóa; ghi nhận bản đóng gói đã kiểm tra.
+* **[ba4b02b]** 22/10/2026 — `test(metrics): add controlled CI before-after and cache measurements`.
+  Phạm vi: 5 file, 442 dòng thêm, 0 dòng xóa. Protocol/workflow/bộ đo trên
+  nhánh `test/giahuy-week6-metrics` đã push để chạy 10 cặp CI cùng SHA.
+* **[68051e3]** 22/10/2026 — `docs(metrics): record ten paired CI runs and measured cache and AI results`.
+  Phạm vi: 107 file, 8176 dòng thêm, 9 dòng xóa. Báo cáo, 20 invocation từ
+  10 workflow runs, raw artifacts, CSV, checksum và đánh giá AI; commit local,
+  chưa push nhánh tài liệu. Before 5/10 fail, after 0/10; giới hạn demo được ghi rõ.
+
+Tổng snapshot 8 commit: 13842 dòng thêm, 237 dòng xóa. Chưa tính commit cập
 nhật snapshot này để tránh tự tham chiếu hash/thống kê của chính nó.
 
 **Các bước còn dự kiến, chưa ghi nhận là commit đã có:**
 
 * Nhóm duyệt barem và góp ý bản soạn; cập nhật sau khi có xác nhận thực tế.
 * Thử chấm/tổng duyệt với người tham gia khi nhóm tổ chức; chưa ghi nhận đã thử.
-* Kiểm chứng Gemini API thật và đo 10 lượt Flaky trên CI.
+* Chụp ảnh history/metrics W6-20 và nhóm rà soát số liệu đã đo; chưa ghi nhận
+  ảnh hoặc đánh giá chéo mới. W6-19 chưa nghiệm thu riêng dù W6-20 có một API call thật.
 
 ---
 
@@ -107,10 +118,11 @@ nhật snapshot này để tránh tự tham chiếu hash/thống kê của chín
 | 1 | Nguyễn Ngọc Minh Tuấn | `nnmt2810` | 5 | ~650 | ~120 | 25% |
 | 2 | Dương Nhật Cường | `cuogne` | 5 | ~580 | ~90 | 25% |
 | 3 | Trần Gia Cường | `trancuonG05` | 5 | ~920 | ~110 | 25% |
-| 4 | Nguyễn Gia Huy | `GiaHuyHCMUS05` | 5 | 5189 | 218 | Chưa đối soát |
+| 4 | Nguyễn Gia Huy | `GiaHuyHCMUS05` | 8 | 13842 | 237 | Chưa đối soát |
 | **Tổng cộng** | **Nhóm 13** | — | **Chưa đối soát** | **Chưa đối soát** | **Chưa đối soát** | **Chưa đối soát** |
 
-Số liệu của Nguyễn Gia Huy gồm đúng `a2cb8c4`, `4495d10`, `d35b932`, `485a778`
-và `a15d7c6` trên hai nhánh, chưa tính commit cập nhật snapshot này.
+Số liệu của Nguyễn Gia Huy gồm đúng `a2cb8c4`, `4495d10`, `d35b932`, `485a778`,
+`a15d7c6`, `c63f346`, `ba4b02b` và `68051e3` trên ba nhánh, chưa tính commit
+cập nhật snapshot này.
 Các hàng thành viên khác được giữ theo bản kê khai của nhóm; chưa
 đối soát lại nên chưa chốt tổng cộng hoặc tỷ lệ đóng góp.

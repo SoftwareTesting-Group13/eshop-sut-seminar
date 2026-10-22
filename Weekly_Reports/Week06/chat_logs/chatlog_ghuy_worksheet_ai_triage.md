@@ -249,3 +249,7 @@ khớp metadata và từng kết quả khớp assertion Jest JSON. Cache log xá
 hit cùng key; JSON Gemini có finishReason STOP. Kiểm tra link, UTF-8/LF và mẫu
 secret không phát hiện credential; lưu checksum cho 97 file batch. Ba image
 versions giữa runs được giữ trong báo cáo, không lọc bỏ hoặc chạy lại để chọn số.
+
+Commit triển khai đo: `ba4b02b` trên nhánh metrics đã push. Commit kết quả:
+`68051e3` trên nhánh tài liệu, local; chứa báo cáo, CSV/raw/metadata và các cập
+nhật khai báo/báo cáo. Chưa push nhánh tài liệu hoặc merge main.
