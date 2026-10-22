@@ -47,9 +47,14 @@ block `bash`, từ thư mục gốc repo dùng `cd backend && npm run test:ci:de
 Không nhét công thức, phép tính hay lệnh test vào inline code trong câu văn.
 Không khẳng định đã sửa hay đã chạy lại.
 Trước khi đề xuất công thức, xác định hàm đang trả về đại lượng nào
-(ví dụ `discount_amount` hay `final_amount`) từ source và test. Tự thay đúng
-giá trị đầu vào của một test fail vào công thức đề xuất: kết quả phải bằng
-Expected của test, và ghi phép tính kiểm tra đó. Nếu không khớp, không đưa
+(ví dụ `discount_amount` hay `final_amount`) từ source và log. Nếu log không
+in trực tiếp giá trị tham số, suy ngược nó từ biểu thức hiện tại và Received;
+ghi rõ đó là giá trị suy ra, không giả định tỉ lệ phần trăm đã ở dạng thập
+phân. Chẳng hạn nếu biểu thức là `total * (1 - value)`, thì
+`value = 1 - Received / total`. Trong Tính thử, dùng chính giá trị tham số
+vừa suy ra và thay vào chính Code đề xuất, không đổi giá trị giữa hai phần.
+Kết quả phải bằng Expected của test, và ghi phép tính kiểm tra đó. Nếu không
+thể suy ra tham số hoặc kết quả không khớp, không đưa
 công thức ấy vào báo cáo. Nếu chưa đủ bằng chứng để đề xuất sửa cụ thể, bỏ
 phần Code đề xuất và Tính thử, chỉ nêu bước kiểm tra nhỏ nhất.
 
