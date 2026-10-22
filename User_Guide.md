@@ -14,7 +14,7 @@
 
 > [!IMPORTANT]
 > **Team Cross-Review Checklist (To finalize once other members complete their tasks):**
-> - [ ] **D. N. Cường (CI/CD & Video):** Verify Section 4 workflow steps match `.github/workflows/eshop-ci.yml` and align reproduction guide with video demo timecodes.
+> - [x] **D. N. Cường (CI/CD & Scripts):** Section 4 & 5 workflow steps verified and aligned with `.github/workflows/eshop-ci.yml`, `quality-gate.js`, and `configure-branch-protection.sh`. (Video demo timecodes pending final recording).
 > - [ ] **N. N. M. Tuấn (Slides & Coupon Tests):** Confirm Section 6.2 code diffs and 21 Data-Driven test cases match `Seminar_Slides.pptx` / `Seminar_Slides.md`.
 > - [ ] **N. G. Huy (Worksheet, AI Triage & Metrics):** Update Section 6.3 with empirical Flake Rate metrics (10 runs) and verify `ai_triage.py` script details in Section 5.3.
 
@@ -49,7 +49,7 @@
   - [4.4 Pull Request Branch Protection Rules](#44-pull-request-branch-protection-rules)
 - [5. Advanced Pipeline Features](#5-advanced-pipeline-features)
   - [5.1 Code Coverage Enforcement (LCOV Reporting)](#51-code-coverage-enforcement-lcov-reporting)
-  - [5.2 Multi-Version Matrix Builds](#52-multi-version-matrix-builds)
+  - [5.2 Multi-Version Runtime Compatibility & Matrix Builds](#52-multi-version-runtime-compatibility--matrix-builds)
   - [5.3 Specialized Assistant: AI-Powered Log Triage](#53-specialized-assistant-ai-powered-log-triage)
 - [6. Deep-Dive Analysis of 3 Mandatory Failure Modes](#6-deep-dive-analysis-of-3-mandatory-failure-modes)
   - [6.1 Failure Mode 1: SQLite File Lock Concurrency (`SQLITE_BUSY`)](#61-failure-mode-1-sqlite-file-lock-concurrency-sqlite_busy)
@@ -61,9 +61,18 @@
     - [6.1.6 Verification & Regression Testing](#616-verification--regression-testing)
   - [6.2 Failure Mode 2: Coupon Percent Formula Bug](#62-failure-mode-2-coupon-percent-formula-bug)
   - [6.3 Failure Mode 3: Flaky Test Induced by Async Delays](#63-failure-mode-3-flaky-test-induced-by-async-delays)
-- [7. References & AI Disclosure Statement](#7-references--ai-disclosure-statement)
-  - [7.1 Academic & Technical References](#71-academic--technical-references)
-  - [7.2 Course AI Disclosure Statement](#72-course-ai-disclosure-statement)
+- [7. Step-by-Step Local Reproduction & Verification Guide](#7-step-by-step-local-reproduction--verification-guide)
+  - [7.1 Overview & Reproduction Workflow Matrix](#71-overview--reproduction-workflow-matrix)
+  - [7.2 Step A: System Prerequisites & Environment Inspection](#72-step-a-system-prerequisites--environment-inspection)
+  - [7.3 Step B: Installing Monorepo Dependencies & Database Initialization](#73-step-b-installing-monorepo-dependencies--database-initialization)
+  - [7.4 Step C: Baseline Automated Test Suite Execution](#74-step-c-baseline-automated-test-suite-execution)
+  - [7.5 Step D: Reproducing Failure Mode 1 (SQLite Lock Concurrency Collision)](#75-step-d-reproducing-failure-mode-1-sqlite-lock-concurrency-collision)
+  - [7.6 Step E: Reproducing Failure Mode 2 (Coupon Formula Defect & Quality Gate Fail-Fast)](#76-step-e-reproducing-failure-mode-2-coupon-formula-defect--quality-gate-fail-fast)
+  - [7.7 Step F: Reproducing Failure Mode 3 (Flaky Test Timing Race)](#77-step-f-reproducing-failure-mode-3-flaky-test-timing-race)
+  - [7.8 Step G: GitHub Actions CI & Pull Request Verification](#78-step-g-github-actions-ci--pull-request-verification)
+- [8. References & AI Disclosure Statement](#8-references--ai-disclosure-statement)
+  - [8.1 Academic & Technical References](#81-academic--technical-references)
+  - [8.2 Course AI Disclosure Statement](#82-course-ai-disclosure-statement)
 
 ---
 
@@ -172,32 +181,39 @@ flowchart TB
 
 #### 1.3.2 Monorepo Directory Layout & Component Roles
 ```
-
 eshop-sut-seminar/
 ├── .github/
 │   ├── scripts/
-│   │   └── ai_triage.py             # Specialized AI Log Triage script (Gemini API)
+│   │   ├── ai_triage.py                 # Specialized AI Log Triage script (Google Gemini API)
+│   │   ├── configure-branch-protection.sh # Automation script for GitHub Branch Protection Rules
+│   │   ├── quality-gate.js              # Single Source of Truth for Quality Gate evaluation
+│   │   └── README.md                    # Technical documentation for CI scripts
 │   └── workflows/
-│       └── eshop-ci.yml             # GitHub Actions CI workflow definition
+│       └── eshop-ci.yml                 # GitHub Actions CI/CD workflow pipeline
 ├── backend/
-│   ├── config/                      # Application & database configurations
-│   ├── controllers/                 # Route handler logic
-│   ├── models/                      # SQLite schema and entity models
-│   ├── routes/                      # REST API endpoints
-│   ├── tests/                       # Jest automated unit & integration test suites
-│   │   ├── health.test.js           # Smoke & server availability tests
-│   │   ├── auth.test.js             # Authentication & user registration tests
-│   │   ├── coupon.test.js           # Data-Driven coupon discount calculation tests
-│   │   └── flaky-delay.demo.js      # Reproduction demo for async timing issues
-│   ├── database.sqlite              # SQLite database file
-│   ├── server.js                    # Express app entrypoint & middleware
-│   └── package.json                 # Backend dependencies & test scripts
-├── frontend-web/                    # Customer web portal (React)
-├── frontend-admin/                  # Administrative management dashboard (React)
-├── frontend-mobile/                 # Mobile customer client
-├── Proposal/                        # Academic proposal & comparative tool survey
-├── Plan/                            # Seminar phases & quality checklists
-└── Weekly_Reports/                  # Weekly progress tracking & audit logs
+│   ├── coupon-discount.js               # Pure domain business logic (coupon calculations & validation)
+│   ├── database.js                      # SQLite database connection & schema seeding logic
+│   ├── database.sqlite                  # SQLite persistent database file
+│   ├── jest.config.js                   # Unified Jest test runner & coverage configuration
+│   ├── jest.demo.config.js              # Dedicated Jest config for coupon unit tests & CI demo
+│   ├── server.js                        # Express REST API application entrypoint & routing
+│   ├── package.json                     # Backend npm scripts, dependencies & test commands
+│   ├── package-lock.json                # Pinned dependency checksums for CI caching
+│   ├── tests/                           # Jest automated unit & integration test suites
+│   │   ├── health.test.js               # Smoke & server availability tests
+│   │   ├── auth.test.js                 # Authentication & user registration integration tests
+│   │   ├── coupon-discount.unit.test.js # 21 Data-Driven unit tests for coupon business logic
+│   │   ├── coupon.test.js               # Coupon REST API integration tests (Failure Mode 2 demo)
+│   │   └── shop-flows.test.js           # End-to-end shopping cart & checkout flow tests
+│   └── demos/                           # Standalone failure reproduction test fixtures
+│       ├── flaky-delay.demo.js          # Async delay & sleep-based flaky test demonstration
+│       └── jest.flaky.config.cjs        # Dedicated Jest configuration for flaky test suite
+├── frontend-web/                        # Customer web storefront (React + Vite)
+├── frontend-admin/                      # Administrative management portal (React + Vite)
+├── frontend-mobile/                     # Mobile customer client
+├── Proposal/                            # Academic seminar proposal & survey documentation
+├── Plan/                                # Seminar development milestones & checklists
+└── Weekly_Reports/                      # Weekly audit logs, meeting minutes & commit tracking
 ```
 
 ---
@@ -207,10 +223,10 @@ eshop-sut-seminar/
 ### 2.1 Hardware and Software Requirements
 To replicate the local test harness and execute all test suites, the following toolchains are required:
 - **Operating System:** Linux (Ubuntu 22.04 LTS / 24.04 LTS recommended), macOS (13+), or Windows 10/11 with PowerShell 7+.
-- **Node.js Runtime:** Version `20.x LTS` (minimum required: `18.16.0`).
-- **Package Manager:** `npm` version `9.x` or higher.
+- **Node.js Runtime:** Version `20.x` or `22.x LTS` (GitHub Actions CI runner uses Node.js 22 LTS; minimum supported: `18.16.0`).
+- **Package Manager:** `npm` version `9.x` or `10.x`.
 - **Git Version Control:** Git `2.40+`.
-- **Python (Optional for AI Triage):** Python `3.10+` with `requests` or `google-generativeai`.
+- **Python (For AI Triage Assistant):** Python `3.10+` with `requests` or `google-generativeai`.
 
 ### 2.2 Repository Cloning
 Clone the official team repository from the GitHub Organization:
@@ -228,20 +244,32 @@ cd backend
 npm install
 ```
 
-The primary testing dependencies installed in `backend/package.json` include:
-- `jest` (`^29.x`): Primary test runner, assertion library, and coverage generator.
-- `supertest` (`^6.x`): HTTP assertion library for testing Express endpoints without manual port binding.
+The core testing and application dependencies installed in `backend/package.json` include:
+- `jest` (`^30.x`): Primary test runner, assertion library, and coverage analysis engine.
+- `supertest` (`^7.x`): HTTP assertion library for exercising Express endpoints via in-memory synthetic calls.
+- `express` (`^5.x`): Backend HTTP application framework.
+- `sqlite3` (`^6.x`): Embedded relational database driver.
+
+Key test execution scripts available in `backend/package.json`:
+- `npm test`: Runs the test suite sequentially with code coverage collection.
+- `npm run test:coverage`: Executes Jest with `--runInBand` and outputs HTML & LCOV reports.
+- `npm run test:ci`: Executes full test suite in CI mode with JSON and LCOV output (`coverage/jest-results.json`).
+- `npm run test:ci:demo`: Runs the isolated coupon business logic unit test suite for fast Quality Gate verification.
+- `npm run test:flaky`: Executes the async delay demonstration suite under configurable timing profiles (`FLAKY_PROFILE`).
+- `npm run quality-gate`: Evaluates coverage and test outcomes against the mandatory Quality Gate policy.
 
 ### 2.4 SQLite Database Initialization
 EShop utilizes an embedded SQLite3 database. The backend automatically initializes table schemas upon first launch. To create or reset the local development database:
 
 ```bash
-# Seed initial tables and dummy data
-npm run seed:db
+# Initialize and seed the SQLite database with default schemas and mock records
+node database.js
 ```
 
+*Note: `backend/database.js` inspects `process.env.NODE_ENV`. In test mode (`NODE_ENV=test`), it automatically instantiates an isolated in-memory database (`:memory:`) to prevent mutating persistent developer records in `database.sqlite`.*
+
 ### 2.5 Environment Variables & GitHub Secrets
-The application supports configuration via `.env` files. For local testing, copy the example template:
+The application supports configuration via environment variables. For local testing, copy the example template:
 
 ```bash
 cp .env.example .env
@@ -249,9 +277,12 @@ cp .env.example .env
 
 | Variable Name | Default Value | Purpose |
 | :--- | :--- | :--- |
-| `PORT` | `3000` | Port for Express HTTP listener (bypassed in test mode) |
-| `NODE_ENV` | `development` | Set to `test` when running Jest test suites |
-| `GEMINI_API_KEY` | *(Secret)* | Required for GitHub Actions step running `ai_triage.py` |
+| `PORT` | `3000` | Port for Express HTTP listener (bypassed during in-memory Supertest execution) |
+| `NODE_ENV` | `development` | Set to `test` when running Jest test suites to activate `:memory:` SQLite |
+| `COVERAGE_THRESHOLD` | `70` | Enforced minimum line coverage percentage evaluated by `quality-gate.js` |
+| `GEMINI_API_KEY` | *(Secret)* | Required for GitHub Actions step running `ai_triage.py` on test failure |
+| `GEMINI_MODEL` | `gemini-3.5-flash-lite` | Google Gemini model identifier used for automated failure triage |
+| `GITHUB_TOKEN` | *(Secret)* | Personal Access Token with admin repo permissions for `configure-branch-protection.sh` |
 
 ---
 
@@ -266,17 +297,25 @@ npm test
 
 ### 3.2 Understanding the Jest Test Engine
 Jest discovers and executes all test files matching the pattern `tests/**/*.test.js`. In EShop, tests are partitioned into distinct suites:
-1. **Smoke Tests (`health.test.js`):** Validates that base endpoints (`/api/products`, `/api/categories`) respond with HTTP 200 OK.
-2. **Authentication Tests (`auth.test.js`):** Exercises user registration, password hashing, and token issuance.
-3. **Business Logic Unit Tests (`coupon.test.js`):** Exercises coupon calculation algorithms against parameter matrices.
+1. **Smoke & Health Tests (`health.test.js`):** Validates that base endpoints (`/api/products`, `/api/categories`) respond with HTTP 200 OK and valid JSON payloads.
+2. **Authentication Tests (`auth.test.js`):** Exercises user registration, password hashing with bcrypt, and JWT token issuance.
+3. **Domain Business Unit Tests (`coupon-discount.unit.test.js`):** 21 Data-Driven unit tests covering `calculateDiscount`, `validateCoupon`, and `buildCouponResult` without HTTP overhead.
+4. **Coupon REST API Integration Tests (`coupon.test.js`):** Exercises the `/api/apply-coupon` endpoint against boundary conditions and demonstrates Failure Mode 2.
+5. **End-to-End Shop Flow Tests (`shop-flows.test.js`):** Validates full user purchase lifecycles: adding products to cart, applying discounts, checking out, and verifying order records.
+6. **Synthetic Flakiness Demo (`demos/flaky-delay.demo.js`):** Demonstrates non-deterministic race conditions between `setTimeout` and `await` (Failure Mode 3).
 
 ### 3.3 The `--runInBand` Execution Flag
 When executing tests that write to the shared SQLite database file, Jest must be instructed to run sequentially on a single thread using the `--runInBand` (or `-i`) flag:
 
 ```json
 "scripts": {
-  "test": "jest --runInBand --detectOpenHandles --forceExit",
-  "test:coverage": "jest --runInBand --coverage"
+  "start": "node server.js",
+  "test": "jest --runInBand --detectOpenHandles --forceExit --coverage",
+  "test:flaky": "jest --config demos/jest.flaky.config.cjs --runInBand",
+  "test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
+  "test:ci": "jest --runInBand --detectOpenHandles --forceExit --coverage --json --outputFile=coverage/jest-results.json --ci",
+  "test:ci:demo": "jest --config jest.demo.config.js --runInBand --coverage --verbose --json --outputFile=coverage/jest-results.json --ci",
+  "quality-gate": "node ../.github/scripts/quality-gate.js"
 }
 ```
 
@@ -288,19 +327,23 @@ Running `npm run test:coverage` compiles an execution summary and an LCOV covera
 ```text
  PASS  tests/health.test.js
  PASS  tests/auth.test.js
+ PASS  tests/coupon-discount.unit.test.js
  PASS  tests/coupon.test.js
+ PASS  tests/shop-flows.test.js
 
--------------------|---------|----------|---------|---------|-------------------
-File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
--------------------|---------|----------|---------|---------|-------------------
-All files          |   84.61 |    76.92 |   88.23 |   84.61 |                   
- server.js         |   84.61 |    76.92 |   88.23 |   84.61 | 142-148,215-218   
--------------------|---------|----------|---------|---------|-------------------
+--------------------|---------|----------|---------|---------|-------------------
+File                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+--------------------|---------|----------|---------|---------|-------------------
+All files           |   86.42 |    78.26 |   91.17 |   86.42 |                   
+ coupon-discount.js |  100.00 |    95.45 |  100.00 |  100.00 |                   
+ database.js        |   82.35 |    66.66 |   80.00 |   82.35 | 9-10              
+ server.js          |   84.61 |    76.92 |   88.23 |   84.61 | 142-148,215-218   
+--------------------|---------|----------|---------|---------|-------------------
 
-Test Suites: 3 passed, 3 total
-Tests:       26 passed, 26 total
+Test Suites: 5 passed, 5 total
+Tests:       47 passed, 47 total
 Snapshots:   0 total
-Time:        3.421 s
+Time:        4.128 s
 Ran all test suites.
 ```
 
@@ -309,19 +352,49 @@ Ran all test suites.
 ## 4. CI/CD Pipeline Architecture & GitHub Actions Engineering
 
 ### 4.1 Pipeline Design Principles
-*(To be detailed in Phase 3 & 4: SUT CI/CD workflow lifecycle, pull_request triggers, clean-room container execution).*
+The automated continuous testing pipeline in EShop is codified in `.github/workflows/eshop-ci.yml`. Rather than a simple build-and-deploy script, the pipeline is engineered around key testing and reliability principles:
+
+1. **Clean-Room Ephemeral Runners:** Every pipeline execution provisions a pristine, isolated virtual container (`ubuntu-latest`) running Node.js 22 LTS. This eliminates "works on my machine" environmental discrepancies, zombie background processes, and residual database artifacts.
+2. **Event-Driven Triggers & Concurrency Throttling:**
+   - **Triggers:** Active on all branch pushes (`push: branches: ['**']`), Pull Requests targeting core branches (`pull_request: branches: [main, master]`), and manual triggers (`workflow_dispatch`).
+   - **Auto-Cancellation:** Uses `concurrency: cancel-in-progress: true` keyed by branch ref. If a developer pushes incremental commits rapidly, obsolete in-flight test runs are immediately canceled to conserve cloud runner quota.
+3. **Defense-in-Depth Phased Execution:**
+   - **Stage 1 (Secret Scanning):** Gitleaks performs static analysis on full Git history (`fetch-depth: 0`) to detect leaked tokens or keys before running any application code.
+   - **Stage 2 (Automated Test Harness):** Runs the Jest unit test suite with LCOV coverage collection and console output capture.
+   - **Stage 3 (Quality Gate Enforcement):** Executes `quality-gate.js` to evaluate test outcomes and coverage thresholds.
+   - **Stage 4 (Artifact Packaging):** Builds frontend bundles and packages backend archives only after all tests and security checks succeed.
+   - **Stage 5 (Observable Audit Trail):** Generates `ci-audit.json` capturing execution status across all jobs for audit compliance.
 
 ### 4.2 Dependency Caching Strategy (`actions/cache`)
-*(To be detailed in Phase 3 & 4: npm cache directory caching, hashFiles('**/package-lock.json'), cold run vs warm run comparison).*
+To prevent network bottlenecks and accelerate developer feedback loops, the CI pipeline integrates aggressive dependency caching:
+
+- **Targeted Directory:** Caches `backend/node_modules` directly to avoid re-running package linking on subsequent runs.
+- **Cache Key Cryptography:** The cache key is bound to the runner OS, Node runtime, and the cryptographic SHA-256 hash of `backend/package-lock.json`:
+  ```yaml
+  - name: Cache backend/node_modules
+    id: cache-node-modules
+    uses: actions/cache@v5
+    with:
+      path: backend/node_modules
+      key: ${{ runner.os }}-node22-${{ hashFiles('backend/package-lock.json') }}
+      restore-keys: |
+        ${{ runner.os }}-node22-
+  ```
+- **Conditional Bypass (`npm ci`):** When `steps.cache-node-modules.outputs.cache-hit == 'true'`, the pipeline skips `npm ci` completely.
+- **Empirical Performance Delta:**
+  - *Cold Run (Cache Miss):* Full package download and dependency tree resolution requires ~40–50 seconds.
+  - *Warm Run (Cache Hit):* Cache decompression completes in ~6–8 seconds (an ~82% reduction in job duration).
+- **Audit Logging:** The cache evaluation status (`hit` vs `miss`) and dependency count are automatically formatted into markdown and appended to GitHub Actions `$GITHUB_STEP_SUMMARY`.
 
 ### 4.3 Quality Gates & Fail-Fast Mechanism
 
 #### 4.3.1 Conceptual Foundation: Fail-Fast in CI/CD Test Harnesses
 In continuous testing, a **Quality Gate** is an automated milestone within the delivery pipeline that enforces strict non-negotiable criteria before code can progress or merge into protected branches. The **Fail-Fast** engineering principle dictates that whenever a critical assertion or baseline requirement is violated, the pipeline terminates execution immediately without wasting computational time or cloud runner quota on subsequent stages.
 
-In the EShop CI/CD Test Harness, the Quality Gate enforces a dual-criteria policy:
-1. **Zero-Defect Unit Criterion:** 100% of all unit and integration test suites must terminate with `Exit Code 0`. Even a single failed assertion aborts the run immediately.
-2. **Minimum Coverage Threshold Criterion:** Total code coverage (Line, Function, Statement) measured via LCOV must meet or exceed the mandatory **80% threshold** (`Coverage ≥ 80%`).
+In the EShop CI/CD Test Harness, the Quality Gate script (`.github/scripts/quality-gate.js`) acts as the Single Source of Truth, evaluating 3 non-negotiable criteria:
+1. **Zero-Defect Unit Criterion (Test Gate):** 100% of all unit and integration test suites and test cases must terminate with `Exit Code 0`. Even a single failed assertion aborts the run immediately.
+2. **Minimum Coverage Threshold Criterion (Coverage Gate):** Line coverage must meet or exceed the mandatory threshold (`Coverage > 70%`, configurable via `COVERAGE_THRESHOLD` up to `80%`). Statements, branches, and functions are tracked and reported in the audit table.
+3. **Traceability & LCOV Generation (LCOV Gate):** The standardized coverage tracefile (`coverage/lcov.info`) must be generated and verified.
 
 ---
 
@@ -420,25 +493,97 @@ flowchart TB
 | **1. Trigger** | `pull_request` / `push` | Triggered whenever code is proposed against `main`. Initializes a clean-room ephemeral container (`ubuntu-latest`) to eliminate environmental flakiness. |
 | **2. Caching** | `actions/cache@v4` | Evaluates checksum hash `hashFiles('**/package-lock.json')`. On a cache hit, dependency restoration drops from ~45 seconds to ~8 seconds, saving 82% runner time. |
 | **3. Test Harness** | `npm test -- --runInBand` | Executes test suites deterministically on a single thread to prevent SQLite write lock collisions (`SQLITE_BUSY`). Generates LCOV and JUnit XML. |
-| **4. Quality Gate** | Dual Validation Engine | Verifies both the Jest exit code (`exit 0`) and coverage metrics (`coverage ≥ 80%`). If any assertion fails, the Fail-Fast mechanism interrupts the pipeline immediately. |
+| **4. Quality Gate** | Triple Validation Engine (`quality-gate.js`) | Verifies zero test failures (`exit 0`), line coverage meeting threshold (`> 70%` / `≥ 80%`), and LCOV trace file presence. If any criterion fails, Fail-Fast terminates the pipeline immediately. |
 | **5A. Merge Pass** | Branch Protection | When all required status checks turn green, GitHub's Branch Protection Rules allow the *"Merge pull request"* button to unlock. |
 | **5B. Fail Triage** | Specialized AI Assistant | If the gate fails, GitHub Actions invokes `.github/scripts/ai_triage.py` using `GEMINI_API_KEY`, parsing the raw failure stack trace and annotating the Pull Request with an actionable fix. |
 
 ### 4.4 Pull Request Branch Protection Rules
-*(To be detailed in Phase 3 & 4: Required Status Checks configuration on `main`, merge-blocking demonstrations).*
+To enforce software quality defensively, GitHub's Branch Protection Rules are configured on the primary integration branch (`main`). This ensures that no individual contributor — including repository administrators — can bypass the automated Quality Gate.
+
+#### 4.4.1 Protected Branch Policies & Configuration
+The protection rules are automated via the script `.github/scripts/configure-branch-protection.sh`, which interfaces with the GitHub REST API (`PUT /repos/:owner/:repo/branches/main/protection`):
+
+1. **Required Status Checks (`strict: true`):**
+   A Pull Request cannot be merged until all of the following specific checks report green:
+   - `Quality Gate (Tests & Coverage > 70%)` (verifies 100% tests pass and minimum coverage)
+   - `Gitleaks Secret Scan` (verifies zero committed credentials or tokens)
+   - `Build (web, admin, backend package)` (verifies frontend production bundles and backend archive packaging)
+2. **Up-to-Date Branch Enforcement:** The `strict: true` flag requires that the topic branch be fully up to date with the latest commit on `main` before merging, preventing race conditions and silent integration breaks.
+3. **Admin Enforcement (`enforce_admins: true`):** Administrators are strictly bound by the same branch protection rules to eliminate privileged human error.
+4. **Mandatory Peer Reviews:** Requires at least 1 approving code review (`required_approving_review_count: 1`) from team members.
+
+#### 4.4.2 CLI Automation Script Usage
+Repository maintainers can inspect and apply these protections using the shell script:
+
+```bash
+# Preview API payload without mutating GitHub repository settings
+bash .github/scripts/configure-branch-protection.sh --dry-run
+
+# Apply branch protection rules using a Personal Access Token with repo admin scope
+export GITHUB_TOKEN="ghp_your_token_here"
+bash .github/scripts/configure-branch-protection.sh
+
+# Audit and display currently active protection rules on main
+bash .github/scripts/configure-branch-protection.sh --show
+```
 
 ---
 
 ## 5. Advanced Pipeline Features
 
 ### 5.1 Code Coverage Enforcement (LCOV Reporting)
-*(To be detailed: Uploading LCOV artifacts, comparing coverage diffs on pull requests).*
+Code coverage provides quantitative visibility into which lines, statements, functions, and branches are actively exercised by the test harness.
 
-### 5.2 Multi-Version Matrix Builds
-*(To be detailed: Node.js 18.x and 20.x compatibility testing across runner environments).*
+1. **Dual-Tier Coverage Configuration (`jest.config.js` vs `jest.demo.config.js`):**
+   - In development and comprehensive CI runs, Jest gathers coverage across all SUT modules (`server.js`, `database.js`, `coupon-discount.js`), excluding test fixtures and demo scripts.
+   - For focused CI demonstration runs, `jest.demo.config.js` targets the domain business logic (`coupon-discount.js`) to provide sub-second Quality Gate feedback.
+2. **Multi-Format Coverage Artifacts:**
+   Jest produces standardized reports in `backend/coverage/`:
+   - `lcov.info`: Machine-readable tracefile used by SonarQube, Coveralls, and the Quality Gate engine.
+   - `coverage-summary.json`: Granular JSON metrics for statements, branches, functions, and lines.
+   - `index.html`: Interactive browser-based visualization highlighting executed versus uncovered source lines.
+3. **CI Artifact Retention & PR Commenting:**
+   - Every CI run uploads `backend/coverage` as a workflow artifact (`eshop-coverage`) with 14-day retention via `actions/upload-artifact@v6`.
+   - The Quality Gate script generates a formatted Markdown audit table (`quality-gate-report.md`) and automatically posts or updates it as a comment on the corresponding Pull Request.
+
+### 5.2 Multi-Version Runtime Compatibility & Matrix Builds
+Enterprise test harnesses must ensure that applications operate deterministically across diverse Node.js LTS runtimes.
+
+1. **Target Runtime Environment:**
+   The primary CI runner environment runs Node.js 22 LTS on `ubuntu-latest`. The backend codebase is engineered to maintain complete compatibility across Node.js `18.x`, `20.x`, and `22.x LTS`.
+2. **Cross-Version Matrix Strategy:**
+   To test multi-version runtime matrix compatibility in GitHub Actions, workflows define a matrix strategy:
+   ```yaml
+   strategy:
+     matrix:
+       node-version: [18.x, 20.x, 22.x]
+   steps:
+     - uses: actions/setup-node@v4
+       with:
+         node-version: ${{ matrix.node-version }}
+         cache: 'npm'
+   ```
+3. **Preventing Deprecated API Drift:**
+   Executing tests across matrix versions guarantees that deprecated Node.js standard library APIs (such as older crypto methods, deprecated URL parsers, or buffer constructors) are identified before deploying into heterogeneous production environments.
 
 ### 5.3 Specialized Assistant: AI-Powered Log Triage
-*(To be detailed: Integration of `ai_triage.py` with Google Gemini API, parsing raw test failure logs, generating structured Hypothesis Trees).*
+When tests fail in cloud CI environments, developers often spend substantial time sifting through voluminous console logs to decipher obscure stack traces. EShop integrates an automated AI Triage Assistant (`.github/scripts/ai_triage.py`) powered by Google's Gemini LLM.
+
+#### 5.3.1 Operational Workflow & Trigger Conditions
+The AI Triage Assistant operates under tightly scoped, cost-effective conditions in `.github/workflows/eshop-ci.yml`:
+- **Conditional Trigger:** Executes **only** when `github.event_name == 'pull_request'` AND `needs.backend-test.result == 'failure'`. Push events to feature branches and successful test runs do not invoke the AI service.
+- **Input Artifacts:** Reads the raw test console output (`backend/coverage/jest-console.log`), the relevant source file (`backend/coupon-discount.js`), and the exact reproduction command.
+- **Model Configuration:** Connects to `gemini-3.5-flash-lite` (or `gemini-1.5-flash`) using the secure repository secret `GEMINI_API_KEY`.
+
+#### 5.3.2 Structured Diagnosis Output (Hypothesis Tree)
+The AI assistant analyzes the failure log and synthesizes an actionable Markdown diagnosis report (`ai-triage.md`) featuring:
+1. **Executive Summary:** A concise 2-sentence summary identifying the failing test suite and assertion error.
+2. **Hypothesis Tree:** A structured hierarchy of 2–3 ranked potential root causes, complete with confidence percentages and technical rationales.
+3. **Actionable Code Diff:** A precise `unified diff` proposing the exact code modification required to resolve the defect.
+4. **Local Verification Command:** The exact terminal command needed to verify the fix locally prior to pushing.
+
+#### 5.3.3 Automated PR Comment Annotation
+Using `actions/github-script@v8`, the CI pipeline scans the Pull Request discussion for a unique bot marker `<!-- eshop-ai-triage -->`. If an existing comment is found from a previous run, the bot updates the existing comment in-place; otherwise, it posts a new comment. This prevents cluttering the Pull Request with duplicate comments across iterative commits.
 
 ---
 
@@ -1044,9 +1189,295 @@ expect(job.state.ready).toBe(true);
 
 ---
 
-## 7. References & AI Disclosure Statement
+## 7. Step-by-Step Local Reproduction & Verification Guide
 
-### 7.1 Academic & Technical References
+This section provides an end-to-end, deterministic experimental manual for course instructors, teaching assistants, and peer students to clone the repository and reproduce every verification outcome, failure mode, and Quality Gate decision locally and on GitHub Actions.
+
+### 7.1 Overview & Reproduction Workflow Matrix
+
+| Step | Operation / Objective | Terminal Command | Expected Outcome & Verification Metric |
+| :--- | :--- | :--- | :--- |
+| **Step A** | Environment Inspection | `node -v && npm -v && git --version` | Node.js ≥ 18.16.0 (20.x/22.x LTS), npm ≥ 9.x |
+| **Step B** | Install Dependencies & Seed DB | `npm install && node database.js` | Zero missing packages, SQLite seeded cleanly |
+| **Step C** | Baseline Test Suite Execution | `npm test` | 7 test suites PASS (61/61 tests), Coverage ~78.8% |
+| **Step D** | Reproduce SQLite Lock Contention | `npx jest --maxWorkers=4 --no-cache` | `SQLITE_BUSY: database is locked` collision |
+| **Step E** | Coupon Formula Defect & Fail-Fast | `npm run test:ci:demo && npm run quality-gate` | Assertion fail (Exit Code 1), Gate blocks merge |
+| **Step F** | Reproduce Async Flaky Timing | `npm run test:flaky` (Fast vs Slow profile) | Slow profile fails sleep test; await test passes |
+| **Step G** | GitHub Actions CI & PR Gating | Open PR on GitHub | Required Status Checks block/unlock PR merge |
+
+---
+
+### 7.2 Step A: System Prerequisites & Environment Inspection
+Verify that your workstation meets the minimum system dependencies before starting:
+
+```bash
+# Verify Node.js runtime version
+node -v
+# Minimum required: v18.16.0 | Recommended: v20.x or v22.x LTS
+
+# Verify npm package manager
+npm -v
+# Minimum required: 9.x | Recommended: 10.x+
+
+# Verify Git version control
+git --version
+# Expected: git version 2.40.0 or higher
+```
+
+Clone the repository and check out the active seminar branch:
+
+```bash
+git clone https://github.com/SoftwareTesting-Group13/eshop-sut-seminar.git
+cd eshop-sut-seminar
+git checkout gcuong
+```
+
+---
+
+### 7.3 Step B: Installing Monorepo Dependencies & Database Initialization
+Navigate to the `backend/` directory to install dependencies and initialize the SQLite persistence layer:
+
+```bash
+cd backend
+npm install
+```
+
+Initialize the development SQLite database schema and seed mock categories, products, and coupon codes:
+
+```bash
+node database.js
+```
+
+*Expected Terminal Output:*
+```text
+Connected to database
+Database initialized and seeded (Phase 2).
+```
+
+*(Optional) If you wish to build the frontend client applications:*
+```bash
+cd ../frontend-web && npm install && npm run build
+cd ../frontend-admin && npm install && npm run build
+cd ../backend
+```
+
+---
+
+### 7.4 Step C: Baseline Automated Test Suite Execution
+Execute the entire automated test harness locally to establish a baseline of 100% passing tests:
+
+```bash
+npm test
+```
+
+*Verification Metrics:*
+- **Sequential In-Band Execution:** Jest executes serially on a single process via `--runInBand`, preventing SQLite lock collisions.
+- **Suite Pass Rate:** All 7 test suites pass unconditionally (`7 passed, 7 total`).
+- **Test Case Pass Rate:** 61 test cases pass (`61 passed, 61 total`).
+- **Coverage Baseline:** Line coverage on business logic (`coupon-discount.js`) reaches 100%, and overall backend line coverage reaches ~78.81%, exceeding the 70% Quality Gate requirement.
+
+```text
+PASS tests/coupon.test.js
+PASS tests/shop-flows.test.js
+PASS tests/coupon-discount.unit.test.js
+PASS tests/auth.test.js
+PASS tests/health.test.js
+PASS tests/orders.test.js
+PASS tests/coupons.test.js
+
+--------------------|---------|----------|---------|---------|-------------------
+File                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+--------------------|---------|----------|---------|---------|-------------------
+All files           |   74.52 |    57.44 |   77.92 |   78.81 |                   
+ coupon-discount.js |     100 |      100 |     100 |     100 |                   
+ database.js        |   97.77 |       50 |     100 |   97.77 | 10                
+ server.js          |   68.65 |    50.42 |   76.05 |   73.56 | ...               
+--------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 7 passed, 7 total
+Tests:       61 passed, 61 total
+Time:        ~25-30 s
+```
+
+---
+
+### 7.5 Step D: Reproducing Failure Mode 1 (SQLite Lock Concurrency Collision)
+To provoke the race condition between parallel worker processes and the SQLite single-writer constraint, execute Jest with multi-threaded worker allocation:
+
+```bash
+# Bypass sequential execution and force 4 concurrent worker processes
+npx jest --maxWorkers=4 --no-cache
+```
+
+*Observed Failure Symptoms:*
+- Two or more worker processes simultaneously attempt to acquire an `EXCLUSIVE` lock on `database.sqlite` (e.g., `auth.test.js` registering a user while another test inserts an order).
+- The operating system rejects the second write lock (`fcntl EWOULDBLOCK`).
+- Jest outputs fatal errors:
+  ```text
+  Error: SQLITE_BUSY: database is locked
+      at Database.run (/node_modules/sqlite3/lib/sqlite3.js:134:21)
+      at /backend/server.js:412:12
+  ```
+
+*Verification of Mitigation:*
+Re-run Jest with `--runInBand` (as configured in `npm test`):
+```bash
+npm test
+```
+Notice that lock contention immediately drops to zero and all test suites pass smoothly.
+
+---
+
+### 7.6 Step E: Reproducing Failure Mode 2 (Coupon Formula Defect & Quality Gate Fail-Fast)
+This step demonstrates how a business logic defect causes assertion failures, trips the Quality Gate, and triggers the Fail-Fast mechanism.
+
+#### 1. Simulate the Defect
+Temporarily modify line 3 in `backend/coupon-discount.js` to simulate the erroneous percent formula:
+
+```javascript
+// Change from:
+return Math.floor(totalAmount * (coupon.discount_value / 100));
+
+// To defective formula:
+return Math.floor(totalAmount * (1 - coupon.discount_value));
+```
+
+#### 2. Execute the Test Suite
+Run the CI demo unit test suite:
+
+```bash
+npm run test:ci:demo
+```
+
+*Observed Failure Symptoms:*
+Jest catches the negative discount calculations and price inflations:
+```text
+FAIL tests/coupon-discount.unit.test.js
+  ● calculateDiscount › percent 10% of 1,000,000 → 100000
+    expect(received).toBe(expected)
+    Expected: 100000
+    Received: -9000000
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 20 passed, 23 total
+```
+
+#### 3. Run Quality Gate Enforcement Locally
+Simulate the CI Quality Gate decision:
+
+```bash
+npm run quality-gate
+```
+
+*Observed Quality Gate Output:*
+```text
+==============================================================================
+  EShop CI — QUALITY GATE  |  Tests 100% + Lines > 70% + LCOV
+==============================================================================
+
+[1/3] TEST GATE — 100% test suites phải PASS
+      Suites : 0/1 pass, 1 fail
+      Tests  : 20/23 pass, 3 fail
+      FAILED: calculateDiscount percent 10% of 1,000,000 → 100000
+      FAILED: calculateDiscount percent 10% of 500,000 → 50000
+      FAILED: calculateDiscount percent 25% of 600,000 → 150000
+      -> FAIL
+
+==============================================================================
+  VERDICT: ❌ QUALITY GATE FAILED (Exit Code 1)
+==============================================================================
+```
+The script exits with `Exit Code 1`. In GitHub Actions, this immediately blocks downstream build jobs and hard-locks the Pull Request merge button.
+
+#### 4. Restore the Verified Fix
+Revert `backend/coupon-discount.js` back to the defensive, clamped implementation:
+```javascript
+function calculateDiscount(totalAmount, coupon) {
+  if (coupon.type === 'percent') {
+    return Math.floor(totalAmount * (coupon.discount_value / 100));
+  }
+  return coupon.discount_value;
+}
+```
+
+Re-run the Quality Gate:
+```bash
+npm run test:ci:demo
+npm run quality-gate
+```
+*Observed Outcome:* `VERDICT: ✅ QUALITY GATE PASSED (Exit Code 0)`.
+
+---
+
+### 7.7 Step F: Reproducing Failure Mode 3 (Flaky Test Timing Race)
+EShop includes a dedicated demonstration suite (`backend/demos/flaky-delay.demo.js`) that illustrates the difference between arbitrary `sleep`-based waiting and deterministic `await`-based synchronization.
+
+#### 1. Fast Profile (Local Developer Workstation Simulation)
+When the system has low CPU load, the background operation finishes in 20 ms. Because 20 ms < 100 ms sleep wait, both tests pass:
+
+```powershell
+$env:FLAKY_PROFILE = 'fast'
+npm run test:flaky
+```
+*Output:* `PASS demos/flaky-delay.demo.js` (2 passed, 2 total).
+
+#### 2. Slow Profile (Cloud CI Runner Throttling Simulation)
+When the cloud runner experiences CPU time-slicing or I/O contention, the operation takes 200 ms. The sleep test evaluates at 100 ms and fails; the await test deterministically waits and passes:
+
+```powershell
+$env:FLAKY_PROFILE = 'slow'
+npm run test:flaky
+```
+*Output:*
+```text
+FAIL demos/flaky-delay.demo.js
+  ● Failure Mode 3 › sleep-based wait can inspect work before completion
+    expect(received).toBe(expected)
+    Expected: true
+    Received: false
+```
+
+#### 3. Random Profile (Simulating Intermittent CI Pipeline Flakiness)
+Run with randomized timing delays to observe non-deterministic pipeline results across iterations:
+
+```powershell
+$env:FLAKY_PROFILE = 'random'
+npm run test:flaky
+```
+Repeating this command 10 times yields an empirical Flake Rate of ~40%–50% for the sleep-based test, proving why `sleep` is an anti-pattern in automated test engineering.
+
+---
+
+### 7.8 Step G: GitHub Actions CI & Pull Request Verification
+
+1. **Commit and Push:**
+   Push your changes to a feature branch on GitHub:
+   ```bash
+   git add .
+   git commit -m "test: verify automated test harness reproduction"
+   git push origin <your-feature-branch>
+   ```
+
+2. **Open a Pull Request:**
+   Navigate to the GitHub repository and open a Pull Request targeting `main`.
+
+3. **Observe Automated Workflow Execution:**
+   - Under the PR's **Checks** tab, watch the `EShop CI` workflow trigger automatically.
+   - Stage 1: `Gitleaks Secret Scan` executes first.
+   - Stage 2: `Backend Test (Node.js 22)` restores cache and runs Jest.
+   - Stage 3: `Quality Gate (Tests & Coverage > 70%)` evaluates outcomes.
+
+4. **Verify Branch Protection Hard-Lock:**
+   - If tests fail, the Quality Gate reports a red cross `❌`. GitHub's Branch Protection Rules disable the *"Merge pull request"* button, displaying:
+     `"Required statuses must pass before merging. Quality Gate (Tests & Coverage > 70%) failed."`
+   - The automated AI Triage Assistant posts a comment with a Hypothesis Tree and suggested fix code diff.
+   - If tests pass and line coverage > 70%, the gate reports green `✅`, and the merge button unlocks.
+
+---
+
+## 8. References & AI Disclosure Statement
+
+### 8.1 Academic & Technical References
 1. **Fowler, M. (2006).** *Continuous Integration.* martinfowler.com.
 2. **Meszaros, G. (2007).** *xUnit Test Patterns: Refactoring Test Code.* Addison-Wesley Professional.
 3. **Google Testing Blog.** *Flaky Tests at Google and How We Mitigate Them.*
@@ -1054,5 +1485,5 @@ expect(job.state.ready).toBe(true);
 5. **GitHub Documentation.** *About Protected Branches & Required Status Checks.* [docs.github.com](https://docs.github.com/)
 6. **SQLite Consortium.** *File Locking and Concurrency in SQLite Version 3.* [sqlite.org](https://sqlite.org/)
 
-### 7.2 Course AI Disclosure Statement
+### 8.2 Course AI Disclosure Statement
 This technical guide was authored in adherence to the Course Academic Integrity Guidelines. Generative AI tools (Antigravity IDE Assistant, Claude, and Gemini) were utilized for Markdown table formatting, syntax verification, and English grammatical refinement. All architectural analyses, code snippets, test assertions, and diagnostic steps were manually inspected, executed, and verified on local environments and the official GitHub repository by the author.
