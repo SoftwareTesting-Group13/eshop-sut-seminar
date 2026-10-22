@@ -64,7 +64,7 @@
 * Các tiêu chí Quality Gates tiêu biểu trong CI/CD:
   * Code Quality & Linting
   * Unit Test Pass Rate (100% Pass)
-  * Code Coverage Threshold (≥ 80% Lines/Branches)
+  * Code Coverage Threshold (line coverage > 70% của module coupon trong CI demo)
   * Security Vulnerability Scan
 
 ### 1.5. Thách thức cốt lõi: Vấn nạn Flaky Test và chi phí gỡ lỗi (Triage)
@@ -77,7 +77,7 @@
 * Hậu quả thực tế: Giảm độ tin cậy của Test Suite và chi phí Triage log lỗi
 
 ### 1.6. Ba trụ cột kiểm thử tự động trong môi trường CI/CD
-1. **Record and Playback (Ghi nhận và Phát lại):** Execution Recording, Snapshot Testing, Artifacts & Trace Log
+1. **Record and Playback (Ghi nhận và Tái chạy):** Workflow run logs, artifacts và Re-run cùng commit
 2. **Data-driven Testing (Kiểm thử hướng dữ liệu):** Tách biệt Test Logic và Test Datasets tham số hóa
 3. **Checkpoints (Điểm kiểm định chất lượng):** Assertions, Coverage Checkpoints, Quality Gate Status Checks
 
@@ -126,7 +126,7 @@
 
 * **Vai trò:** "Trung tâm chỉ huy" điều phối toàn bộ pipeline — khởi tạo runner sạch, cài đặt môi trường, chạy Unit Test tự động, áp đặt Quality Gates, upload artifacts và kích hoạt AI Log Triage khi pipeline thất bại.
 * **Cơ chế rào chắn Branch Protection & Pull Request Gate:** GitHub Actions không chỉ chạy script kiểm thử đơn thuần mà hoạt động như một chốt chặn bảo vệ mã nguồn qua cơ chế **Branch Protection Rules (Required Status Checks)**. Khi lập trình viên mở một Pull Request (PR), toàn bộ bộ Unit Test suites và ngưỡng kiểm tra Code Coverage (Quality Gate) bắt buộc phải vượt qua (Status: Green). Nếu có bất kỳ test case nào thất bại hoặc vi phạm độ bao phủ, nút `Merge Pull Request` sẽ bị **khóa cứng (Blocked)**, ngăn chặn triệt để mã nguồn lỗi được hòa trộn vào nhánh chính (`main`).
-* **Thuật ngữ cốt lõi sẽ trình bày:** Workflow, Event/Trigger, Runner, Fail-Fast Mechanism, Test Coverage Gate (≥ 80% — đề xuất nhóm), PR Annotations, Branch Protection Rules.
+* **Thuật ngữ cốt lõi sẽ trình bày:** Workflow, Event/Trigger, Runner, Fail-Fast Mechanism, Test Coverage Gate (line coverage module coupon > 70%), PR Annotations, Branch Protection Rules.
 * **Kế hoạch 3 kịch bản Demo:**
   * *Demo 1:* Khởi tạo workflow `eshop-ci.yml`, demo cache optimization (60s → 5s).
   * *Demo 2:* Commit lỗi Unit Test → pipeline chặn merge → sửa lỗi → pipeline xanh.
@@ -144,7 +144,7 @@
   * Database dùng SQLite file-based (`database.sqlite`); hàm `initDatabase()` reset toàn bộ dữ liệu khi gọi.
   * Phải cấu hình `--runInBand` (chạy tuần tự) để tránh lỗi `SQLITE_BUSY` (File Lock Conflict) — đây là Failure Mode thực tế nhóm sẽ demo.
 * **Lỗi nghiệp vụ thực tế phát hiện qua phân tích code:**
-  * Hàm tính coupon `percent` trong `server.js` dùng công thức sai (`total_amount * (1 - discount_value)` thay vì `total_amount * discount_value / 100`), dẫn đến `discount_amount` âm. Phát hiện và minh chứng qua Data-Driven Testing với `test.each()`.
+  * Trên branch demo, tạm đổi công thức coupon `percent` trong `coupon-discount.js` thành `total_amount * (1 - discount_value)` (thay vì `total_amount * discount_value / 100`), dẫn đến `discount_amount` âm. Phát hiện và minh chứng qua Data-Driven Testing với `test.each()`.
 * **Kế hoạch 3 kịch bản Demo:**
   * *Demo 1:* Cấu hình Jest + `--runInBand` + `beforeAll`/`afterAll` cho test isolation.
   * *Demo 2:* Data-Driven Testing (`test.each`) phát hiện lỗi coupon thực tế → pipeline fail → fix → xanh.
@@ -169,12 +169,12 @@
 ## 4. MINH HỌA CHI TIẾT 3 THÀNH PHẦN KIỂM THỬ: RECORD & PLAYBACK, DATA-DRIVEN, CHECKPOINTS
 
 ### 4.1. Record and Playback — áp dụng trong CI/CD EShop
-* **Cơ chế 1 — CI Execution Logs & Artifacts:** GitHub Actions ghi lại toàn bộ log thực thi mỗi lần chạy. Kỹ sư có thể "phát lại" (Re-run with debug logging) để tái hiện lỗi chập chờn.
-* **Cơ chế 2 — Jest Snapshot Testing:** Ghi nhận (record) cấu trúc response API vào file `.snap`; mỗi lần CI chạy (playback) tự động so khớp với snapshot đã lưu.
+* **Ghi nhận lần chạy CI:** GitHub Actions lưu log, kết quả Jest, coverage và audit artifact kèm commit/run ID. Nhóm có thể đối chiếu các lần chạy để truy vết lỗi.
+* **Tái chạy:** `Re-run jobs` chạy lại workflow trên cùng commit; đối chiếu log và artifact của các `run_attempt`. Đây là tái chạy pipeline, không phải chức năng ghi/phát lại thao tác UI.
 
 ### 4.2. Data-Driven Testing — áp dụng trong EShop
-* Dùng `test.each()` của Jest để kiểm thử API `POST /api/apply-coupon` với nhiều bộ dữ liệu (coupon hợp lệ, hết hạn, không đủ điều kiện) mà không cần viết lại logic test.
-* Phát hiện lỗi công thức `discount_amount` thực tế trong `server.js` — minh chứng rõ nét giá trị của kiểm thử tham số hóa.
+* CI demo dùng 23 unit test trong `backend/tests/coupon-discount.unit.test.js`, gồm các bảng `test.each()` cho percent/fixed, mã thiếu hoặc vô hiệu hóa, ngưỡng đơn và giới hạn lượt dùng. Bộ `coupon.test.js` kiểm thử API `POST /api/apply-coupon` bằng dữ liệu tham số hóa khi chạy full backend suite.
+* Các ca percent phát hiện lỗi công thức `discount_amount` trong `coupon-discount.js`; các ca khác kiểm tra điều kiện áp mã và `final_amount`.
 
 ### 4.3. Checkpoints — áp dụng đa tầng trong EShop
 * **Tầng API:** `expect(res.status).toBe(200)` và kiểm tra response body.
