@@ -7,27 +7,36 @@ Kịch bản thao tác: [ci-devops-demo.md](ci-devops-demo.md).
 
 | Gate | Điều kiện | Nguồn dữ liệu |
 | :--- | :--- | :--- |
-| Test | **2/2 unit test coupon được chọn phải pass** | `backend/coverage/jest-results.json` |
+| Test | **23/23 unit test nghiệp vụ coupon phải pass** | `backend/coverage/jest-results.json` |
 | Coverage | **Line coverage > 70% của `backend/coupon-discount.js`** | `backend/coverage/coverage-summary.json` |
 | LCOV | Báo cáo tồn tại, có ít nhất một record `SF:` | `backend/coverage/lcov.info` |
 
 Statements, branches và functions vẫn xuất trong báo cáo để theo dõi, nhưng
 không phải ngưỡng chặn merge. Coverage của CI demo chỉ đo module coupon,
-**không phải độ phủ toàn backend**. Muốn chạy toàn bộ backend test suite riêng:
+**không phải độ phủ toàn backend**.
+
+Các unit test của demo kiểm tra công thức, làm tròn, mã thiếu/không hoạt động,
+hạn dùng, ngưỡng đơn, giới hạn lượt dùng, `discount_amount` và `final_amount`.
+Chúng kiểm tra **nghiệp vụ hiện có trong backend**. FR-09 trong README còn yêu
+cầu JWT cho việc áp coupon, nhưng route `POST /api/apply-coupon` hiện chưa xác
+thực JWT và vẫn cho phép nhánh không có `user_id`; đó là khoảng trống chức năng
+cần xử lý riêng, không được tính là đã phủ bởi 100% coverage của module.
+
+Muốn chạy toàn bộ backend test suite riêng:
 
 ```bash
 cd backend
-npm run test:ci
+NODE_ENV=test npm run test:ci
 ```
 
-Lần kiểm tra full suite ngày 22/10/2026 đạt 37/37 test pass và 78.16% line
+Lần kiểm tra full suite ngày 22/10/2026 đạt 58/58 test pass và 78.81% line
 coverage toàn backend. Số này là bằng chứng cho full suite, không phải số trong
 Quality Gate của PR demo.
 
 ## Luồng CI và artifact
 
 ```text
-Push / PR → Gitleaks → 2 unit test coupon → Quality Gate → Build
+Push / PR → Gitleaks → 23 unit test nghiệp vụ coupon → Quality Gate → Build
                          └─ PR test fail → Gemini AI Triage → comment trên PR
 Pipeline Summary → eshop-ci-audit (luôn chạy)
 ```
@@ -38,6 +47,10 @@ Gitleaks phát hiện secret thì các job sau bị skip. Jest luôn upload
 `GEMINI_API_KEY`; kết quả vừa comment trên PR vừa lưu ở `eshop-ai-triage`.
 Build pass thì upload `eshop-build`. Pipeline Summary ghi trạng thái các job
 trong `eshop-ci-audit`.
+
+Actions lưu log và artifact cho mỗi run. Có thể dùng **Re-run jobs** để chạy lại
+cùng commit và đối chiếu `run_id`/`attempt` trong `eshop-ci-audit`. Đây là tái
+chạy pipeline, không phải ghi rồi phát lại thao tác giao diện người dùng.
 
 Kiểm tra local đúng phạm vi CI demo:
 

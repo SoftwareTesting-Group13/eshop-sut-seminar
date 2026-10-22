@@ -404,3 +404,47 @@ Preflight local trên source chuẩn bị push: `npm run test:ci:demo` **2/2 pas
 Theo yêu cầu “Sửa lại là 70% hết”, Codex rà soát workflow và tài liệu: `.github/workflows/eshop-ci.yml` đã cố định `COVERAGE_THRESHOLD=70`; `.github/scripts/quality-gate.js` chặn khi **line coverage ≤ 70%**. Phạm vi đo của CI demo là `backend/coupon-discount.js`; cả **2/2 unit test được chọn** phải pass. Đây là điều kiện `>70%`, không phải `≥70%` hoặc độ phủ toàn backend.
 
 Đã đồng bộ mô tả hiện hành trong `Plan/Seminar_Phases_Plan.md`, `Plan/Week6Plan.md`, `Proposal/Proposal.md`, `Proposal/Demo_Plan.md` và `docs/ci-quality-gate.md`. Các nhắc đến 80% trong Mục 1–8 và những phần lịch sử phía trên được giữ nguyên để phản ánh quyết định tại thời điểm đó. Full backend suite kiểm tra riêng ngày 22/10/2026: **37/37 test pass, 78.16% line coverage**; số này không phải kết quả Quality Gate của hai test demo.
+
+### 9.12. Bổ sung unit test nghiệp vụ coupon và rà CI trước khi merge (22/10/2026)
+
+**Công cụ AI của lượt bổ sung:** OpenAI Codex. Các yêu cầu tiêu biểu của Dương
+Nhật Cường trong phiên chat này:
+
+> “OK v qua branch ncuong hiện tại improve cái CI/CD dùm t nhé (Focus CI thôi, CD để sau). Ko commit nhé, làm xong t review đã”
+
+> “Giờ như này đi, m check coi trong backend á, cái coupon này nghiệp vụ tính toán nó như nào, r tạo unit test tương ứng để phủ cho cái feature này trong backend nhé, t nghĩ là đừng tạo riêng cái feature ngoài backend”
+
+> “Sửa cho nó xanh cái để t merge nha m, sau đó t mới tạo 1 branch khác, sửa code cho fail r push lại”
+
+> “Fix docs lại cho sync luôn + Audit log ai chat của t thêm luôn nha.”
+
+**Phản hồi và hiệu chỉnh:** Codex ban đầu gợi ý Playwright để minh họa Record
+and Playback, nhưng sinh viên nhắc lại trọng tâm là GitHub Actions. Cách trình
+bày được sửa thành lưu log/artifact và `Re-run jobs` trên cùng commit, ghi rõ
+đây là tái chạy pipeline chứ không ghi/phát lại thao tác UI. Theo yêu cầu unit
+test thực sự, Codex giữ logic trong `backend`: mở rộng `coupon-discount.js` có
+sẵn, chuyển phần rule thuần từ route `server.js` vào đó và để API gọi lại cùng
+hàm; không tạo feature ngoài backend.
+
+**Kết quả AI hỗ trợ, cần sinh viên review trước commit:** CI demo chạy
+**23/23 unit test pass**, Quality Gate pass và 100% line/branch coverage của
+module coupon trên baseline công thức đúng. Bản sao tạm có công thức percent sai
+cho **5/23 fail**, Gate fail. Full backend suite chạy với SQLite in-memory:
+**58/58 pass**, 78.81% line coverage toàn backend. Build web/admin pass,
+Gitleaks CLI quét lịch sử hiện có báo 0 leak, `git diff --check` pass. Đây là
+kiểm chứng **local**, chưa phải kết quả GitHub Actions của commit mới. Codex
+không commit, push hay merge theo yêu cầu của sinh viên.
+
+**Tài liệu và AI audit:** Codex cập nhật `docs/ci-cd-flow-and-demo.md`,
+`docs/ci-devops-demo.md`, `docs/ci-presentation-demo.md`,
+`docs/ci-quality-gate.md`, hai file kế hoạch có mô tả CI hiện hành,
+`docs/ci-audit-log.md` và bản kê khai sử dụng AI của Dương Nhật Cường. Các
+con số cũ trong phần lịch sử của chat log/audit log được giữ nguyên, còn
+trạng thái hiện hành ghi 23/23 local, 18 pass/5 fail trên bản sao lỗi và chờ
+run GitHub mới. Đây là phần do AI soạn để sinh viên kiểm tra, không phải bằng
+chứng sinh viên đã phê duyệt hoặc nộp tài liệu.
+
+**Giới hạn đã nhận diện:** FR-09 ghi điều kiện JWT khi áp coupon nhưng route
+hiện không bắt buộc JWT. Unit test mới bao phủ nghiệp vụ đang được thực thi,
+không chứng minh điều kiện xác thực đó đã hoàn thành. Sinh viên cần tự kiểm tra
+diff và run GitHub sau khi commit/push trước khi kết luận PR đủ điều kiện merge.

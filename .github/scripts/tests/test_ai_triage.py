@@ -36,6 +36,13 @@ class TriageTests(unittest.TestCase):
         self.folder = Path(self.temp.name)
         self.log = self.folder / "jest.log"
         self.log.write_text("FAIL coupon.test.js\nExpected: >= 0\nReceived: -9000000", encoding="utf-8")
+        self.source = self.folder / "coupon-discount.js"
+        self.source.write_text(
+            "function calculateDiscount(total, coupon) {\n"
+            "  if (coupon.type === 'percent') {\n"
+            "    return Math.floor(total * (1 - coupon.discount_value));\n"
+            "  }\n}\n", encoding="utf-8",
+        )
         self.env = patch.dict(os.environ, {
             "GEMINI_API_KEY": "test-key", "GEMINI_MODEL": triage.DEFAULT_MODEL,
             "OPENAI_API_KEY": "old-openai-key", "LLM_API_KEY": "old-llm-key",
@@ -52,13 +59,15 @@ class TriageTests(unittest.TestCase):
 
     @patch.object(triage.urllib.request, "urlopen")
     def test_file_to_api_to_markdown_and_summary(self, call):
-        call.return_value = response("## Hiện tượng", "- Giả thuyết: lỗi coupon")
+        call.return_value = response("### Tóm tắt", "### Vị trí và cơ chế\nLỗi coupon tại dòng 3")
         report = self.folder / "nested" / "report.md"
         summary = self.folder / "summary.md"
         summary.write_text("Existing summary\n", encoding="utf-8")
         with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(summary)}):
             code, out, err = self.run_cli(
-                "--log-file", str(self.log), "--output", str(report),
+                "--log-file", str(self.log), "--source-file", str(self.source),
+                "--test-command", "cd backend && npm run test:ci:demo",
+                "--output", str(report),
                 "--model", "models/" + triage.DEFAULT_MODEL,
             )
         self.assertEqual((code, err), (0, ""))
@@ -71,10 +80,14 @@ class TriageTests(unittest.TestCase):
         self.assertIsNone(request.get_header("Authorization"))
         self.assertNotIn("test-key", request.full_url)
         self.assertIn("Received: -9000000", payload["contents"][0]["parts"][0]["text"])
+        self.assertIn("3:     return Math.floor(total * (1 - coupon.discount_value));", payload["contents"][0]["parts"][0]["text"])
+        self.assertIn(f"File: {self.source}", payload["contents"][0]["parts"][0]["text"])
+        self.assertIn("cd backend && npm run test:ci:demo", payload["contents"][0]["parts"][0]["text"])
         self.assertEqual(payload["systemInstruction"]["parts"][0]["text"], triage.INSTRUCTIONS)
-        self.assertIn("Provider: Gemini", out)
+        self.assertIn("# AI Log Triage — Bug Diagnosis", out)
+        self.assertIn("source `", out)
         self.assertNotIn("PRIVATE_THOUGHT", out)
-        self.assertIn("lỗi coupon", out)
+        self.assertIn("Lỗi coupon tại dòng 3", out)
 
     @patch.object(triage.urllib.request, "urlopen")
     def test_stdin_dry_run_trims_log_and_does_not_call_api(self, call):
@@ -85,6 +98,53 @@ class TriageTests(unittest.TestCase):
         self.assertTrue(out.endswith("second\nthird\n"))
         self.assertNotIn("first", out)
         call.assert_not_called()
+
+    @patch.object(triage.urllib.request, "urlopen")
+    def test_dry_run_shows_numbered_source_without_api_call(self, call):
+        with patch.dict(os.environ, {
+            "GITHUB_REPOSITORY": "example/eshop", "GITHUB_SHA": "abc123",
+            "GITHUB_SERVER_URL": "https://github.com",
+        }):
+            # Absolute paths have no repository permalink; line numbers still work.
+            code, out, err = self.run_cli(
+                "--dry-run", "--log-file", str(self.log), "--source-file", str(self.source),
+            )
+        self.assertEqual((code, err), (0, ""))
+        self.assertIn("## Source sẽ gửi", out)
+        self.assertIn("3:     return Math.floor(total * (1 - coupon.discount_value));", out)
+        self.assertNotIn("GitHub permalink (thêm", out.split("## Source sẽ gửi", 1)[1])
+        call.assert_not_called()
+
+    def test_relative_source_has_permalink_to_tested_commit(self):
+        with patch.dict(os.environ, {
+            "GITHUB_REPOSITORY": "example/eshop", "GITHUB_SHA": "abc123",
+            "GITHUB_SERVER_URL": "https://github.com",
+        }):
+            with patch.object(triage.Path, "read_text", return_value=self.source.read_text(encoding="utf-8")):
+                context = triage.read_source("backend/coupon-discount.js", "test-key")
+        self.assertIn(
+            "https://github.com/example/eshop/blob/abc123/backend/coupon-discount.js",
+            context,
+        )
+
+    @patch.object(triage.urllib.request, "urlopen")
+    def test_multiple_explicit_source_files_are_supported_without_api_call(self, call):
+        another_source = self.folder / "inventory.js"
+        another_source.write_text("function stock() { return 0; }\n", encoding="utf-8")
+        code, out, err = self.run_cli(
+            "--dry-run", "--log-file", str(self.log),
+            "--source-file", str(self.source), "--source-file", str(another_source),
+            "--test-command", "cd backend && npm test -- inventory.test.js",
+        )
+        self.assertEqual((code, err), (0, ""))
+        self.assertIn(f"File: {self.source}", out)
+        self.assertIn(f"File: {another_source}", out)
+        self.assertIn("cd backend && npm test -- inventory.test.js", out)
+        call.assert_not_called()
+
+    def test_prompt_has_no_coupon_specific_fix_or_test_command(self):
+        self.assertNotIn("coupon", triage.INSTRUCTIONS.lower())
+        self.assertNotIn("npm run test:ci:demo", triage.INSTRUCTIONS)
 
     def test_windows_encoding_ansi_and_key_redaction(self):
         self.log.write_bytes("\x1b[31mLỗi test-key\x1b[0m".encode("utf-16"))
