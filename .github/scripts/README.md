@@ -2,8 +2,9 @@
 
 `ai_triage.py` đọc log kiểm thử và (khi có) source liên quan, gọi Gemini API
 để tạo báo cáo tiếng Việt ngắn gọn: **Tóm tắt → Vị trí và cơ chế → Bằng chứng →
-Cách sửa và kiểm chứng**. Source được đánh số dòng để AI có thể chỉ chính xác
-vị trí lỗi; khi thiếu bằng chứng, báo cáo phải nói rõ chưa xác định được dòng.
+Cách sửa và kiểm chứng**. Prompt dùng chung cho lỗi unit test, không gắn với
+công thức hay lỗi coupon cụ thể. Source được đánh số dòng để AI có thể chỉ chính
+xác vị trí lỗi; khi thiếu bằng chứng, báo cáo phải nói rõ chưa xác định được dòng.
 Chỉ dùng thư viện chuẩn Python, không cần cài SDK.
 
 ## Chạy từ thư mục gốc repo (PowerShell)
@@ -81,9 +82,14 @@ Các test dùng phản hồi API giả lập, không gửi log hay source ra m�
 
 Model mặc định là `gemini-3.5-flash-lite`; đổi bằng `--model TEN_MODEL` hoặc
 biến `GEMINI_MODEL`. Script lấy tối đa 100 dòng cuối và 20.000 ký tự cuối của log.
-`--source-file` là tùy chọn; source được đánh số dòng và giới hạn ở 300 dòng,
-20.000 ký tự. Trong CI, workflow gửi `backend/coupon-discount.js` tại commit
-đang chạy. Nếu không có source, báo cáo chỉ có thể chỉ vị trí nghi ngờ từ log.
+`--source-file` là tùy chọn và có thể lặp lại cho tối đa ba file đã chọn rõ ràng;
+mỗi file được đánh số dòng và giới hạn ở 300 dòng, 20.000 ký tự.
+`--test-command` cho AI biết lệnh test thật để đề xuất chạy lại,
+không tự đoán lệnh. Trong CI hiện tại, workflow gửi `backend/coupon-discount.js`
+và lệnh test coupon vì đây là phạm vi suite đang chạy. Khi mở rộng suite sang
+feature khác, cấu hình các source và lệnh test tương ứng trong workflow; prompt và
+script không cần thay theo từng kiểu bug. Nếu không có source, báo cáo chỉ có
+thể chỉ vị trí nghi ngờ từ log.
 Trong GitHub Actions, prompt cũng có permalink tới file ở commit được kiểm thử
 để AI có thể gắn link trực tiếp đến dòng liên quan trong comment PR.
 Khi chạy thủ công với log cũ, dùng source từ đúng commit tạo ra log đó.

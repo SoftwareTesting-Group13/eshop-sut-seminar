@@ -66,6 +66,7 @@ class TriageTests(unittest.TestCase):
         with patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": str(summary)}):
             code, out, err = self.run_cli(
                 "--log-file", str(self.log), "--source-file", str(self.source),
+                "--test-command", "cd backend && npm run test:ci:demo",
                 "--output", str(report),
                 "--model", "models/" + triage.DEFAULT_MODEL,
             )
@@ -81,6 +82,7 @@ class TriageTests(unittest.TestCase):
         self.assertIn("Received: -9000000", payload["contents"][0]["parts"][0]["text"])
         self.assertIn("3:     return Math.floor(total * (1 - coupon.discount_value));", payload["contents"][0]["parts"][0]["text"])
         self.assertIn(f"File: {self.source}", payload["contents"][0]["parts"][0]["text"])
+        self.assertIn("cd backend && npm run test:ci:demo", payload["contents"][0]["parts"][0]["text"])
         self.assertEqual(payload["systemInstruction"]["parts"][0]["text"], triage.INSTRUCTIONS)
         self.assertIn("# AI Log Triage — Bug Diagnosis", out)
         self.assertIn("source `", out)
@@ -124,6 +126,25 @@ class TriageTests(unittest.TestCase):
             "https://github.com/example/eshop/blob/abc123/backend/coupon-discount.js",
             context,
         )
+
+    @patch.object(triage.urllib.request, "urlopen")
+    def test_multiple_explicit_source_files_are_supported_without_api_call(self, call):
+        another_source = self.folder / "inventory.js"
+        another_source.write_text("function stock() { return 0; }\n", encoding="utf-8")
+        code, out, err = self.run_cli(
+            "--dry-run", "--log-file", str(self.log),
+            "--source-file", str(self.source), "--source-file", str(another_source),
+            "--test-command", "cd backend && npm test -- inventory.test.js",
+        )
+        self.assertEqual((code, err), (0, ""))
+        self.assertIn(f"File: {self.source}", out)
+        self.assertIn(f"File: {another_source}", out)
+        self.assertIn("cd backend && npm test -- inventory.test.js", out)
+        call.assert_not_called()
+
+    def test_prompt_has_no_coupon_specific_fix_or_test_command(self):
+        self.assertNotIn("coupon", triage.INSTRUCTIONS.lower())
+        self.assertNotIn("npm run test:ci:demo", triage.INSTRUCTIONS)
 
     def test_windows_encoding_ansi_and_key_redaction(self):
         self.log.write_bytes("\x1b[31mLỗi test-key\x1b[0m".encode("utf-16"))

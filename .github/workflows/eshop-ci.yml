@@ -148,6 +148,7 @@ jobs:
             python3 .github/scripts/ai_triage.py \
               --log-file backend/coverage/jest-console.log \
               --source-file backend/coupon-discount.js \
+              --test-command 'cd backend && npm run test:ci:demo' \
               --output backend/coverage/ai-triage.md
           else
             echo 'AI triage skipped: add GEMINI_API_KEY to repository secrets.' >> "$GITHUB_STEP_SUMMARY"
