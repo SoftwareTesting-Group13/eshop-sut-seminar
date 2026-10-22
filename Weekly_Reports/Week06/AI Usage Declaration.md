@@ -99,6 +99,7 @@
   - Đã rà soát và commit local bộ Worksheet, Answer Key và 6 raw log CI. Có 2 ảnh Worksheet, 1 ảnh barem và 7 ảnh CI/index do sinh viên chụp.
   - W6-20 có 10 workflow runs thật, mỗi run gồm hai invocation chọn riêng test sleep/await: before fail 5/10, after fail 0/10, giảm 50 điểm phần trăm. Đã giữ toàn bộ dữ liệu, đối chiếu assertion JSON/raw/checksum; profile 5 fast/5 slow được chọn trước nên không coi là flake rate tự nhiên của SUT. Hosted image thay đổi giữa runs được ghi rõ, khớp trong từng cặp.
   - Cache riêng: cold miss/warm hit, khoảng chuẩn bị dependency 6.283604/2.330145 giây, speedup 2.697×; không phải tốc độ npm ci hoặc tổng job. Gemini gọi thật một lần, HTTP 200, JSON parse được, nhận body khoảng 2.456 giây. Codex đối chiếu 1 giả thuyết có bằng chứng/1 giả thuyết; không gọi đây là độ chính xác tổng quát. Đã nhận và mở kiểm tra 5 ảnh W6-20 do sinh viên chụp: history, metrics, cache cold/warm và API.
+  - Sau khi tích hợp main `32e1178` để chuẩn bị Draft PR: backend 61/61 pass, AI offline 8/10; hai fail do so sánh đường dẫn Windows đã có trên baseline. CLI dry-run exit 0, không gọi API mới. Giữ tỷ lệ AI 35% do sinh viên tự chỉnh; trạng thái ký để sinh viên xác nhận.
 
 ---
 

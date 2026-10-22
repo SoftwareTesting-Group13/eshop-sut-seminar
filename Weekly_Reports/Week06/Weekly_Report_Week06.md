@@ -31,7 +31,7 @@
 4. **Về mặt Bài tập Tương tác trên lớp (`Activity_Worksheet.md` & `Activity_Worksheet_AnswerKey.md`):**
    - Đã tạo và tinh gọn bản nháp [Activity_Worksheet.md](../../Activity_Worksheet.md): 23 phút, 10 điểm, đọc hồ sơ SQLite/coupon/async/cache và viết lệnh đề xuất; không bắt buộc chạy test trên lớp. Hai nhóm trình bày, mọi nhóm nộp phiếu. Đã tách [ghi chú điều phối](../../Materials/Worksheet_Facilitator_Notes.md) khỏi phiếu sinh viên.
    - [Bộ Sample CI Logs](../../Materials/Sample_Logs/README.md) đã có 6 raw log: coupon/cache lịch sử và hai job SQLite demo cùng run `39741620266`, kèm bản trích, metadata, source đúng SHA và đủ 7 ảnh. SQLite là tái hiện có kiểm soát trên nhánh riêng: parallel SQLITE_BUSY, serial pass; không sửa code nghiệp vụ.
-   - Đã soạn và rà soát [Answer Key W6-17](../../Activity_Worksheet_AnswerKey.md) cho 10 câu, có nguồn/revision, hướng sửa/cách xác nhận và điểm từng ý; đã có ảnh barem. Bản đóng gói local giữ ghi chú **barem đề xuất, chưa được nhóm duyệt**; chưa thử chấm hoặc đo thời lượng với lớp, chưa push tài liệu.
+   - Đã soạn và rà soát [Answer Key W6-17](../../Activity_Worksheet_AnswerKey.md) cho 10 câu, có nguồn/revision, hướng sửa/cách xác nhận và điểm từng ý; đã có ảnh barem. Giữ ghi chú **barem đề xuất, chưa được nhóm duyệt**; chưa thử chấm hoặc đo thời lượng với lớp, chuẩn bị Draft PR để nhóm phản hồi.
 
 5. **Về mặt Đo đạc Thực nghiệm (Empirical Metrics) & AI Triage:**
    - Đã có [Empirical Metrics W6-20](../../Empirical_Metrics.md), [protocol](../../Materials/Empirical_Metrics/ghuy_protocol.md), raw artifacts và CSV từ 10 workflow runs (20 invocation): before 5/10 fail, after 0/10 fail, giảm 50 điểm phần trăm. Profile fast/slow được chọn trước; không suy rộng thành flake rate tự nhiên hoặc kết luận đã loại hết flaky.
@@ -126,12 +126,13 @@ Bộ ảnh W6-18 ghuy_03a–ghuy_03g đầy đủ.
    - Ảnh thật: [API](screenshots/ghuy_04_ai_triage_gemini_output.png), [10 runs](screenshots/ghuy_05_flake_rate_10runs.png), [bảng metrics](screenshots/ghuy_06_empirical_metrics.png), [cold](screenshots/ghuy_07_cache_cold.png), [warm](screenshots/ghuy_07_cache_warm.png).
 
 **Rà soát cuối W6-16–20:** Log và phạm vi kiểm tra tại [verification/README.md](verification/README.md).
-Backend nhánh tài liệu pass 37/37; AI offline 6/6 và dry-run exit 0. Main mới
-`634c131` chạy cô lập: backend 58/58, AI 8/10; hai fail do assertion đường dẫn
-Windows là baseline, không sửa/skip. Tái tính 10 cặp và 97 checksum metrics
-khớp; database/Checklist không thay đổi. Nhánh tài liệu chưa tích hợp 16 commit
-của main mới; cần cập nhật và kiểm thử lại trước PR. Chưa push hoặc tạo PR trong
-lượt rà soát. Tỷ lệ AI/chữ ký/tự kiểm chứng và trao đổi nhóm chưa xác nhận thay.
+Lượt rà soát trước tích hợp: backend 37/37 và AI offline 6/6; snapshot main
+`634c131` có backend 58/58, AI 8/10. Nhánh tài liệu đã tích hợp main `32e1178`
+qua merge local `92d8e41`; kiểm thử lại backend 61/61 pass, AI 8/10 và dry-run
+exit 0. Hai fail AI do assertion đường dẫn Windows giống baseline; không sửa/skip.
+Tái tính 10 cặp và 97 checksum metrics khớp; database/Checklist không thay đổi.
+Sinh viên tự đặt tỷ lệ AI 35%; chữ ký/tự kiểm chứng và trao đổi nhóm chưa được
+Codex xác nhận thay. Chuẩn bị Draft PR vào main để nhóm trưởng phản hồi, chưa merge main.
 
 ---
 

@@ -290,3 +290,21 @@ Git snapshot cập nhật qua `f0cadc4`: 9 commit thật trên 3 nhánh, +13865/
 không tính binary, file đang sửa hoặc commit tương lai. Database và Checklist
 không đổi hash, không restore database. Chưa stage/commit/push hoặc tạo PR
 trong lượt rà soát này; chỉ đề xuất các nhóm commit theo diff thực tế.
+
+## 13. Chuẩn bị bản review trên nhánh riêng
+
+Sinh viên đã tinh gọn khai báo và tự đặt tỷ lệ AI 35%, xóa file tổng hợp rà
+soát riêng. Giữ các chỉnh sửa đó; gỡ các liên kết còn trỏ tới file đã xóa,
+giữ raw log kiểm chứng. Không lưu lại prompt có dấu `*` trong lượt này.
+
+Commit `d19355e` đóng gói phần đang sửa và 5 ảnh mới. Đã tích hợp main nhóm
+`32e1178` vào nhánh `feature/giahuy-week6-worksheet` qua merge `92d8e41`,
+không đưa thay đổi lên main. Phần code nghiệp vụ, script AI và workflow nhóm
+khớp main; không ghi đè các cập nhật mới của thành viên khác.
+
+Kiểm thử sau tích hợp: backend 7 suites/61 tests pass; Python AI 8/10,
+cùng hai assertion đường dẫn Windows đã fail trên baseline. CLI dry-run
+thành công, không gọi API mới. Database và Checklist không đổi hash. Lưu
+log `ghuy_backend_integrated.txt`, `ghuy_triage_integrated.txt` và
+`ghuy_triage_integrated_dry_run.txt` trong verification. Barem vẫn là đề xuất;
+đưa bản này lên nhánh riêng và Draft PR vào main để nhóm trưởng phản hồi.

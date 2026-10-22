@@ -15,6 +15,10 @@ log CI, không cộng các lượt local vào mẫu 10 runs. Không có lần g�
 | `ghuy_metrics_recomputed.txt` | `python -B .github/scripts/ghuy_summarize_metrics.py Materials/Empirical_Metrics/ghuy-20261022-110838` | 0 |
 | `ghuy_final_checks.json` | Đối chiếu checksum raw/metrics, dòng excerpt/source từ Git, mã câu, ảnh PNG, mẫu secret, protected hashes và thống kê commit | 0 |
 | `ghuy_link_checks.json` | Kiểm tra đích 167 link nội bộ trong 14 tài liệu; 4 đích thiếu đã có từ trước ngoài phần Huy | Không phải test pass toàn bộ link |
+| `ghuy_backend_integrated.txt` | `npm test` sau tích hợp main `32e1178` tại merge `92d8e41`: 7 suites/61 tests pass | 0 |
+| `ghuy_triage_integrated.txt` | Python unittest sau tích hợp: 8/10; cùng hai assertion Windows fail trên baseline | 1 |
+| `ghuy_triage_integrated_dry_run.txt` | CLI `ai_triage.py --log-file Weekly_Reports/Week05/coupon_failure_mode2_huy.txt --dry-run` sau tích hợp | 0 |
+| `ghuy_publish_checks.json` | Rà lại checksum/source/ảnh, mẫu secret và snapshot 10 commit không merge trước xuất bản Draft PR | 0 |
 
 Snapshot baseline được dựng từ blob `origin/main` bằng `git ls-tree`/`git show`
 trong `ci-artifacts/ghuy-w6-final-review/baseline`, dùng junction tới dependency
