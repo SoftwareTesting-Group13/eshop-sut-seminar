@@ -67,3 +67,24 @@ Bộ ảnh W6-18 ghuy_03a–ghuy_03g đã đầy đủ.
 thấy nội dung [Answer Key](../../../Activity_Worksheet_AnswerKey.md) sau bổ sung,
 đáp án A1, nguồn code/revision và bảng chia điểm 0.5 + 0.5. Đây là minh chứng
 bản soạn, không phải bằng chứng nhóm duyệt barem hoặc thử chấm với lớp.
+
+### Minh chứng W6-20 — Dữ liệu đã đo, ảnh chờ chụp
+
+Nguồn: [Empirical Metrics](../../../Empirical_Metrics.md), experiment
+`ghuy-20261022-110838`, SHA `ba4b02b`.
+
+- `ghuy_05_flake_rate_10runs.png`: mở [workflow history](https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/workflows/ghuy-week6-metrics.yml?query=event%3Aworkflow_dispatch),
+  lọc workflow_dispatch và nhánh test/giahuy-week6-metrics, thấy 10 runs theo
+  pair 1–10. Không tính run registration hoặc EShop CI chạy kèm.
+- `ghuy_06_empirical_metrics.png`: Markdown Preview của báo cáo, bảng
+  before 5/10 fail, after 0/10, giảm 50 điểm phần trăm và phương pháp 10 cặp.
+- `ghuy_07_cache_cold_warm.png`: trong [run pair 1](https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600),
+  chụp cache-cold/cache-warm có miss/hit cùng key và output interval của bước
+  Stop dependency preparation interval. Có thể chia hai ảnh `_cold`/`_warm`.
+- `ghuy_04_ai_triage_gemini_output.png`: job ai-evaluation của pair 1, bước
+  Measure one real AI call if configured, thấy HTTP 200, latency, JSON validity;
+  có thể kèm Markdown analysis từ artifact. Không chụp key/secrets.
+
+Ảnh chưa được cung cấp trong lượt đo; không đánh dấu đã có ảnh. History có
+5 run đỏ do before fail dự kiến, after vẫn chạy; số workflow run không đồng
+nhất với số invocation. 10/10 after pass chỉ mô tả mẫu demo đã đo.

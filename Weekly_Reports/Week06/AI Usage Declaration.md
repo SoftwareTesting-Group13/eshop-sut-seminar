@@ -76,17 +76,22 @@
   - Gợi ý phân bổ thời gian, thang điểm và cách trình bày câu hỏi; soạn hướng dẫn điều phối và danh mục nguồn log phục vụ bài tập.
   - Hỗ trợ W6-18: tìm run GitHub Actions, tải log thật, trích dòng bằng chứng và lưu metadata; phân biệt lỗi cài dependency với trạng thái cache miss.
   - Hỗ trợ W6-17: soạn Answer Key cho 10 câu của Worksheet, đối chiếu số liệu/log/code và chia barem từng ý.
+  - Hỗ trợ W6-20: thiết kế protocol, triển khai workflow đo riêng, thu thập 10 cặp before/after cùng SHA, kiểm tra cache cold/warm và đánh giá một phản hồi Gemini thật.
 - **Prompt tiêu biểu:**
   > **W6-16:** *"Tinh gọn Worksheet Pipeline Postmortem trong 20–25 phút về SQLite lock, coupon percent, async delay và cache; chia thang điểm 10, thêm chỗ trả lời và tách hướng dẫn điều phối. Sinh viên đọc log/code và đề xuất cách kiểm chứng, không bắt buộc chạy test trên lớp."*
   >
   > *"Thực hiện W6-18: thu thập Sample CI Failure Logs cho bài tập Pipeline Postmortem."*
+  >
+  > **W6-20 (bản rút gọn):** *"Đo before/after trên GitHub Actions, 10 lượt hợp lệ mỗi biến thể; ghi điều kiện, run/SHA, duration và raw log, phân biệt test fail với lỗi hạ tầng. Đo cache cold/warm bằng key riêng, tính failure rate/speedup; đánh giá API triage và bằng chứng chẩn đoán riêng với JSON hợp lệ. Tổng hợp phương pháp, số liệu và giới hạn vào Empirical Metrics."*
 - **Đánh giá phản hồi & Hiệu chỉnh thủ công:**
   - Bản nháp ban đầu có nhiều câu hỏi phụ, dễ vượt thời lượng. Sau trao đổi, nội dung được tinh gọn thành hoạt động 23 phút, tổng 10 điểm; sinh viên đọc hồ sơ và viết lệnh kiểm tra đề xuất. Hướng dẫn tổ chức được tách sang `Materials/Worksheet_Facilitator_Notes.md`, phần trình bày giới hạn hai nhóm, mỗi nhóm 60 giây.
   - Codex đã đối chiếu mã nguồn và log tham khảo, phát hiện công thức coupon hiện tại đã được sửa nên ghi rõ log tuần 5 thuộc phiên bản sự cố cũ; đồng thời kiểm tra liên kết và định dạng Markdown. Sinh viên còn cần rà soát nội dung, chọn log CI thật và kiểm tra bố cục trước khi nghiệm thu.
   - Đã tải 6 log job CI qua REST API, lưu bản raw, trích đoạn đánh số dòng, metadata và source đúng commit. Đối chiếu cache cho thấy miss vẫn có run pass; một run khác fail vì package/lockfile không đồng bộ. Các số `~60s/~5s` trong script cũ là nội dung ghi cứng, không dùng làm số đo.
   - Không tìm thấy SQLite lock trong 25 run lịch sử đã rà soát nên đã tạo demo trên nhánh riêng, không sửa code nghiệp vụ. Run `39741620266`, SHA `485a778`, có job parallel báo SQLITE_BUSY và serial pass. Đây là tái hiện có kiểm soát bằng hai kết nối trong một tiến trình, không phải bằng chứng SUT lỗi do nhiều Jest worker. Codex kiểm tra log/source; sinh viên còn cần đối chiếu và chụp ảnh minh chứng.
   - Đã có bản soạn Answer Key với đáp án, log, file/hàm/dòng và revision, nguyên nhân cùng hướng sửa/cách xác nhận từng câu; barem đề xuất 3 + 3 + 3 + 1 = 10 chưa được nhóm duyệt. Đối chiếu coupon xác định discount_amount âm, final_amount dương vượt tổng, khác diễn giải điều kiện ở kế hoạch dòng 68. Đáp án giữ rõ nguồn CI/local và giới hạn giả thuyết; sinh viên còn cần đọc lại, thử chấm và chụp preview.
-  - Đã rà soát để đóng gói local bộ Worksheet, Answer Key và 6 raw log CI. Có 2 ảnh Worksheet, 1 ảnh barem và 7 ảnh CI/index do sinh viên chụp, Codex đã mở kiểm tra. Barem chưa được nhóm duyệt; chưa push tài liệu, thử chấm với lớp, kiểm chứng Gemini hoặc đo 10 lượt CI.
+  - Đã rà soát và commit local bộ Worksheet, Answer Key và 6 raw log CI. Có 2 ảnh Worksheet, 1 ảnh barem và 7 ảnh CI/index do sinh viên chụp, Codex đã mở kiểm tra. Barem chưa được nhóm duyệt; chưa thử chấm với lớp hoặc push nhánh tài liệu.
+  - W6-20 có 10 workflow runs thật, mỗi run gồm hai invocation chọn riêng test sleep/await: before fail 5/10, after fail 0/10, giảm 50 điểm phần trăm. Đã giữ toàn bộ dữ liệu, đối chiếu assertion JSON/raw/checksum; profile 5 fast/5 slow được chọn trước nên không coi là flake rate tự nhiên của SUT. Hosted image thay đổi giữa runs được ghi rõ, khớp trong từng cặp.
+  - Cache riêng: cold miss/warm hit, khoảng chuẩn bị dependency 6.283604/2.330145 giây, speedup 2.697×; không phải tốc độ npm ci hoặc tổng job. Gemini gọi thật một lần, HTTP 200, JSON parse được, nhận body khoảng 2.456 giây. Codex đối chiếu 1 giả thuyết có bằng chứng/1 giả thuyết; không gọi đây là độ chính xác tổng quát. Chưa có đánh giá chéo của nhóm hoặc ảnh W6-20 do sinh viên chụp trong phiên này.
 
 ---
 

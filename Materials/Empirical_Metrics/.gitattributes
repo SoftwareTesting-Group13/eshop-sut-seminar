@@ -1,0 +1,7 @@
+*.txt text eol=lf -whitespace
+*.json text eol=lf
+*.csv text eol=lf
+*.md text eol=lf
+*.sha256 text eol=lf
+# Preserve the provider's original Markdown formatting in downloaded artifacts.
+**/artifacts/ghuy-ai-metrics/*.md -whitespace

@@ -34,8 +34,9 @@
    - Đã soạn và rà soát [Answer Key W6-17](../../Activity_Worksheet_AnswerKey.md) cho 10 câu, có nguồn/revision, hướng sửa/cách xác nhận và điểm từng ý; đã có ảnh barem. Bản đóng gói local giữ ghi chú **barem đề xuất, chưa được nhóm duyệt**; chưa thử chấm hoặc đo thời lượng với lớp, chưa push tài liệu.
 
 5. **Về mặt Đo đạc Thực nghiệm (Empirical Metrics) & AI Triage:**
-   - Phần việc W6-19/W6-20 của Nguyễn Gia Huy chưa có kết quả Gemini thật hoặc bộ số liệu 10 lượt CI được bổ sung trong phiên ngày 22/10/2026.
-   - Mã AI Triage và demo Flaky kế thừa từ tuần 5; chưa dùng chúng để khẳng định đã hoàn thành kiểm chứng API hoặc benchmark của tuần 6.
+   - Đã có [Empirical Metrics W6-20](../../Empirical_Metrics.md), [protocol](../../Materials/Empirical_Metrics/ghuy_protocol.md), raw artifacts và CSV từ 10 workflow runs (20 invocation): before 5/10 fail, after 0/10 fail, giảm 50 điểm phần trăm. Profile fast/slow được chọn trước; không suy rộng thành flake rate tự nhiên hoặc kết luận đã loại hết flaky.
+   - Một cặp cache riêng xác nhận miss/hit cùng key/SHA/image: khoảng chuẩn bị dependency 6.283604/2.330145 giây, speedup 2.697×; tách khỏi npm ci step và tổng job. Image giữa 10 cặp thay đổi được ghi thành giới hạn, không loại mẫu.
+   - API Gemini gọi thật một lần trong workflow đo: HTTP 200, JSON hợp lệ, nhận body khoảng 2.456 giây. Đã đối chiếu riêng chẩn đoán với tham chiếu (1 giả thuyết có bằng chứng/1); không coi JSON hợp lệ là độ chính xác. W6-19 chưa nghiệm thu riêng, W6-20 còn chờ ảnh history/metrics và nhóm rà soát số liệu.
 
 6. **Về mặt Đóng gói & Pre-share:**
    - Đóng gói toàn bộ sản phẩm mốc 90% lên Google Drive và GitHub Releases sẵn sàng nộp và chia sẻ cho lớp trước buổi báo cáo ít nhất 3 ngày làm việc.
@@ -49,7 +50,7 @@
 | **Nguyễn Ngọc Minh Tuấn** | Lead soạn bộ Slide (pptx & md ≤ 15 trang), mở rộng test suites coupon & cấu hình LCOV coverage | 17.0h | Đang làm | Thiết kế khung Slide pptx/md 15 trang; bổ sung 21 ca test Data-Driven cho coupon; cấu hình Jest HTML coverage. |
 | **Dương Nhật Cường** | Lead sản xuất Video Screencast (1080p, ≤ 100MB, English narration), Quality Gate CI, đóng gói Pre-share | 18.0h | Đang làm | Lập kịch bản Storyboard, quay màn hình thao tác thật, thu âm tiếng Anh, nén video ffmpeg ≤ 100MB, đóng gói Drive. **Quality Gate CI (W6-07) đã xong**: workflow có job `Quality Gate (100% Tests & Coverage >= 80%)` kiểm tra 100% suite pass + ngưỡng coverage 80% + xuất LCOV, Branch Protection Rules đã bật trên `main` (PR #7 đang ở trạng thái `blocked` — đúng cơ chế Fail-Fast cần demo). |
 | **Trần Gia Cường** | Lead biên soạn `User_Guide.md` tiếng Anh, phân tích 3 Failure Modes, vẽ sơ đồ Mermaid, Step-by-Step Guide | 17.5h | Đang làm | Hoàn thành khung 7 mục User Guide tiếng Anh, phân tích sâu 3 Failure Modes, tích hợp sơ đồ Mermaid, kiểm tra liên kết. |
-| **Nguyễn Gia Huy** | Lead thiết kế `Activity_Worksheet.md` & Answer Key, nâng cấp AI Triage Gemini API, đo đạc Metrics Flake Rate | 18.0h | Đang làm | W6-16/W6-17/W6-18: đã soạn và rà soát Worksheet, Answer Key, 6 log CI và ảnh minh chứng để đóng gói local. Barem 10 điểm vẫn là đề xuất chưa được nhóm duyệt, chưa thử chấm với lớp. W6-19/W6-20 chưa thực hiện trong phiên này. 18.0h là giờ kế hoạch. |
+| **Nguyễn Gia Huy** | Lead thiết kế `Activity_Worksheet.md` & Answer Key, nâng cấp AI Triage Gemini API, đo đạc Metrics Flake Rate | 18.0h | Đang làm | W6-16–18: đã commit tài liệu/log/ảnh local, barem chưa được nhóm duyệt. W6-20: đo đủ 10 cặp CI, có CSV/raw, cache miss/hit và một API triage thật; chờ ảnh history và rà soát nhóm. W6-19 chưa nghiệm thu riêng. 18.0h là giờ kế hoạch. |
 
 ---
 
@@ -65,6 +66,7 @@
 * **Tài liệu User Guide chuyên sâu:** [User_Guide.md](../../User_Guide.md) *(hoặc tại thư mục nghiệm thu)*.
 * **Bộ Slide thuyết trình:** `Seminar_Slides.pptx` & `Seminar_Slides.md`.
 * **Bài tập tương tác trên lớp:** [Activity_Worksheet.md](../../Activity_Worksheet.md) và [Answer Key / barem](../../Activity_Worksheet_AnswerKey.md) đã soạn, chờ rà soát cuối.
+* **Thực nghiệm W6-20:** [Empirical_Metrics.md](../../Empirical_Metrics.md) và [danh mục dữ liệu](../../Materials/Empirical_Metrics/README.md).
 
 ---
 
@@ -120,7 +122,7 @@ Bộ ảnh W6-18 ghuy_03a–ghuy_03g đầy đủ.
    - Trạng thái: Đã có [preview Worksheet](screenshots/ghuy_01_worksheet_preview.png), [ảnh tiếp theo](screenshots/ghuy_01b_worksheet_preview.png) và [Answer Key/barem](screenshots/ghuy_02_answerkey_rubric.png). Codex đã mở kiểm tra; barem chưa được nhóm duyệt.
 2. **Minh chứng ghuy-2: Kết quả chạy AI Triage Gemini API & Thống kê 10 runs Flake Rate**
    - File: `ghuy_04_ai_triage_gemini_output.png`, `ghuy_05_flake_rate_10runs.png`
-   - Trạng thái: Minh chứng cần thu thập ở W6-19/W6-20; chưa có output Gemini thật hoặc bảng 10 lượt CI được bổ sung trong phiên này.
+   - Trạng thái: Đã có số liệu 10 cặp CI và một output Gemini thật trong W6-20; còn chờ ảnh chụp history/metrics/API. Hướng dẫn tại [screenshots/README.md](screenshots/README.md); chưa tạo ảnh thay thế.
 
 ---
 

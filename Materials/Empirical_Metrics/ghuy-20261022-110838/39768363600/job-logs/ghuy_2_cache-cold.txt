@@ -1,0 +1,243 @@
+2026-10-22T11:08:44.8000935Z Current runner version: '2.338.0'
+2026-10-22T11:08:44.8026587Z ##[group]Runner Image Provisioner
+2026-10-22T11:08:44.8027895Z Hosted Compute Agent
+2026-10-22T11:08:44.8028570Z Version: 20261012.601
+2026-10-22T11:08:44.8029218Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-22T11:08:44.8030021Z Build Date: 2026-10-12T17:48:21Z
+2026-10-22T11:08:44.8030723Z Worker ID: {98ed4ab4-9399-4ef2-a347-2d805df51bf4}
+2026-10-22T11:08:44.8031455Z Region: westus2
+2026-10-22T11:08:44.8032053Z Cloud: Azure
+2026-10-22T11:08:44.8032588Z ##[endgroup]
+2026-10-22T11:08:44.8034085Z ##[group]Operating System
+2026-10-22T11:08:44.8034814Z Ubuntu
+2026-10-22T11:08:44.8035360Z 24.04.5
+2026-10-22T11:08:44.8036300Z LTS
+2026-10-22T11:08:44.8036850Z ##[endgroup]
+2026-10-22T11:08:44.8037656Z ##[group]Runner Image
+2026-10-22T11:08:44.8038395Z Image: ubuntu-24.04
+2026-10-22T11:08:44.8038983Z Version: 20261012.334.1
+2026-10-22T11:08:44.8040283Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-22T11:08:44.8041787Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-22T11:08:44.8042859Z ##[endgroup]
+2026-10-22T11:08:44.8043926Z ##[group]GITHUB_TOKEN Permissions
+2026-10-22T11:08:44.8046096Z Contents: read
+2026-10-22T11:08:44.8046702Z Metadata: read
+2026-10-22T11:08:44.8047706Z ##[endgroup]
+2026-10-22T11:08:44.8049948Z Secret source: Actions
+2026-10-22T11:08:44.8050960Z Cache mode: write
+2026-10-22T11:08:44.8051675Z Prepare workflow directory
+2026-10-22T11:08:44.8395979Z Prepare all required actions
+2026-10-22T11:08:44.8444785Z Getting action download info
+2026-10-22T11:08:45.2139864Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-22T11:08:45.3600600Z Download action repository 'actions/setup-node@v7' (SHA:949feb2413d6458794dcd2491c4babbbce0c15c1)
+2026-10-22T11:08:45.6430852Z Download action repository 'actions/cache@v5' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-22T11:08:45.7412213Z Download action repository 'actions/upload-artifact@v6' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+2026-10-22T11:08:45.9947588Z Complete job name: cache-cold
+2026-10-22T11:08:46.0741063Z ##[group]Run actions/checkout@v6
+2026-10-22T11:08:46.0741926Z with:
+2026-10-22T11:08:46.0742459Z   repository: SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-22T11:08:46.0746322Z   token: ***
+2026-10-22T11:08:46.0746754Z   ssh-strict: true
+2026-10-22T11:08:46.0747386Z   ssh-user: git
+2026-10-22T11:08:46.0747838Z   persist-credentials: true
+2026-10-22T11:08:46.0748328Z   clean: true
+2026-10-22T11:08:46.0748765Z   sparse-checkout-cone-mode: true
+2026-10-22T11:08:46.0749279Z   fetch-depth: 1
+2026-10-22T11:08:46.0749695Z   fetch-tags: false
+2026-10-22T11:08:46.0750127Z   show-progress: true
+2026-10-22T11:08:46.0750556Z   lfs: false
+2026-10-22T11:08:46.0750961Z   submodules: false
+2026-10-22T11:08:46.0751402Z   set-safe-directory: true
+2026-10-22T11:08:46.0751904Z   allow-unsafe-pr-checkout: false
+2026-10-22T11:08:46.0752713Z ##[endgroup]
+2026-10-22T11:08:46.1788393Z Syncing repository: SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-22T11:08:46.1792750Z ##[group]Getting Git version info
+2026-10-22T11:08:46.1794060Z Working directory is '/home/runner/work/eshop-sut-seminar/eshop-sut-seminar'
+2026-10-22T11:08:46.1795760Z [command]/usr/bin/git version
+2026-10-22T11:08:46.1897741Z git version 2.55.0
+2026-10-22T11:08:46.1924278Z ##[endgroup]
+2026-10-22T11:08:46.1941267Z Temporarily overriding HOME='/home/runner/work/_temp/7d1d5ad5-053a-4333-96de-abe50985b596' before making global git config changes
+2026-10-22T11:08:46.1943729Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-22T11:08:46.1947036Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/eshop-sut-seminar/eshop-sut-seminar
+2026-10-22T11:08:46.2046680Z Deleting the contents of '/home/runner/work/eshop-sut-seminar/eshop-sut-seminar'
+2026-10-22T11:08:46.2059093Z ##[group]Determining repository object format
+2026-10-22T11:08:46.2060946Z ##[endgroup]
+2026-10-22T11:08:46.2062072Z ##[group]Initializing the repository
+2026-10-22T11:08:46.2062900Z [command]/usr/bin/git init /home/runner/work/eshop-sut-seminar/eshop-sut-seminar
+2026-10-22T11:08:46.2189508Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-22T11:08:46.2191279Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-22T11:08:46.2192810Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-22T11:08:46.2193917Z hint: call:
+2026-10-22T11:08:46.2194329Z hint:
+2026-10-22T11:08:46.2194857Z hint: 	git config --global init.defaultBranch <name>
+2026-10-22T11:08:46.2195478Z hint:
+2026-10-22T11:08:46.2196049Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-22T11:08:46.2196958Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-22T11:08:46.2198031Z hint:
+2026-10-22T11:08:46.2198541Z hint: 	git branch -m <name>
+2026-10-22T11:08:46.2199008Z hint:
+2026-10-22T11:08:46.2199629Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-22T11:08:46.2201274Z Initialized empty Git repository in /home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git/
+2026-10-22T11:08:46.2208185Z [command]/usr/bin/git remote add origin https://github.com/SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-22T11:08:46.2262940Z ##[endgroup]
+2026-10-22T11:08:46.2264078Z ##[group]Disabling automatic garbage collection
+2026-10-22T11:08:46.2266658Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-22T11:08:46.2302603Z ##[endgroup]
+2026-10-22T11:08:46.2304423Z ##[group]Setting up auth
+2026-10-22T11:08:46.2305563Z Removing SSH command configuration
+2026-10-22T11:08:46.2310331Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-22T11:08:46.2350090Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-22T11:08:46.2751802Z Removing HTTP extra header
+2026-10-22T11:08:46.2760052Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-22T11:08:46.2799835Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-22T11:08:46.3021288Z Removing includeIf entries pointing to credentials config files
+2026-10-22T11:08:46.3029265Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-22T11:08:46.3067882Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-22T11:08:46.3295872Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-22T11:08:46.3338795Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git.path /home/runner/work/_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:08:46.3374664Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:08:46.3414703Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:08:46.3450319Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:08:46.3488685Z ##[endgroup]
+2026-10-22T11:08:46.3489710Z ##[group]Fetching the repository
+2026-10-22T11:08:46.3499407Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +ba4b02b86b94c329a8b0614a5053bb7d7b161f67:refs/remotes/origin/test/giahuy-week6-metrics
+2026-10-22T11:08:46.7596690Z From https://github.com/SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-22T11:08:46.7599240Z  * [new ref]         ba4b02b86b94c329a8b0614a5053bb7d7b161f67 -> origin/test/giahuy-week6-metrics
+2026-10-22T11:08:46.7609652Z [command]/usr/bin/git branch --list --remote origin/test/giahuy-week6-metrics
+2026-10-22T11:08:46.7638054Z   origin/test/giahuy-week6-metrics
+2026-10-22T11:08:46.7646891Z [command]/usr/bin/git rev-parse refs/remotes/origin/test/giahuy-week6-metrics
+2026-10-22T11:08:46.7688803Z ba4b02b86b94c329a8b0614a5053bb7d7b161f67
+2026-10-22T11:08:46.7770637Z ##[endgroup]
+2026-10-22T11:08:46.7773392Z ##[group]Determining the checkout info
+2026-10-22T11:08:46.7776145Z ##[endgroup]
+2026-10-22T11:08:46.7778008Z [command]/usr/bin/git sparse-checkout disable
+2026-10-22T11:08:46.7782698Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-22T11:08:46.7792042Z ##[group]Checking out the ref
+2026-10-22T11:08:46.7796183Z [command]/usr/bin/git checkout --progress --force -B test/giahuy-week6-metrics refs/remotes/origin/test/giahuy-week6-metrics
+2026-10-22T11:08:46.8070140Z Switched to a new branch 'test/giahuy-week6-metrics'
+2026-10-22T11:08:46.8074708Z branch 'test/giahuy-week6-metrics' set up to track 'origin/test/giahuy-week6-metrics'.
+2026-10-22T11:08:46.8081966Z ##[endgroup]
+2026-10-22T11:08:46.8128830Z [command]/usr/bin/git log -1 --format=%H
+2026-10-22T11:08:46.8156513Z ba4b02b86b94c329a8b0614a5053bb7d7b161f67
+2026-10-22T11:08:46.8550790Z ##[group]Run actions/setup-node@v7
+2026-10-22T11:08:46.8551917Z with:
+2026-10-22T11:08:46.8552691Z   node-version: 22.23.3
+2026-10-22T11:08:46.8553621Z   check-latest: false
+2026-10-22T11:08:46.8563992Z   token: ***
+2026-10-22T11:08:46.8564854Z   package-manager-cache: true
+2026-10-22T11:08:46.8565876Z ##[endgroup]
+2026-10-22T11:08:46.9947619Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-22T11:08:47.9175411Z ##[group]Environment details
+2026-10-22T11:08:49.6312040Z node: v22.23.3
+2026-10-22T11:08:49.6312694Z npm: 10.9.9
+2026-10-22T11:08:49.6313193Z yarn: 1.22.22
+2026-10-22T11:08:49.6314583Z ##[endgroup]
+2026-10-22T11:08:49.6472273Z ##[group]Run python3 - <<'PY'
+2026-10-22T11:08:49.6472700Z [36;1mpython3 - <<'PY'[0m
+2026-10-22T11:08:49.6473028Z [36;1mimport os,re,hashlib[0m
+2026-10-22T11:08:49.6473335Z [36;1mfrom pathlib import Path[0m
+2026-10-22T11:08:49.6473676Z [36;1mtag=os.environ['EXPERIMENT'][0m
+2026-10-22T11:08:49.6474055Z [36;1massert re.fullmatch(r'[A-Za-z0-9-]{1,80}',tag)[0m
+2026-10-22T11:08:49.6474591Z [36;1mlock=hashlib.sha256(Path('backend/package-lock.json').read_bytes()).hexdigest()[0m
+2026-10-22T11:08:49.6475313Z [36;1mwith open(os.environ['GITHUB_OUTPUT'],'a') as f: f.write(f'value=ghuy-w620-{tag}-Linux-node22.23.3-{lock}\n')[0m
+2026-10-22T11:08:49.6475878Z [36;1mPY[0m
+2026-10-22T11:08:49.6803631Z shell: /usr/bin/bash -e {0}
+2026-10-22T11:08:49.6804138Z env:
+2026-10-22T11:08:49.6804421Z   EXPERIMENT: ghuy-20261022-110838
+2026-10-22T11:08:49.6804757Z ##[endgroup]
+2026-10-22T11:08:49.7282169Z ##[group]Run mkdir -p ci-artifacts/cache
+2026-10-22T11:08:49.7282653Z [36;1mmkdir -p ci-artifacts/cache[0m
+2026-10-22T11:08:49.7283291Z [36;1mpython3 -c 'import time,pathlib;pathlib.Path("ci-artifacts/cache/start.txt").write_text(str(time.monotonic_ns()))'[0m
+2026-10-22T11:08:49.7351536Z shell: /usr/bin/bash -e {0}
+2026-10-22T11:08:49.7351912Z ##[endgroup]
+2026-10-22T11:08:49.7804815Z ##[group]Run actions/cache/restore@v5
+2026-10-22T11:08:49.7805186Z with:
+2026-10-22T11:08:49.7805436Z   path: backend/node_modules
+2026-10-22T11:08:49.7806224Z   key: ghuy-w620-ghuy-20261022-110838-Linux-node22.23.3-78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e
+2026-10-22T11:08:49.7806873Z   enableCrossOsArchive: false
+2026-10-22T11:08:49.7807782Z   fail-on-cache-miss: false
+2026-10-22T11:08:49.7808071Z   lookup-only: false
+2026-10-22T11:08:49.7808334Z ##[endgroup]
+2026-10-22T11:08:50.1550788Z Cache not found for input keys: ghuy-w620-ghuy-20261022-110838-Linux-node22.23.3-78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e
+2026-10-22T11:08:50.1653623Z ##[group]Run npm ci --no-audit --no-fund
+2026-10-22T11:08:50.1653979Z [36;1mnpm ci --no-audit --no-fund[0m
+2026-10-22T11:08:50.1718328Z shell: /usr/bin/bash -e {0}
+2026-10-22T11:08:50.1718588Z ##[endgroup]
+2026-10-22T11:08:53.6167964Z npm warn deprecated prebuild-install@7.1.3: No longer maintained. Please contact the author of the relevant native addon; alternatives are available.
+2026-10-22T11:08:54.8033823Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-10-22T11:08:55.9558139Z 
+2026-10-22T11:08:55.9558823Z added 426 packages in 6s
+2026-10-22T11:08:56.0090974Z ##[group]Run python3 .github/scripts/ghuy_measure_cache.py
+2026-10-22T11:08:56.0091445Z [36;1mpython3 .github/scripts/ghuy_measure_cache.py[0m
+2026-10-22T11:08:56.0156686Z shell: /usr/bin/bash -e {0}
+2026-10-22T11:08:56.0156948Z env:
+2026-10-22T11:08:56.0157450Z   CACHE_HIT: 
+2026-10-22T11:08:56.0157657Z   CACHE_MODE: cold
+2026-10-22T11:08:56.0158222Z   CACHE_KEY: ghuy-w620-ghuy-20261022-110838-Linux-node22.23.3-78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e
+2026-10-22T11:08:56.0158842Z ##[endgroup]
+2026-10-22T11:08:56.1345197Z {"mode": "cold", "cache_hit": false, "cache_hit_raw": "", "cache_key": "ghuy-w620-ghuy-20261022-110838-Linux-node22.23.3-78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e", "preparation_interval_seconds": 6.283604498, "boundary": "after start stamp, across restore and conditional npm ci, until stop script begins", "excludes": "checkout, setup-node, save cache, upload artifacts; NOT total job duration", "run_id": "39768363600", "sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67", "runner_os": "Linux", "runner_image": "ubuntu24", "runner_image_version": "20261012.334.1", "node": "v22.23.3", "npm": "10.9.9", "package_lock_sha256": "78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e", "valid_cache_state": true}
+2026-10-22T11:08:56.1468979Z ##[group]Run actions/cache/save@v5
+2026-10-22T11:08:56.1469270Z with:
+2026-10-22T11:08:56.1469473Z   path: backend/node_modules
+2026-10-22T11:08:56.1470029Z   key: ghuy-w620-ghuy-20261022-110838-Linux-node22.23.3-78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e
+2026-10-22T11:08:56.1470611Z   enableCrossOsArchive: false
+2026-10-22T11:08:56.1470860Z ##[endgroup]
+2026-10-22T11:08:56.2961176Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/eshop-sut-seminar/eshop-sut-seminar --files-from manifest.txt --use-compress-program zstdmt
+2026-10-22T11:08:57.8378812Z Sent 15228427 of 15228427 (100.0%), 14.5 MBs/sec
+2026-10-22T11:08:58.3086581Z Cache saved with key: ghuy-w620-ghuy-20261022-110838-Linux-node22.23.3-78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e
+2026-10-22T11:08:58.3207063Z ##[group]Run actions/upload-artifact@v6
+2026-10-22T11:08:58.3207674Z with:
+2026-10-22T11:08:58.3207895Z   name: ghuy-cache-cold
+2026-10-22T11:08:58.3208148Z   path: ci-artifacts/cache
+2026-10-22T11:08:58.3208427Z   if-no-files-found: warn
+2026-10-22T11:08:58.3208673Z   compression-level: 6
+2026-10-22T11:08:58.3208896Z   overwrite: false
+2026-10-22T11:08:58.3209119Z   include-hidden-files: false
+2026-10-22T11:08:58.3209362Z ##[endgroup]
+2026-10-22T11:08:58.4776922Z With the provided path, there will be 2 files uploaded
+2026-10-22T11:08:58.4778178Z Artifact name is valid!
+2026-10-22T11:08:58.4778704Z Root directory input is valid!
+2026-10-22T11:08:58.8429402Z Beginning upload of artifact content to blob storage
+2026-10-22T11:08:59.1378197Z Uploaded bytes 707
+2026-10-22T11:08:59.2107783Z Finished uploading artifact content to blob storage!
+2026-10-22T11:08:59.2109278Z SHA256 digest of uploaded artifact zip is d2bca0ef302ce82e789eff2c04c697968c3b01970a85fd8216bc1955d2502b62
+2026-10-22T11:08:59.2110777Z Finalizing artifact upload
+2026-10-22T11:08:59.8191050Z Artifact ghuy-cache-cold.zip successfully finalized. Artifact ID 12420228985
+2026-10-22T11:08:59.8192408Z Artifact ghuy-cache-cold has been successfully uploaded! Final size is 707 bytes. Artifact ID is 12420228985
+2026-10-22T11:08:59.8195474Z Artifact download URL: https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600/artifacts/12420228985
+2026-10-22T11:08:59.8375916Z Post job cleanup.
+2026-10-22T11:08:59.9682516Z Post job cleanup.
+2026-10-22T11:09:00.0659280Z [command]/usr/bin/git version
+2026-10-22T11:09:00.0719289Z git version 2.55.0
+2026-10-22T11:09:00.0778528Z Temporarily overriding HOME='/home/runner/work/_temp/d5768380-105a-46ec-8247-e8c6a30d4d83' before making global git config changes
+2026-10-22T11:09:00.0782193Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-22T11:09:00.0784751Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/eshop-sut-seminar/eshop-sut-seminar
+2026-10-22T11:09:00.0832394Z Removing SSH command configuration
+2026-10-22T11:09:00.0842196Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-22T11:09:00.0901065Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-22T11:09:00.1268781Z Removing HTTP extra header
+2026-10-22T11:09:00.1270075Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-22T11:09:00.1343582Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-22T11:09:00.1639784Z Removing includeIf entries pointing to credentials config files
+2026-10-22T11:09:00.1641220Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-22T11:09:00.1661723Z includeif.gitdir:/home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git.path
+2026-10-22T11:09:00.1671210Z includeif.gitdir:/home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git/worktrees/*.path
+2026-10-22T11:09:00.1672748Z includeif.gitdir:/github/workspace/.git.path
+2026-10-22T11:09:00.1674003Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-22T11:09:00.1676941Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git.path
+2026-10-22T11:09:00.1700081Z /home/runner/work/_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:09:00.1719621Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git.path /home/runner/work/_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:09:00.1760753Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git/worktrees/*.path
+2026-10-22T11:09:00.1785230Z /home/runner/work/_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:09:00.1801640Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:09:00.1847461Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-22T11:09:00.1873166Z /github/runner_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:09:00.1886482Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:09:00.1930551Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-22T11:09:00.1965607Z /github/runner_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:09:00.1977992Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config
+2026-10-22T11:09:00.2022831Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-22T11:09:00.2283193Z Removing credentials config '/home/runner/work/_temp/git-credentials-d51dee21-d495-4c67-ae27-6ae869a4d286.config'
+2026-10-22T11:09:00.2437446Z Evaluate and set job outputs
+2026-10-22T11:09:00.2443656Z Set output 'key'
+2026-10-22T11:09:00.2445702Z Cleaning up orphan processes

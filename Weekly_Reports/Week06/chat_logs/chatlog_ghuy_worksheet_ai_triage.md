@@ -4,7 +4,7 @@
 - **Công cụ:** OpenAI Codex; không xác định thêm tên phiên bản model từ phiên làm việc.
 - **Thời điểm:** 22/10/2026, Asia/Saigon.
 - **Nhánh:** `feature/giahuy-week6-worksheet`.
-- **Phạm vi phiên hiện tại:** đóng gói bản soạn W6-16/W6-17/W6-18, có nguồn và ảnh; barem đề xuất chưa được nhóm duyệt.
+- **Phạm vi phiên hiện tại:** W6-16–18 đã đóng gói local; W6-20 đã đo 10 cặp CI/cache/AI và tổng hợp dữ liệu. Barem vẫn là đề xuất chưa được nhóm duyệt.
 
 ## 1. Mục tiêu công việc
 
@@ -21,6 +21,10 @@ và nguồn tham khảo; không coi bản nháp là bộ đề đã có log CI v
 **W6-17 — Bản rút gọn của prompt hoàn thiện Answer Key:**
 
 > *"Hoàn thiện Answer Key khớp từng câu Worksheet: đáp án, bằng chứng log, file/hàm/dòng tại revision đã kiểm tra, nguyên nhân, hướng sửa và cách xác nhận. Đề xuất barem 10 điểm có điểm thành phần; chấp nhận lời giải khác có bằng chứng. Kiểm tra discount_amount/final_amount, ghi sai khác với kế hoạch, tránh lộ đáp án và bổ sung ghi chú điều phối."*
+
+**W6-20 — Bản rút gọn:**
+
+> *"Đo before/after trên GitHub Actions, 10 lượt hợp lệ mỗi biến thể; ghi điều kiện, run/SHA, duration và raw log, phân biệt test fail với lỗi hạ tầng. Đo cache cold/warm bằng key riêng, tính failure rate/speedup; đánh giá API triage và bằng chứng chẩn đoán riêng với JSON hợp lệ. Tổng hợp phương pháp, số liệu và giới hạn vào Empirical Metrics."*
 
 ## 3. Nhật ký phản hồi AI và sản phẩm
 
@@ -61,9 +65,9 @@ và nguồn tham khảo; không coi bản nháp là bộ đề đã có log CI v
 
 ## 5. Trạng thái các phần tiếp theo
 
-W6-17 đã có bản soạn tại mục 9; W6-18 cập nhật ở mục 7–8. W6-19 và W6-20 chưa
-thực hiện trong phiên này. Chưa gọi Gemini, chạy benchmark 10 lượt hoặc tự ký
-xác nhận mới.
+W6-17 có bản soạn tại mục 9; W6-18 cập nhật ở mục 7–8. W6-20 và lần gọi Gemini
+để đánh giá được cập nhật tại mục 11. W6-19 chưa nghiệm thu riêng; không tự ký
+xác nhận mới hoặc ghi nhóm đã duyệt barem.
 
 ## 6. Cập nhật thiết kế Worksheet — 22/10/2026
 
@@ -203,3 +207,45 @@ Không thay đổi code nghiệp vụ trong lượt đóng gói này.
 excerpt của 6 raw log, mẫu secret và ảnh thật. Whitespace gốc trong file bằng
 chứng được giữ nguyên, chỉ miễn kiểm tra whitespace riêng các thư mục archive.
 Nhật ký Git cập nhật snapshot qua commit này; không tự ghi nhận nhóm duyệt.
+
+## 11. Đo thực nghiệm W6-20 — 10 cặp CI, cache và AI
+
+Thiết kế và commit protocol trước khi dispatch, trên nhánh riêng
+`test/giahuy-week6-metrics` từ main đã kiểm tra. SHA thí nghiệm `ba4b02b`, không
+thay test tuần 5, code nghiệp vụ hoặc eshop-ci.yml. Workflow chỉ contents:read,
+giới hạn thời gian, không comment PR/deploy; cache dùng key theo experiment,
+không xóa cache nhóm. Một lần gọi Gemini nếu có key; không retry tự động.
+
+Local validation kiểm tra sleep slow fail/await pass, fast cả hai pass; thiếu
+Jest được phân loại hạ tầng/harness. Các log local này không trộn vào mẫu CI.
+Sau kiểm tra tác dụng phụ đã dispatch 10 runs cùng full SHA, experiment
+`ghuy-20261022-110838`. Mỗi run có hai Jest invocation mới, lọc riêng test
+before/after, không cộng test skipped thành mẫu.
+
+- Cặp lẻ profile slow 200 ms, cặp chẵn fast 20 ms, cùng profile trong cặp;
+  đảo thứ tự before/after theo cặp. Cấu hình này được chọn trước, không phải
+  mẫu flake tự nhiên từ SUT.
+- Đủ 10 hợp lệ mỗi biến thể: before 5 fail/10, after 0 fail/10; giảm 50 điểm
+  phần trăm. Không lỗi hạ tầng, không lượt thay thế, giữ toàn bộ test fail.
+- Ba hosted image versions xuất hiện giữa runs. Giữ nguyên toàn bộ dữ liệu;
+  mỗi cặp cùng runner/image, Node/lockfile/source/config hashes khớp.
+- Cache cold miss/warm hit trên key riêng, cùng môi trường: khoảng chuẩn bị
+  dependency 6.283604498/2.330145184 giây, ratio 2.696657934×. Không so npm ci
+  với warm skipped hoặc dùng tổng job làm dependency time; n=1 cặp là giới hạn.
+- Gemini HTTP 200, response JSON thật hợp lệ, model gemini-3.5-flash-lite,
+  client request/body 2455.726275 ms. Phản hồi chẩn đoán vẫn Markdown. Codex
+  đối chiếu một giả thuyết với tham chiếu đã đăng ký: có bằng chứng hỗ trợ,
+  nhưng ghi hạn chế “200 ms thực tế” chỉ là cấu hình và tăng sleep không phải
+  sửa bền vững. Không gọi JSON hợp lệ hay 1/1 hỗ trợ là AI chính xác tổng quát.
+
+Đã lưu run metadata, raw job logs, 20 raw invocation/Jest JSON, CSV, kết quả
+cache/AI và đánh giá trong `Materials/Empirical_Metrics/`; báo cáo
+`Empirical_Metrics.md`, bộ tái tính offline `ghuy_summarize_metrics.py`.
+Nhánh đo đã publish để thực hiện CI; kết quả/báo cáo trên nhánh tài liệu chưa
+push. Chưa có ảnh W6-20 hoặc đánh giá chéo của nhóm được cung cấp.
+
+Kiểm chứng cuối W6-20: tái tính offline khớp 10 runs/20 hợp lệ, từng raw checksum
+khớp metadata và từng kết quả khớp assertion Jest JSON. Cache log xác nhận miss/
+hit cùng key; JSON Gemini có finishReason STOP. Kiểm tra link, UTF-8/LF và mẫu
+secret không phát hiện credential; lưu checksum cho 97 file batch. Ba image
+versions giữa runs được giữ trong báo cáo, không lọc bỏ hoặc chạy lại để chọn số.

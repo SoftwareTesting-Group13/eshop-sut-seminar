@@ -1,0 +1,130 @@
+{
+  "experiment": "ghuy-20261022-110838",
+  "sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+  "workflow_runs": 10,
+  "observations": 20,
+  "invalid_observations": 0,
+  "duplicates": 0,
+  "target_met": true,
+  "metrics": {
+    "before": {
+      "valid_invocations": 10,
+      "test_failures": 5,
+      "failure_rate": 0.5
+    },
+    "after": {
+      "valid_invocations": 10,
+      "test_failures": 0,
+      "failure_rate": 0.0
+    }
+  },
+  "reduction_percentage_points": 50.0,
+  "fixed_controls": {
+    "sha": [
+      "ba4b02b86b94c329a8b0614a5053bb7d7b161f67"
+    ],
+    "node": [
+      "v22.23.3"
+    ],
+    "runner_os": [
+      "Linux"
+    ],
+    "runner_image": [
+      "ubuntu24"
+    ],
+    "runner_image_version": [
+      "20261012.334.1",
+      "20261018.339.1",
+      "20261021.345.10"
+    ],
+    "package_lock_sha256": [
+      "78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e"
+    ],
+    "demo_sha256": [
+      "e1fd083df4acc009f3744aeb7d1380839771dba12357122d55ea5fa618cc85a4"
+    ],
+    "jest_config_sha256": [
+      "7520964b9d52cc30bb7a85be8b31292e09294c036133a588378713553d8605ee"
+    ]
+  },
+  "hosted_image_varies_between_pairs": true,
+  "paired_image_matches": true,
+  "cache": {
+    "cold": {
+      "mode": "cold",
+      "cache_hit": false,
+      "cache_hit_raw": "",
+      "cache_key": "ghuy-w620-ghuy-20261022-110838-Linux-node22.23.3-78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e",
+      "preparation_interval_seconds": 6.283604498,
+      "boundary": "after start stamp, across restore and conditional npm ci, until stop script begins",
+      "excludes": "checkout, setup-node, save cache, upload artifacts; NOT total job duration",
+      "run_id": "39768363600",
+      "sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+      "runner_os": "Linux",
+      "runner_image": "ubuntu24",
+      "runner_image_version": "20261012.334.1",
+      "node": "v22.23.3",
+      "npm": "10.9.9",
+      "package_lock_sha256": "78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e",
+      "valid_cache_state": true,
+      "metadata_path": "39768363600/artifacts/ghuy-cache-cold/cache-cold.json",
+      "job_duration_seconds": 19.0,
+      "individual_steps": {
+        "Restore isolated cache": {
+          "conclusion": "success",
+          "duration_seconds": 1.0
+        },
+        "Install dependencies on miss": {
+          "conclusion": "success",
+          "duration_seconds": 6.0
+        }
+      },
+      "job_success": true
+    },
+    "warm": {
+      "mode": "warm",
+      "cache_hit": true,
+      "cache_hit_raw": "true",
+      "cache_key": "ghuy-w620-ghuy-20261022-110838-Linux-node22.23.3-78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e",
+      "preparation_interval_seconds": 2.330145184,
+      "boundary": "after start stamp, across restore and conditional npm ci, until stop script begins",
+      "excludes": "checkout, setup-node, save cache, upload artifacts; NOT total job duration",
+      "run_id": "39768363600",
+      "sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+      "runner_os": "Linux",
+      "runner_image": "ubuntu24",
+      "runner_image_version": "20261012.334.1",
+      "node": "v22.23.3",
+      "npm": "10.9.9",
+      "package_lock_sha256": "78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e",
+      "valid_cache_state": true,
+      "metadata_path": "39768363600/artifacts/ghuy-cache-warm/cache-warm.json",
+      "job_duration_seconds": 10.0,
+      "individual_steps": {
+        "Restore isolated cache": {
+          "conclusion": "success",
+          "duration_seconds": 3.0
+        },
+        "Install dependencies on miss": {
+          "conclusion": "skipped",
+          "duration_seconds": null
+        }
+      },
+      "job_success": true
+    },
+    "comparable": true,
+    "speedup": 2.6966579340834755
+  },
+  "ai": {
+    "api_status": "success",
+    "called": true,
+    "model": "gemini-3.5-flash-lite",
+    "http_status": 200,
+    "request_body_latency_ms": 2455.726275,
+    "response_json_valid": true,
+    "analysis_generated": true,
+    "quality_assessed": false,
+    "run_id": "39768363600",
+    "sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67"
+  }
+}
