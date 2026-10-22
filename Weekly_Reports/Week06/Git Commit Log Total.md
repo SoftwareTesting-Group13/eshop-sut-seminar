@@ -61,7 +61,9 @@ git log --oneline --graph -n 20
 *Nhánh làm việc chính: `gcuong`*
 * **[2cb8b4c]** 2026-10-22 — `docs(guide): initialize 7-section user guide structure and table of contents`
 * **[9a095ec]** 2026-10-22 — `docs(guide): add deep-dive technical analysis of 3 mandatory failure modes with proven fixes`
-* `docs(guide): embed interactive mermaid diagrams for architecture, ci/cd fail-fast pipeline, and sqlite concurrency file-locking`
+* **[0a6f982]** 2026-10-22 — `docs(guide): embed interactive mermaid diagrams for architecture, ci/cd fail-fast pipeline, and sqlite concurrency file-locking`
+* **[74e02da]** 2026-10-23 — `docs(guide): write step-by-step reproduction guide and local verification steps`
+* **[a5973a4]** 2026-10-23 — `docs(guide): finalize user guide with academic review and validated markdown links`
 
 ### 3.4. Thành viên 4: Nguyễn Gia Huy (`GiaHuyHCMUS05`)
 *Nhánh làm việc chính: `feature/worksheet-and-ai-triage`*

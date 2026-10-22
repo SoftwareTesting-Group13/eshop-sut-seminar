@@ -43,11 +43,17 @@
 
 ### Prompt 8 (Thiết kế Sơ đồ 2 - Luồng CI/CD Pipeline & Quality Gate Fail-Fast):
 > *"Thiết kế Sơ đồ 2 — Luồng CI/CD Pipeline & Quality Gate Fail-Fast"*  
-> *Yêu cầu căn chỉnh:* Căn lề trái các tựa đề subgraph, làm đậm mũi tên liên kết, đẩy hình thoi quyết định xuống thấp tránh đè tựa đề mà không thay đổi font size hay cấu trúc sơ đồ.
-
 ### Prompt 9 (Thiết kế Sơ đồ 3 - Cơ chế SQLite Concurrency File-Locking):
 > *"Thiết kế Sơ đồ 3 — Cơ chế SQLite Concurrency File-Locking"*  
 > *Khắc phục lỗi render:* Xử lý lỗi Parse error Mermaid do dấu ngoặc đơn `(Write)` trong nhãn cạnh và ký hiệu `<->`.
+
+### Prompt 10 (Hiệu chỉnh nội dung User Guide trước Giai đoạn 4):
+> *"Hãy chỉnh sửa những nội dung @User_Guide.md trước giai đoạn 4 nếu có."*  
+> *Nội dung hiệu chỉnh:* Đồng bộ toàn diện các mục 1.3.2 (cây thư mục), 2.1–2.5 (setup, lệnh seed database, biến môi trường), 3.2–3.4 (danh mục 6 test suites, bảng coverage), 4.1–4.2 (nguyên lý CI pipeline, cache dependency), 4.4 (kịch bản cấu hình Branch Protection Rules), 5.1–5.3 (LCOV, matrix build, AI log triage Gemini).
+
+### Prompt 11 (Triển khai Giai đoạn 4 - Step-by-Step Reproduction Guide & Thực nghiệm Local):
+> *"thực hiện giai đoạn 4 BIÊN SOẠN STEP-BY-STEP REPRODUCTION GUIDE & THỰC NGHIỆM LOCAL"*  
+> *Nội dung triển khai:* Soạn Section 7 gồm 8 mục con chi tiết (Bước A–G) hướng dẫn kiểm tra môi trường, cài đặt, chạy baseline, tái hiện 3 Failure Modes, và quan sát Quality Gate Fail-Fast trên GitHub Actions PR; chạy kiểm chứng thực tế tại terminal local (`npm test`, `test:ci:demo`, `quality-gate`, `test:flaky`), thực hiện Git Commit `74e02da` và push origin `gcuong`.
 
 ---
 
@@ -109,6 +115,21 @@
   - *Nhánh B (Tuần tự hóa In-Band với cờ `--runInBand` / `-i`):* Bắt buộc Jest chạy đơn luồng trên Main Process. Suite 1 chạy xong, commit và nhả lock thì Suite 2 mới bắt đầu chiếm lock $\rightarrow$ Chu kỳ lock (`UNLOCKED` $\leftrightarrow$ `EXCLUSIVE`) diễn ra nhịp nhàng, triệt tiêu race condition $\rightarrow$ 100% Deterministic Pass với Exit Code 0.
 - **Xử lý lỗi Parse Error cú pháp Mermaid:** Khắc phục lỗi parser do dấu ngoặc đơn chưa đóng gói `(Write)` trong nhãn cạnh bằng cách chuẩn hóa sang `1. BEGIN IMMEDIATE - Write`, và thay chuỗi `<->` bằng ký tự Unicode `↔`.
 
+### 3.9. Về Hiệu chỉnh nội dung User Guide trước Giai đoạn 4:
+- Thực hiện rà soát chéo toàn bộ các mục từ 1 đến 5 sau khi merge nhánh `main`:
+  - Cập nhật cây thư mục 1.3.2 phản ánh chính xác các script mới (`quality-gate.js`, `configure-branch-protection.sh`, `coupon-discount.js`, `jest.config.js`).
+  - Sửa lệnh `npm run seed:db` thành `node database.js` vì `package.json` không có script `seed:db`.
+  - Thay thế toàn bộ các placeholder `*(To be detailed...)*` trong Mục 4.1 (Nguyên lý Pipeline CI/CD), 4.2 (Chiến lược Cache dependency), 4.4 (Branch Protection Rules & script CLI), 5.1 (LCOV artifact), 5.2 (Node.js runtime matrix), và 5.3 (AI Log Triage Gemini API).
+
+### 3.10. Về Biên soạn Step-by-Step Reproduction Guide & Thực nghiệm Local:
+- Soạn thảo Mục 7 trong `User_Guide.md` với bảng tổng kết ma trận quy trình thực nghiệm và 7 bước chi tiết (Bước A–G).
+- Thực thi chuỗi lệnh kiểm chứng thực tế tại terminal local:
+  - `npm test`: 7/7 test suites pass, 61/61 test cases pass, thời gian chạy ~29.4s, độ bao phủ tổng đạt 78.81% (vượt ngưỡng 70%).
+  - `npm run test:ci:demo`: chạy riêng bộ unit test coupon trong 1.2s, độ bao phủ 100%, ghi file `coverage/jest-results.json`.
+  - `npm run quality-gate`: kiểm chứng script `quality-gate.js` tại local, xuất kết quả `VERDICT: ✅ QUALITY GATE PASSED`.
+  - `npm run test:flaky`: kiểm chứng ca test Flaky với 3 profiles (`fast` pass cả 2, `slow` fail sleep pass await, `random` chứng minh tỷ lệ Flake Rate).
+- Thực hiện Git Commit 4 (`74e02da`) và đẩy thành công lên nhánh `gcuong`.
+
 ---
 
 ## 4. ĐÁNH GIÁ & HIỆU CHỈNH THỦ CÔNG CỦA SINH VIÊN (HUMAN VERIFICATION)
@@ -118,9 +139,10 @@ Trong quá trình làm việc cùng AI, tôi đã trực tiếp kiểm tra, ph�
 2. **Loại bỏ cú pháp LaTeX math:** Phát hiện AI có chèn cú pháp dạng `$\ge 80\%$` trong file Markdown, tôi đã yêu cầu rà soát và chuyển toàn bộ sang ký tự Unicode thuần túy (`≥ 80%`, `→`) để GitHub render không bị vỡ giao diện.
 3. **Bổ sung Checklist đầu file:** Nhận thấy tài liệu User Guide có nhiều điểm giao thoa với công việc của Tuấn, D.N. Cường và Huy, tôi đã yêu cầu thêm ngay một bảng checklist đối soát ngắn gọn ở đầu file để tiện theo dõi khi các bạn đẩy code/script lên.
 4. **Kiểm chứng mã nguồn thực tế:** Tôi đã tự đối chiếu các dòng code trong `backend/server.js` và `backend/tests/coupon.test.js` để đảm bảo số dòng và logic lỗi được phân tích trong User Guide khớp 100% với mã nguồn hiện tại của dự án.
+5. **Thực nghiệm chuỗi lệnh local:** Trực tiếp chạy và kiểm tra kết quả terminal của `npm test`, `npm run test:ci:demo`, `npm run quality-gate`, `npm run test:flaky` đảm bảo mọi câu lệnh và thông số ghi trong User Guide đều chính xác 100%.
 
 ---
 
 **Xác nhận của sinh viên:**  
 *Tôi cam kết toàn bộ nội dung trong tài liệu `User_Guide.md` và kế hoạch tuần đã được tôi tự đọc hiểu, kiểm chứng mã nguồn thực nghiệm và biên tập cẩn thận trước khi xuất bản.*  
-**Người khai:** Trần Gia Cường (Ký ngày: 22/10/2026)
+**Người khai:** Trần Gia Cường (Ký ngày: 23/10/2026)
