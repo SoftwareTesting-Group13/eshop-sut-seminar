@@ -150,3 +150,59 @@ describe('Failure Mode 2 — discount_amount âm với coupon percent', () => {
     expect(res.body.final_amount).toBeLessThan(total);
   });
 });
+
+describe('Phân biệt guest và user khi áp coupon', () => {
+  it('guest không đăng nhập vẫn áp được coupon hợp lệ (hành vi endpoint hiện tại)', async () => {
+    const res = await applyCoupon({ code: 'SAVE10', total_amount: 500000 });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.discount_amount).toBe(50000);
+  });
+
+  it('user đăng nhập áp được coupon khi còn lượt sử dụng', async () => {
+    const login = await request(app)
+      .post('/api/login')
+      .send({ email: 'test@eshop.com', password: 'Test1234!' });
+
+    expect(login.status).toBe(200);
+    expect(login.body.user.role).toBe('user');
+
+    const res = await request(app)
+      .post('/api/apply-coupon')
+      .set('Authorization', `Bearer ${login.body.token}`)
+      .send({ code: 'SAVE10', total_amount: 500000, user_id: login.body.user.id });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.discount_amount).toBe(50000);
+  });
+
+  it('user đã dùng hết lượt SAVE10 bị từ chối', async () => {
+    const login = await request(app)
+      .post('/api/login')
+      .send({ email: 'test@eshop.com', password: 'Test1234!' });
+    expect(login.status).toBe(200);
+
+    const coupon = await dbGet("SELECT id FROM coupons WHERE code = 'SAVE10'");
+    await dbRun(
+      'INSERT INTO coupon_usage (coupon_id, user_id) VALUES (?, ?)',
+      [coupon.id, login.body.user.id],
+    );
+
+    try {
+      const res = await request(app)
+        .post('/api/apply-coupon')
+        .set('Authorization', `Bearer ${login.body.token}`)
+        .send({ code: 'SAVE10', total_amount: 500000, user_id: login.body.user.id });
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toMatch(/đã đạt giới hạn/);
+    } finally {
+      await dbRun('DELETE FROM coupon_usage WHERE coupon_id = ? AND user_id = ?', [
+        coupon.id,
+        login.body.user.id,
+      ]);
+    }
+  });
+});

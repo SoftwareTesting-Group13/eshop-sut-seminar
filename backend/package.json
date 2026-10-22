@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "jest --runInBand --detectOpenHandles --forceExit",
+    "test": "jest --runInBand --detectOpenHandles --forceExit --coverage",
     "test:flaky": "jest --config demos/jest.flaky.config.cjs --runInBand",
     "test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
     "test:ci": "jest --runInBand --detectOpenHandles --forceExit --coverage --json --outputFile=coverage/jest-results.json --ci",

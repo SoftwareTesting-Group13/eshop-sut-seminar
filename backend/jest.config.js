@@ -21,5 +21,5 @@ module.exports = {
 
   // Đầu ra: bảng text trong log CI, báo cáo LCOV và JSON cho Quality Gate.
   coverageDirectory: "<rootDir>/coverage",
-  coverageReporters: ["text", "text-summary", "lcov", "json-summary", "json"],
+  coverageReporters: ["text", "text-summary", "lcov", "html", "json-summary", "json"],
 };
