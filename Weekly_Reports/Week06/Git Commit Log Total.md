@@ -58,12 +58,12 @@ git log --oneline --graph -n 20
 * `docs(report): compile week 6 report and update screenshots index`
 
 ### 3.3. Thành viên 3: Trần Gia Cường (`trancuonG05`)
-*Nhánh làm việc chính: `docs/user-guide-and-failure-modes`*
-* `docs(guide): initialize User_Guide.md skeleton with 7 mandatory sections`
-* `docs(guide): complete deep-dive analysis on 3 mandatory failure modes`
-* `docs(mermaid): add architecture, ci/cd pipeline and sqlite lock diagrams`
-* `docs(guide): document step-by-step reproduction guide for all failure modes`
-* `style(guide): review academic english grammar, markdown formatting and link integrity`
+*Nhánh làm việc chính: `gcuong`*
+* **[2cb8b4c]** 2026-10-22 — `docs(guide): initialize 7-section user guide structure and table of contents`
+* **[9a095ec]** 2026-10-22 — `docs(guide): add deep-dive technical analysis of 3 mandatory failure modes with proven fixes`
+* **[0a6f982]** 2026-10-22 — `docs(guide): embed interactive mermaid diagrams for architecture, ci/cd fail-fast pipeline, and sqlite concurrency file-locking`
+* **[74e02da]** 2026-10-23 — `docs(guide): write step-by-step reproduction guide and local verification steps`
+* **[a5973a4]** 2026-10-23 — `docs(guide): finalize user guide with academic review and validated markdown links`
 
 ### 3.4. Thành viên 4: Nguyễn Gia Huy (`GiaHuyHCMUS05`)
 *Nhánh làm việc chính: `feature/worksheet-and-ai-triage`*

@@ -47,7 +47,7 @@
 | :--- | :--- | :---: | :---: | :--- |
 | **Nguyễn Ngọc Minh Tuấn** | Lead soạn bộ Slide (pptx & md ≤ 15 trang), mở rộng test suites coupon & cấu hình LCOV coverage | 17.0h | Đang làm | Thiết kế khung Slide pptx/md 15 trang; bổ sung 21 ca test Data-Driven cho coupon; cấu hình Jest HTML coverage. |
 | **Dương Nhật Cường** | Lead sản xuất Video Screencast (1080p, ≤ 100MB, English narration), Quality Gate CI, đóng gói Pre-share | 18.0h | Đang làm | Lập kịch bản Storyboard, quay màn hình thao tác thật, thu âm tiếng Anh, nén video ffmpeg ≤ 100MB, đóng gói Drive. **Quality Gate CI (W6-07) đã xong**: workflow có job `Quality Gate (100% Tests & Coverage >= 80%)` kiểm tra 100% suite pass + ngưỡng coverage 80% + xuất LCOV, Branch Protection Rules đã bật trên `main` (PR #7 đang ở trạng thái `blocked` — đúng cơ chế Fail-Fast cần demo). |
-| **Trần Gia Cường** | Lead biên soạn `User_Guide.md` tiếng Anh, phân tích 3 Failure Modes, vẽ sơ đồ Mermaid, Step-by-Step Guide | 17.5h | Đang làm | Hoàn thành khung 7 mục User Guide tiếng Anh, phân tích sâu 3 Failure Modes, tích hợp sơ đồ Mermaid, kiểm tra liên kết. |
+| **Trần Gia Cường** | Lead biên soạn `User_Guide.md` tiếng Anh, phân tích 3 Failure Modes, vẽ sơ đồ Mermaid, Step-by-Step Guide | 18.5h | Hoàn thành | Khởi tạo khung User Guide (`2cb8b4c`), hoàn tất 3 Failure Modes (`9a095ec`), hoàn thành bộ 3 Sơ đồ Mermaid (`0a6f982`), biên soạn Hướng dẫn từng bước & thực nghiệm local (`74e02da`), rà soát học thuật và kiểm tra liên kết hoàn tất (`a5973a4`), cập nhật đầy đủ chat log. |
 | **Nguyễn Gia Huy** | Lead thiết kế `Activity_Worksheet.md` & Answer Key, nâng cấp AI Triage Gemini API, đo đạc Metrics Flake Rate | 18.0h | Đang làm | Soạn kịch bản Postmortem 20-25m, barem điểm chi tiết, trích xuất sample logs, kết nối Gemini API thật, chạy 10 runs Flake rate. |
 
 ---
@@ -70,40 +70,21 @@
 ## 4. KHU VỰC MINH CHỨNG TRỰC QUAN (VISUAL EVIDENCE)
 
 > [!NOTE]
-> Mọi file ảnh minh chứng được lưu trong thư mục `Weekly_Reports/Week06/screenshots/` và tuân thủ quy tắc tiền tố tên thành viên.
+> Mọi file ảnh minh chứng được lưu trong thư mục `Weekly_Reports/Week06/screenshots/` và tuân thủ quy tắc tiền tố tên thành viên. Mục này chỉ ghi nhận các file ảnh minh chứng thực tế đã tồn tại trong thư mục.
 
-### 4.1. Minh chứng nhóm Nguyễn Ngọc Minh Tuấn (`mtuan_`)
-1. **Minh chứng mtuan-1: Giao diện Slide trình chiếu và file Markdown**
-   - File: `mtuan_01_slide_preview.png`
-   - Mô tả: Giao diện bộ slide 15 trang (`Seminar_Slides.pptx`) và bản hiển thị `Seminar_Slides.md` trên GitHub.
-2. **Minh chứng mtuan-2: Báo cáo Code Coverage LCOV & Bộ test Data-Driven coupon**
-   - File: `mtuan_02_coupon_extended_tests.png`, `mtuan_03_lcov_coverage.png`
-   - Mô tả: Kết quả thực thi 21 test cases coupon và báo cáo độ bao phủ mã nguồn backend đạt chuẩn.
+### 4.1. Minh chứng nhóm Trần Gia Cường (`gcuong_`)
+1. **Minh chứng Lịch sử Git Commits & Tiến độ hoàn thiện User Guide:**
+   - **File:** `gcuong-commits-week6.png`
+   - **Mô tả:** Ảnh chụp lịch sử Git Commits của Trần Gia Cường trên GitHub repository (nhánh `gcuong`), minh chứng hoàn thành đầy đủ chuỗi 5 giai đoạn: khởi tạo khung tài liệu (`2cb8b4c`), phân tích 3 failure modes (`9a095ec`), vẽ sơ đồ Mermaid (`0a6f982`), đồng bộ nhánh `main` (`d3fcd72`), hướng dẫn tái hiện Step-by-Step (`74e02da`), và rà soát học thuật hoàn tất (`a5973a4`).
 
-### 4.2. Minh chứng nhóm Dương Nhật Cường (`ncuong_`)
-1. **Minh chứng ncuong-1: Kịch bản Storyboard & Quality Gate CI/CD**
-   - File: `ncuong_01_video_storyboard.png`, `ncuong_02_ci_quality_gate.png`
-   - Mô tả: Bảng phân cảnh video 5-8 phút và kết quả workflow GitHub Actions kiểm soát Quality Gate.
-   - *Ghi chú chụp ảnh:* ảnh `ncuong_02_ci_quality_gate.png` nên chụp ở tab **Checks** của PR #7 (job `Quality Gate (100% Tests & Coverage >= 80%)` đang đỏ) kèm nút **Merge** bị khoá mờ, và ảnh **Settings → Branches** hiển thị Required Status Check.
-2. **Minh chứng ncuong-2: Thông số kỹ thuật Video Demo Screencast**
-   - File: `ncuong_04_mp4_properties.png`
-   - Mô tả: File Properties của `Demo_Screencast.mp4` chứng minh dung lượng ≤ 100MB, thời lượng 5-8 phút, độ phân giải 1080p.
+### 4.2. Minh chứng nhóm Nguyễn Ngọc Minh Tuấn (`mtuan_`)
+- *(Hiện tại chưa có file ảnh trong thư mục `Weekly_Reports/Week06/screenshots/`. Các ảnh minh chứng slide và test coverage của Tuấn đang tạm lưu tại thư mục `evidence/` trên branch `main` và đang chờ chuyển sang `screenshots/` theo đúng quy chuẩn).*
 
-### 4.3. Minh chứng nhóm Trần Gia Cường (`gcuong_`)
-1. **Minh chứng gcuong-1: Bố cục User Guide tiếng Anh & 3 Failure Modes**
-   - File: `gcuong_01_user_guide_toc.png`, `gcuong_02_failure_modes_diff.png`
-   - Mô tả: Mục lục 7 phần của `User_Guide.md` và các code block phân tích sâu 3 lỗi kỹ thuật.
-2. **Minh chứng gcuong-2: Sơ đồ kỹ thuật Mermaid & Hướng dẫn tái hiện**
-   - File: `gcuong_03_mermaid_diagrams.png`, `gcuong_04_reproduction_run.png`
-   - Mô tả: Render sơ đồ kiến trúc Mermaid trên GitHub và log tái hiện thành công kịch bản chạy demo.
+### 4.3. Minh chứng nhóm Dương Nhật Cường (`ncuong_`)
+- *(Hiện tại chưa có file ảnh trong thư mục `Weekly_Reports/Week06/screenshots/`. Đang cập nhật khi hoàn thành kịch bản quay video screencast và nén file MP4).*
 
 ### 4.4. Minh chứng nhóm Nguyễn Gia Huy (`ghuy_`)
-1. **Minh chứng ghuy-1: Giao diện Bài tập Worksheet & Answer Key**
-   - File: `ghuy_01_worksheet_preview.png`, `ghuy_02_answerkey_rubric.png`
-   - Mô tả: Đề bài "Pipeline Postmortem" và thang điểm chấm bài tập trên lớp.
-2. **Minh chứng ghuy-2: Kết quả chạy AI Triage Gemini API & Thống kê 10 runs Flake Rate**
-   - File: `ghuy_04_ai_triage_gemini_output.png`, `ghuy_05_flake_rate_10runs.png`
-   - Mô tả: Output phân tích log lỗi thực tế từ Gemini API và bảng đo đạc tỉ lệ Flaky test qua 10 lượt chạy CI.
+- *(Hiện tại chưa có file ảnh trong thư mục `Weekly_Reports/Week06/screenshots/`. Đang cập nhật khi hoàn tất chạy thực nghiệm 10 runs Flake Rate và kết nối Gemini API).*
 
 ---
 

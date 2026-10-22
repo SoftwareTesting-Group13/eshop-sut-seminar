@@ -61,14 +61,15 @@
 
 ### 2.3. Sinh viên 3: Trần Gia Cường (MSSV: 23120225)
 - **Tình trạng sử dụng:** Có sử dụng
-- **Công cụ:** Antigravity IDE (Gemini 2.5 Flash / Pro)
+- **Công cụ:** Antigravity IDE (Gemini 3.8 Flash)
 - **Mục đích sử dụng:**
-  - Hỗ trợ soát lỗi văn phong tiếng Anh học thuật và định dạng Markdown trong `User_Guide.md`.
-  - Tham khảo cú pháp Mermaid vẽ sơ đồ cơ chế File Locking của SQLite (Shared Lock vs Exclusive Lock).
+  - Soạn thảo kế hoạch cá nhân Tuần 6 theo phương pháp Commit-Driven kết nối với `Checklist.md`.
+  - Khởi tạo khung 7 mục chuẩn Rubric cho `User_Guide.md` và checklist đối soát nhóm.
+  - Phân tích chuyên sâu bản chất kỹ thuật 2 lỗi bắt buộc: SQLite Concurrency Lock (`SQLITE_BUSY`) và Coupon Percent Formula Bug (âm `discount_amount`).
 - **Prompt tiêu biểu:**
-  > *"Review the technical grammar and clarity of Section 6 (Mandatory Failure Modes) in User_Guide.md. Generate a clean Mermaid state/sequence diagram illustrating SQLite database locking conflict during parallel Jest runs versus sequential execution."*
+  > *"Soạn thảo Failure Mode 1 — SQLite Concurrency Lock. Phân tích rõ tại sao phải thêm cờ --runInBand (hoặc -i). Soạn thảo Failure Mode 2 — Coupon Percent Formula Bug mổ xẻ lỗi discount_amount âm trong server.js."*
 - **Đánh giá phản hồi & Hiệu chỉnh thủ công:**
-  - Sơ đồ Mermaid do AI sinh ra cần sửa lại tên các node để tránh ký tự đặc biệt gây lỗi render trên GitHub Markdown. Nội dung phân tích lỗi SQLite lock và async delay được sinh viên đối chiếu trực tiếp với mã nguồn và log chạy thực tế của SUT để đảm bảo 100% tính xác thực.
+  - AI cung cấp phân tích logic chi tiết và sơ đồ ASCII rõ ràng. Sinh viên đã trực tiếp đối chiếu lại từng dòng code trong `backend/server.js` (dòng 398-401 và 418-421) cùng `backend/tests/coupon.test.js`, đồng thời yêu cầu loại bỏ hoàn toàn các ký tự LaTeX math (`$...$`) chuyển sang ký tự Unicode chuẩn để tránh lỗi hiển thị trên GitHub.
 
 ---
 
@@ -90,7 +91,7 @@
 Mỗi thành viên lưu toàn bộ nội dung trao đổi chi tiết với AI trong thư mục `chat_logs/`:
 1. Nguyễn Ngọc Minh Tuấn: [chatlog_mtuan_slides_coupon_tests.md](./chat_logs/chatlog_mtuan_slides_coupon_tests.md)
 2. Dương Nhật Cường: [chatlog_ncuong_video_storyboard_ci.md](./chat_logs/chatlog_ncuong_video_storyboard_ci.md)
-3. Trần Gia Cường: [chatlog_gcuong_user_guide_failure_modes.md](./chat_logs/chatlog_gcuong_user_guide_failure_modes.md)
+3. Trần Gia Cường: [chatlog_gcuong_user_guide.md](./chat_logs/chatlog_gcuong_user_guide.md)
 4. Nguyễn Gia Huy: [chatlog_ghuy_worksheet_ai_triage.md](./chat_logs/chatlog_ghuy_worksheet_ai_triage.md)
 
 ---

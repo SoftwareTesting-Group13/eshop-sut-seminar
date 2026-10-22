@@ -56,7 +56,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
 
 ### 3.1. Nguyễn Ngọc Minh Tuấn (Phụ trách Bộ Slide pptx/md & Kịch bản Nghiệp vụ SUT)
 
-* [ ] **Task Tuấn 1: Thiết kế cấu trúc & biên soạn bộ Slide song song (`Seminar_Slides.pptx` & `Seminar_Slides.md`)**
+* [x] **Task Tuấn 1: Thiết kế cấu trúc & biên soạn bộ Slide song song (`Seminar_Slides.pptx` & `Seminar_Slides.md`)**
   * **Task Description:** Xây dựng khung cấu trúc và nội dung bộ slide thuyết trình tuân thủ nghiêm ngặt quy định **tối đa 15 slides**. Định dạng phong cách thiết kế chuẩn mực **chữ đen nền trắng (clean, high-contrast)** trang nhã, tập trung sơ đồ kiến trúc trực quan, biểu đồ số liệu thực nghiệm, hạn chế tối đa text dày đặc. Đối với video demo (`Demo_Screencast.mp4`), thiết kế slide tóm tắt ngắn gọn các mốc nội dung chính và đính kèm đường link dẫn trực tiếp tới video. Hoàn thành đồng bộ cả **2 phiên bản**: file trình chiếu `Seminar_Slides.pptx` và file tài liệu hóa `Seminar_Slides.md` hiển thị trực tiếp trên GitHub repository.
   * **Hours:** 4.0h
   * **Evidence:**
@@ -64,7 +64,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit thêm 2 file `Seminar_Slides.pptx` và `Seminar_Slides.md` kèm commit hash rõ ràng trên GitHub.
     * *Artifacts:* Ảnh preview giao diện file `Seminar_Slides.md` trên GitHub và file PPTX hoàn chỉnh đúng 15 trang chữ đen nền trắng có link video.
 
-* [ ] **Task Tuấn 2: Soạn nội dung Slide chuyên sâu về Failure Mode 2 & Data-Driven Testing**
+* [x] **Task Tuấn 2: Soạn nội dung Slide chuyên sâu về Failure Mode 2 & Data-Driven Testing**
   * **Task Description:** Biên soạn 2 slide chi tiết phân tích lỗi nghiệp vụ coupon percent (`discount_amount` tính ra số âm khi số tiền giảm lớn hơn tổng đơn hàng trong `server.js`). Trình bày giải pháp Data-Driven Testing (`test.each`) với 21 ca kiểm thử bao phủ toàn bộ miền giá trị biên và trường hợp dị thường.
   * **Hours:** 3.5h
   * **Evidence:**
@@ -72,7 +72,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit cập nhật nội dung slide Failure Mode 2 trên nhánh làm việc kèm hash commit.
     * *Artifacts:* Screenshot slide hiển thị rõ ràng code snippet before/after fix và bảng ma trận 21 ca kiểm thử.
 
-* [ ] **Task Tuấn 3: Bổ sung ca kiểm thử mở rộng nhánh coupon & cấu hình xuất báo cáo LCOV**
+* [x] **Task Tuấn 3: Bổ sung ca kiểm thử mở rộng nhánh coupon & cấu hình xuất báo cáo LCOV**
   * **Task Description:** Viết thêm các test cases kiểm tra phân quyền (role user vs guest khi áp mã coupon) trong `coupon.test.js`. Cấu hình script npm test xuất báo cáo độ bao phủ mã nguồn định dạng LCOV và HTML reporter (`backend/coverage/lcov-report/index.html`).
   * **Hours:** 4.0h
   * **Evidence:**
@@ -80,7 +80,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit thêm các test cases mới và cấu hình script coverage trong `backend/package.json`.
     * *Test logs:* Terminal log chạy Jest test pass 100% kèm ảnh chụp bảng HTML Code Coverage đạt chỉ tiêu.
 
-* [ ] **Task Tuấn 4: Rà soát và kiểm tra chéo tính nhất quán (Consistency Cross-Check)**
+* [x] **Task Tuấn 4: Rà soát và kiểm tra chéo tính nhất quán (Consistency Cross-Check)**
   * **Task Description:** Đối soát chéo từng thuật ngữ kỹ thuật, tên hàm, mã lỗi, đường dẫn file, tham số dòng lệnh giữa bộ Slide (`.pptx` / `.md`), tài liệu `User_Guide.md` và mã nguồn SUT thực tế để đảm bảo không có bất kỳ điểm mâu thuẫn hay lệch thông tin nào.
   * **Hours:** 2.5h
   * **Evidence:**
@@ -88,7 +88,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit chỉnh sửa các chỗ lệch thuật ngữ hoặc link dẫn trên repository.
     * *Artifacts:* Bảng checklist đối soát tính nhất quán hoàn tất không còn sai lệch.
 
-* [ ] **Task Tuấn 5: Biên soạn kịch bản thuyết minh trực tiếp tại lớp (Live Presentation Script)**
+* [x] **Task Tuấn 5: Biên soạn kịch bản thuyết minh trực tiếp tại lớp (Live Presentation Script)**
   * **Task Description:** Xây dựng tài liệu kịch bản thuyết trình trực tiếp tại lớp cho phần giới thiệu tổng quan hệ thống SUT và phần diễn giải demo Failure Mode 2. Phân chia rõ ràng lời thoại, mốc thời gian (pitch 10m, live demo 10m) và phân công người phối hợp trên máy chiếu.
   * **Hours:** 3.0h
   * **Evidence:**
@@ -100,7 +100,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
 
 ### 3.2. Dương Nhật Cường (Phụ trách Video Screencast & Hoàn thiện CI/CD Pipeline)
 
-* [ ] **Task D.N.Cường 1: Soạn kịch bản phân cảnh chi tiết (Video Storyboard & Narration Script)**
+* [x] **Task D.N.Cường 1: Soạn kịch bản phân cảnh chi tiết (Video Storyboard & Narration Script)**
   * **Task Description:** Lập kịch bản phân cảnh chi tiết (Storyboard) cho video demo screencast: phân bổ thời lượng 5–8 phút (tối đa 8 phút đúng quy định), xác định cụ thể các hành động thao tác trên màn hình (terminal, VS Code, GitHub Actions) song song với kịch bản lời dẫn thuyết minh 100% bằng tiếng Anh.
   * **Hours:** 3.5h
   * **Evidence:**
@@ -108,7 +108,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit file kịch bản `Video_Storyboard.md` lên repository kèm commit hash.
     * *Artifacts:* Bảng Storyboard chi tiết có 3 cột: Timecode, Screen Action (Thao tác màn hình), và English Narration (Lời đọc).
 
-* [ ] **Task D.N.Cường 2: Tích hợp bước Quality Gate & Branch Protection vào workflow GitHub Actions (`eshop-ci.yml`)**
+* [x] **Task D.N.Cường 2: Tích hợp bước Quality Gate & Branch Protection vào workflow GitHub Actions (`eshop-ci.yml`)**
   * **Task Description:** Hoàn thiện workflow `.github/workflows/eshop-ci.yml`: Quality Gate yêu cầu 23/23 unit test nghiệp vụ coupon được chọn pass, line coverage của `coupon-discount.js` > 70% (full backend suite chạy riêng), xuất báo cáo LCOV và cấu hình Branch Protection Required Status Checks chặn merge PR khi vi phạm để demo Fail-Fast.
   * **Hours:** 3.5h
   * **Evidence:**
@@ -144,7 +144,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
 
 ### 3.3. Trần Gia Cường (Phụ trách Tài liệu User Guide & Phân tích Kiến trúc)
 
-* [ ] **Task T.G.Cường 1: Khởi tạo và thiết kế khung tài liệu `User_Guide.md` chuẩn tiếng Anh**
+* [x] **Task T.G.Cường 1: Khởi tạo và thiết kế khung tài liệu `User_Guide.md` chuẩn tiếng Anh**
   * **Task Description:** Khởi tạo cấu trúc tài liệu `User_Guide.md` hoàn toàn bằng **tiếng Anh**, tuân thủ nghiêm ngặt rubric môn học với tối thiểu 7 phần chuyên sâu (Introduction, Installation & Setup, Quickstart / First Test, CI/CD Architecture, Advanced Pipeline Features, Failure Modes Analysis, References). Không dùng cú pháp LaTeX, dùng Unicode và Markdown chuẩn.
   * **Hours:** 3.5h
   * **Evidence:**
@@ -152,7 +152,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit khởi tạo khung file `User_Guide.md` trên nhánh làm việc riêng kèm commit hash.
     * *Artifacts:* Screenshot mục lục Table of Contents và bố cục trình bày chuẩn Markdown preview trên GitHub.
 
-* [ ] **Task T.G.Cường 2: Biên soạn chuyên sâu Mục 6: 3 Mandatory Failure Modes trong `User_Guide.md`**
+* [x] **Task T.G.Cường 2: Biên soạn chuyên sâu Mục 6: 3 Mandatory Failure Modes trong `User_Guide.md`**
   * **Task Description:** Phân tích kỹ thuật chuyên sâu cả 3 lỗi bắt buộc: (1) SQLite Lock `SQLITE_BUSY` do chạy Jest parallel và giải pháp `--runInBand`; (2) Coupon Percent Formula Bug dẫn đến `discount_amount` âm; (3) Flaky Test do async delay (`sleep` vs `await`). Mỗi lỗi có đủ 4 thành phần: Root Cause, Reproducing Code Snippet, Failure Symptoms/Error Log, Proven Fix/Workaround.
   * **Hours:** 5.0h
   * **Evidence:**
@@ -160,7 +160,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit cập nhật toàn bộ nội dung phân tích 3 Failure Modes vào `User_Guide.md`.
     * *Artifacts:* Screenshot các đoạn mã so sánh before/after và phân tích lỗi hiển thị trực quan trên tài liệu.
 
-* [ ] **Task T.G.Cường 3: Xây dựng hệ thống sơ đồ kỹ thuật Mermaid chuyên nghiệp**
+* [x] **Task T.G.Cường 3: Xây dựng hệ thống sơ đồ kỹ thuật Mermaid chuyên nghiệp**
   * **Task Description:** Thiết kế và tích hợp toàn bộ hệ thống sơ đồ kiến trúc bằng cú pháp **Mermaid** hiển thị trực tiếp trên GitHub: Sơ đồ kiến trúc tổng thể Monorepo & Test Harness, Sơ đồ luồng CI/CD Pipeline (GitHub Actions stages & cache logic), Sơ đồ cơ chế File-locking của SQLite (Shared Read vs Exclusive Write Lock).
   * **Hours:** 3.5h
   * **Evidence:**
@@ -168,7 +168,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit mã nguồn sơ đồ Mermaid vào tài liệu `User_Guide.md` kèm commit hash.
     * *Artifacts:* Screenshot các sơ đồ Mermaid render chuẩn xác, sắc nét, không vỡ khung trên GitHub viewer.
 
-* [ ] **Task T.G.Cường 4: Viết tài liệu hướng dẫn tái hiện từng bước (Step-by-Step Reproduction Guide)**
+* [x] **Task T.G.Cường 4: Viết tài liệu hướng dẫn tái hiện từng bước (Step-by-Step Reproduction Guide)**
   * **Task Description:** Soạn thảo mục hướng dẫn thực nghiệm từng bước (Step-by-Step Guide) từ khâu clone repository, cài đặt môi trường, cấu hình biến môi trường, đến các lệnh kích hoạt từng ca kiểm thử và quan sát đúng kết quả lỗi / kết quả pass trên cả máy local và GitHub Actions runner.
   * **Hours:** 3.0h
   * **Evidence:**
@@ -176,7 +176,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit bổ sung phần Reproduction Guide vào `User_Guide.md`.
     * *Test logs:* Terminal log ghi nhận các lệnh clone, npm test thực thi thành công từ A-Z.
 
-* [ ] **Task T.G.Cường 5: Rà soát học thuật tiếng Anh, kiểm tra liên kết & xuất bản `User_Guide.md`**
+* [x] **Task T.G.Cường 5: Rà soát học thuật tiếng Anh, kiểm tra liên kết & xuất bản `User_Guide.md`**
   * **Task Description:** Kiểm tra toàn diện ngữ pháp, văn phong kỹ thuật tiếng Anh (Grammar, Clarity, Technical Terms), rà soát tính toàn vẹn của tất cả các markdown links, hình ảnh đính kèm, trích dẫn tài liệu tham khảo (References chuẩn IEEE/ACM) và xuất bản bản tài liệu hoàn chỉnh.
   * **Hours:** 2.5h
   * **Evidence:**
@@ -266,27 +266,27 @@ Mỗi task lớn nên được chia nhỏ thành các **Phase** và phân rã th
 
 | STT | Mã Task | Hạng mục công việc chi tiết | Người phụ trách | Giờ (Hours) | Minh chứng chính (Evidence) | Hạn chót | Trạng thái | Sản phẩm nghiệm thu |
 | :---: | :---: | :--- | :---: | :---: | :--- | :---: | :---: | :--- |
-| **1** | `W6-01` | Khởi tạo khung User Guide tiếng Anh (≥ 7 mục) | T.G.Cường | 3.5h | Chat log, Git commit, TOC preview | Ngày 2 | [ ] | File `User_Guide.md` có đầy đủ mục lục |
-| **2** | `W6-02` | Soạn thảo chi tiết 3 Mandatory Failure Modes | T.G.Cường | 5.0h | Chat log, Git commit, Before/After code | Ngày 4 | [ ] | Mục 6 trong `User_Guide.md` sâu sắc |
-| **3** | `W6-03` | Vẽ sơ đồ Mermaid cho kiến trúc & pipeline | T.G.Cường | 3.5h | Chat log, Git commit, Mermaid render | Ngày 4 | [ ] | Các sơ đồ hiển thị đẹp trên GitHub |
-| **4** | `W6-04` | Hoàn thiện Step-by-Step Reproduction Guide | T.G.Cường | 3.0h | Chat log, Test logs, Git commit | Ngày 5 | [ ] | Các bước chạy demo có thể tái hiện 100% |
-| **5** | `W6-05` | Rà soát format Markdown & ngữ pháp tiếng Anh | T.G.Cường | 2.5h | Chat log, Link checker report, Git commit | Ngày 6 | [ ] | File `User_Guide.md` hoàn chỉnh |
-| **6** | `W6-06` | Soạn Storyboard chi tiết cho Video Screencast | D.N.Cường | 3.5h | Chat log, Git commit, Storyboard table | Ngày 2 | [ ] | Kịch bản phân cảnh 5–8 phút |
-| **7** | `W6-07` | Bổ sung Quality Gate & Branch Protection vào CI | D.N.Cường | 3.5h | Chat log, Git commit, CI Run URL | Ngày 3 | [ ] | Workflow kiểm tra pass test, coverage & PR lock |
-| **8** | `W6-08` | Quay video screencast thao tác màn hình thật | D.N.Cường | 4.5h | Chat log, Video raw 1080p, OBS timeline | Ngày 4 | [ ] | Video thô 1080p, thao tác trực tiếp IDE |
-| **9** | `W6-09` | Thu âm tiếng Anh, biên tập & nén video MP4 | D.N.Cường | 4.0h | Chat log, ffmpeg log, File Properties | Ngày 5 | [ ] | File `Demo_Screencast.mp4` (≤ 100MB, 5-8m) |
-| **10**| `W6-10` | Đóng gói bộ sản phẩm Pre-share lên Drive/Releases | D.N.Cường | 2.5h | Chat log, Drive link, GitHub Release | Ngày 6 | [ ] | Link tải trọn gói tài liệu mốc 90% |
-| **11**| `W6-11` | Soạn bộ Slide song song (`.pptx` & `.md` ≤ 15 trang) | N.N.M.Tuấn | 4.0h | Chat log, Git commit, Slide preview | Ngày 2 | [ ] | 2 file `Seminar_Slides.pptx` & `.md` |
-| **12**| `W6-12` | Hoàn thiện slide Failure Mode 2 & Data-Driven test | N.N.M.Tuấn | 3.5h | Chat log, Git commit, Slide screenshot | Ngày 4 | [ ] | Slide trực quan, có code diff & 21 tests |
-| **13**| `W6-13` | Mở rộng test suites coupon & cấu hình LCOV coverage | N.N.M.Tuấn | 4.0h | Chat log, Git commit, HTML Coverage log | Ngày 4 | [ ] | Báo cáo độ bao phủ mã nguồn backend |
-| **14**| `W6-14` | Kiểm tra tính nhất quán giữa Slide, Guide và Code | N.N.M.Tuấn | 2.5h | Chat log, Git commit, Checklist đối soát | Ngày 5 | [ ] | Thống nhất 100% thuật ngữ và số liệu |
-| **15**| `W6-15` | Soạn kịch bản thuyết minh trực tiếp buổi seminar | N.N.M.Tuấn | 3.0h | Chat log, Git commit, Script timeline | Ngày 6 | [ ] | File `Presentation_Script.md` phân vai rõ |
-| **16**| `W6-16` | Thiết kế bài tập lớp `Activity_Worksheet.md` | N.G.Huy | 4.0h | Chat log, Git commit, Worksheet preview | Ngày 2 | [ ] | Kịch bản 20–25m "Pipeline Postmortem" |
-| **17**| `W6-17` | Soạn thảo `Activity_Worksheet_AnswerKey.md` | N.G.Huy | 3.0h | Chat log, Git commit, Barem chi tiết | Ngày 3 | [ ] | Barem chấm điểm & giải thích chi tiết |
-| **18**| `W6-18` | Trích xuất Sample Failure Logs làm đề bài tập | N.G.Huy | 2.5h | Chat log, Raw CI logs, Git commit | Ngày 4 | [ ] | Thư mục `Materials/Sample_Logs/` đầy đủ |
-| **19**| `W6-19` | Kết nối & kiểm chứng Gemini API thật trong AI Triage | N.G.Huy | 4.5h | Chat log, Git commit, JSON output terminal | Ngày 5 | [ ] | Script xuất Cây giả thuyết hoàn chỉnh |
-| **20**| `W6-20` | Chạy đo đạc Flake Rate (10 runs) & tổng hợp Metrics | N.G.Huy | 4.0h | Chat log, 10 CI run screenshots, Git commit | Ngày 5 | [ ] | Bảng số liệu hoàn chỉnh đưa vào Slide/Guide |
-| **21**| `W6-21` | Tổng hợp hồ sơ Weekly Report Tuần 6 (PDF, AI, Git) | D.N.Cường | 2.0h | Chat log, Commit logs, Báo cáo hoàn tất | Ngày 6 | [ ] | Thư mục `Weekly_Reports/Week06/` hoàn tất |
+| **1** | `W6-01` | Khởi tạo khung User Guide tiếng Anh (≥ 7 mục) | T.G.Cường | 3.5h | Chat log, Git commit, TOC preview | Ngày 2 | [x] Hoàn thành | File `User_Guide.md` có đầy đủ mục lục |
+| **2** | `W6-02` | Soạn thảo chi tiết 3 Mandatory Failure Modes | T.G.Cường | 5.0h | Chat log, Git commit, Before/After code | Ngày 4 | [x] Hoàn thành | Mục 6 trong `User_Guide.md` sâu sắc |
+| **3** | `W6-03` | Vẽ sơ đồ Mermaid cho kiến trúc & pipeline | T.G.Cường | 3.5h | Chat log, Git commit, Mermaid render | Ngày 4 | [x] Hoàn thành | Các sơ đồ hiển thị đẹp trên GitHub |
+| **4** | `W6-04` | Hoàn thiện Step-by-Step Reproduction Guide | T.G.Cường | 3.0h | Chat log, Test logs, Git commit | Ngày 5 | [x] Hoàn thành | Các bước chạy demo có thể tái hiện 100% |
+| **5** | `W6-05` | Rà soát format Markdown & ngữ pháp tiếng Anh | T.G.Cường | 2.5h | Chat log, Link checker report, Git commit | Ngày 6 | [x] Hoàn thành | File `User_Guide.md` hoàn chỉnh |
+| **6** | `W6-06` | Soạn Storyboard chi tiết cho Video Screencast | D.N.Cường | 3.5h | Chat log, Git commit, Storyboard table | Ngày 2 | [x] Hoàn thành | Kịch bản phân cảnh 5–8 phút |
+| **7** | `W6-07` | Bổ sung Quality Gate & Branch Protection vào CI | D.N.Cường | 3.5h | Chat log, Git commit, CI Run URL | Ngày 3 | [x] Hoàn thành | Workflow kiểm tra pass test, coverage & PR lock |
+| **8** | `W6-08` | Quay video screencast thao tác màn hình thật | D.N.Cường | 4.5h | Chat log, Video raw 1080p, OBS timeline | Ngày 4 | [ ] Đang làm | Video thô 1080p, thao tác trực tiếp IDE |
+| **9** | `W6-09` | Thu âm tiếng Anh, biên tập & nén video MP4 | D.N.Cường | 4.0h | Chat log, ffmpeg log, File Properties | Ngày 5 | [ ] Đang làm | File `Demo_Screencast.mp4` (≤ 100MB, 5-8m) |
+| **10**| `W6-10` | Đóng gói bộ sản phẩm Pre-share lên Drive/Releases | D.N.Cường | 2.5h | Chat log, Drive link, GitHub Release | Ngày 6 | [ ] Chưa hoàn thành | Link tải trọn gói tài liệu mốc 90% |
+| **11**| `W6-11` | Soạn bộ Slide song song (`.pptx` & `.md` ≤ 15 trang) | N.N.M.Tuấn | 4.0h | Chat log, Git commit, Slide preview | Ngày 2 | [x] Hoàn thành | 2 file `Seminar_Slides.pptx` & `.md` |
+| **12**| `W6-12` | Hoàn thiện slide Failure Mode 2 & Data-Driven test | N.N.M.Tuấn | 3.5h | Chat log, Git commit, Slide screenshot | Ngày 4 | [x] Hoàn thành | Slide trực quan, có code diff & 21 tests |
+| **13**| `W6-13` | Mở rộng test suites coupon & cấu hình LCOV coverage | N.N.M.Tuấn | 4.0h | Chat log, Git commit, HTML Coverage log | Ngày 4 | [x] Hoàn thành | Báo cáo độ bao phủ mã nguồn backend |
+| **14**| `W6-14` | Kiểm tra tính nhất quán giữa Slide, Guide và Code | N.N.M.Tuấn | 2.5h | Chat log, Git commit, Checklist đối soát | Ngày 5 | [x] Hoàn thành | Thống nhất 100% thuật ngữ và số liệu |
+| **15**| `W6-15` | Soạn kịch bản thuyết minh trực tiếp buổi seminar | N.N.M.Tuấn | 3.0h | Chat log, Git commit, Script timeline | Ngày 6 | [x] Hoàn thành | File `Presentation_Script.md` phân vai rõ |
+| **16**| `W6-16` | Thiết kế bài tập lớp `Activity_Worksheet.md` | N.G.Huy | 4.0h | Chat log, Git commit, Worksheet preview | Ngày 2 | [ ] Đang làm | Kịch bản 20–25m "Pipeline Postmortem" |
+| **17**| `W6-17` | Soạn thảo `Activity_Worksheet_AnswerKey.md` | N.G.Huy | 3.0h | Chat log, Git commit, Barem chi tiết | Ngày 3 | [ ] Đang làm | Barem chấm điểm & giải thích chi tiết |
+| **18**| `W6-18` | Trích xuất Sample Failure Logs làm đề bài tập | N.G.Huy | 2.5h | Chat log, Raw CI logs, Git commit | Ngày 4 | [ ] Đang làm | Thư mục `Materials/Sample_Logs/` đầy đủ |
+| **19**| `W6-19` | Kết nối & kiểm chứng Gemini API thật trong AI Triage | N.G.Huy | 4.5h | Chat log, Git commit, JSON output terminal | Ngày 5 | [ ] Đang làm | Script xuất Cây giả thuyết hoàn chỉnh |
+| **20**| `W6-20` | Chạy đo đạc Flake Rate (10 runs) & tổng hợp Metrics | N.G.Huy | 4.0h | Chat log, 10 CI run screenshots, Git commit | Ngày 5 | [ ] Đang làm | Bảng số liệu hoàn chỉnh đưa vào Slide/Guide |
+| **21**| `W6-21` | Tổng hợp hồ sơ Weekly Report Tuần 6 (PDF, AI, Git) | D.N.Cường | 2.0h | Chat log, Commit logs, Báo cáo hoàn tất | Ngày 6 | [ ] Đang làm | Thư mục `Weekly_Reports/Week06/` hoàn tất |
 
 ---
 
