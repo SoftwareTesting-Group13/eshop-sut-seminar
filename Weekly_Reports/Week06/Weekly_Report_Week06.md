@@ -29,12 +29,12 @@
    - Thuyết minh 100% bằng tiếng Anh (English Narration) rõ ràng, không nhạc nền; thời lượng đạt chuẩn 5 – 8 phút; dung lượng file nén đạt chuẩn **≤ 100MB** ở độ phân giải 1080p.
 
 4. **Về mặt Bài tập Tương tác trên lớp (`Activity_Worksheet.md` & `Activity_Worksheet_AnswerKey.md`):**
-   - Thiết kế kịch bản thực hành "Pipeline Postmortem" thời lượng 20–25 phút với log lỗi thực tế từ hệ thống SUT.
-   - Đã có file đáp án chi tiết và barem chấm điểm (Rubric) phục vụ điều phối và đánh giá trên lớp.
+   - Đã tạo bản nháp [Activity_Worksheet.md](../../Activity_Worksheet.md) với lịch 23 phút, hồ sơ SQLite/coupon/async, phần thảo luận cache và thang điểm 10.
+   - [Danh mục nguồn log](../../Materials/Sample_Logs/README.md) phân biệt tài liệu local tuần 5 với raw CI logs còn chờ thu thập. Chưa nghiệm thu W6-16; Answer Key và barem chi tiết W6-17 chưa soạn trong phiên này.
 
 5. **Về mặt Đo đạc Thực nghiệm (Empirical Metrics) & AI Triage:**
-   - Chạy thực nghiệm lặp lại 10 lần ca Flaky Test trên GitHub Actions để đo Flake Rate thực tế trước và sau khi fix.
-   - Nâng cấp script `.github/scripts/ai_triage.py` kết nối trực tiếp Gemini API với API key thật để sinh Cây giả thuyết (Hypothesis Tree) từ log lỗi.
+   - Phần việc W6-19/W6-20 của Nguyễn Gia Huy chưa có kết quả Gemini thật hoặc bộ số liệu 10 lượt CI được bổ sung trong phiên ngày 22/10/2026.
+   - Mã AI Triage và demo Flaky kế thừa từ tuần 5; chưa dùng chúng để khẳng định đã hoàn thành kiểm chứng API hoặc benchmark của tuần 6.
 
 6. **Về mặt Đóng gói & Pre-share:**
    - Đóng gói toàn bộ sản phẩm mốc 90% lên Google Drive và GitHub Releases sẵn sàng nộp và chia sẻ cho lớp trước buổi báo cáo ít nhất 3 ngày làm việc.
@@ -48,7 +48,7 @@
 | **Nguyễn Ngọc Minh Tuấn** | Lead soạn bộ Slide (pptx & md ≤ 15 trang), mở rộng test suites coupon & cấu hình LCOV coverage | 17.0h | Đang làm | Thiết kế khung Slide pptx/md 15 trang; bổ sung 21 ca test Data-Driven cho coupon; cấu hình Jest HTML coverage. |
 | **Dương Nhật Cường** | Lead sản xuất Video Screencast (1080p, ≤ 100MB, English narration), Quality Gate CI, đóng gói Pre-share | 18.0h | Đang làm | Lập kịch bản Storyboard, quay màn hình thao tác thật, thu âm tiếng Anh, nén video ffmpeg ≤ 100MB, đóng gói Drive. **Quality Gate CI (W6-07) đã xong**: workflow có job `Quality Gate (100% Tests & Coverage >= 80%)` kiểm tra 100% suite pass + ngưỡng coverage 80% + xuất LCOV, Branch Protection Rules đã bật trên `main` (PR #7 đang ở trạng thái `blocked` — đúng cơ chế Fail-Fast cần demo). |
 | **Trần Gia Cường** | Lead biên soạn `User_Guide.md` tiếng Anh, phân tích 3 Failure Modes, vẽ sơ đồ Mermaid, Step-by-Step Guide | 17.5h | Đang làm | Hoàn thành khung 7 mục User Guide tiếng Anh, phân tích sâu 3 Failure Modes, tích hợp sơ đồ Mermaid, kiểm tra liên kết. |
-| **Nguyễn Gia Huy** | Lead thiết kế `Activity_Worksheet.md` & Answer Key, nâng cấp AI Triage Gemini API, đo đạc Metrics Flake Rate | 18.0h | Đang làm | Soạn kịch bản Postmortem 20-25m, barem điểm chi tiết, trích xuất sample logs, kết nối Gemini API thật, chạy 10 runs Flake rate. |
+| **Nguyễn Gia Huy** | Lead thiết kế `Activity_Worksheet.md` & Answer Key, nâng cấp AI Triage Gemini API, đo đạc Metrics Flake Rate | 18.0h | Đang làm | W6-16: đã có bản nháp Worksheet 23 phút và danh mục nguồn log; chờ rà soát nội dung, thu thập raw CI logs và ảnh preview. W6-17 đến W6-20 chưa nghiệm thu. 18.0h là giờ kế hoạch. |
 
 ---
 
@@ -63,7 +63,7 @@
 * **Thư mục Video Demo:** [videos/](./videos/).
 * **Tài liệu User Guide chuyên sâu:** [User_Guide.md](../../User_Guide.md) *(hoặc tại thư mục nghiệm thu)*.
 * **Bộ Slide thuyết trình:** `Seminar_Slides.pptx` & `Seminar_Slides.md`.
-* **Bài tập tương tác trên lớp:** `Activity_Worksheet.md` & `Activity_Worksheet_AnswerKey.md`.
+* **Bài tập tương tác trên lớp:** [Activity_Worksheet.md](../../Activity_Worksheet.md) (bản nháp); `Activity_Worksheet_AnswerKey.md` chưa soạn trong phiên này.
 
 ---
 
@@ -100,10 +100,10 @@
 ### 4.4. Minh chứng nhóm Nguyễn Gia Huy (`ghuy_`)
 1. **Minh chứng ghuy-1: Giao diện Bài tập Worksheet & Answer Key**
    - File: `ghuy_01_worksheet_preview.png`, `ghuy_02_answerkey_rubric.png`
-   - Mô tả: Đề bài "Pipeline Postmortem" và thang điểm chấm bài tập trên lớp.
+   - Trạng thái: Tên file dự kiến, chưa có ảnh được cung cấp trong phiên này. Sau khi rà soát bản nháp, chụp preview Worksheet; ảnh Answer Key bổ sung khi làm W6-17.
 2. **Minh chứng ghuy-2: Kết quả chạy AI Triage Gemini API & Thống kê 10 runs Flake Rate**
    - File: `ghuy_04_ai_triage_gemini_output.png`, `ghuy_05_flake_rate_10runs.png`
-   - Mô tả: Output phân tích log lỗi thực tế từ Gemini API và bảng đo đạc tỉ lệ Flaky test qua 10 lượt chạy CI.
+   - Trạng thái: Minh chứng cần thu thập ở W6-19/W6-20; chưa có output Gemini thật hoặc bảng 10 lượt CI được bổ sung trong phiên này.
 
 ---
 

@@ -66,12 +66,20 @@ git log --oneline --graph -n 20
 * `style(guide): review academic english grammar, markdown formatting and link integrity`
 
 ### 3.4. Thành viên 4: Nguyễn Gia Huy (`GiaHuyHCMUS05`)
-*Nhánh làm việc chính: `feature/worksheet-and-ai-triage`*
-* `docs(worksheet): create Activity_Worksheet.md for Pipeline Postmortem session`
-* `docs(worksheet): add Activity_Worksheet_AnswerKey.md with grading rubric`
-* `data(logs): package sample ci failure logs for classroom activity`
-* `feat(ai-triage): integrate live gemini api client to generate hypothesis tree`
-* `test(flake-rate): execute 10 runs benchmark for flaky test and summarize empirical metrics`
+*Nhánh làm việc: `feature/giahuy-week6-worksheet`.*
+
+**Nhật ký thật trích xuất đến `a2cb8c4`, giờ Việt Nam (UTC+7):**
+
+* **[a2cb8c4]** 22/10/2026 11:46 — `docs(worksheet): draft Pipeline Postmortem classroom activity`.
+* Phạm vi: 2 file mới, 226 dòng thêm, 0 dòng xóa. Đây là commit bản nháp,
+  chưa phải nghiệm thu toàn bộ W6-16. Chưa gồm commit cập nhật hồ sơ này.
+
+**Các bước còn dự kiến, chưa ghi nhận là commit đã có:**
+
+* Hoàn thiện Worksheet sau khi rà soát và chọn bộ log CI.
+* Soạn `Activity_Worksheet_AnswerKey.md` với barem chi tiết.
+* Đóng gói sample CI logs có nguồn kiểm chứng.
+* Kiểm chứng Gemini API thật và đo 10 lượt Flaky trên CI.
 
 ---
 
@@ -82,5 +90,9 @@ git log --oneline --graph -n 20
 | 1 | Nguyễn Ngọc Minh Tuấn | `nnmt2810` | 5 | ~650 | ~120 | 25% |
 | 2 | Dương Nhật Cường | `cuogne` | 5 | ~580 | ~90 | 25% |
 | 3 | Trần Gia Cường | `trancuonG05` | 5 | ~920 | ~110 | 25% |
-| 4 | Nguyễn Gia Huy | `GiaHuyHCMUS05` | 5 | ~710 | ~80 | 25% |
-| **Tổng cộng** | **Nhóm 13** | — | **20** | **~2,860** | **~400** | **100%** |
+| 4 | Nguyễn Gia Huy | `GiaHuyHCMUS05` | 1 | 226 | 0 | Chưa đối soát |
+| **Tổng cộng** | **Nhóm 13** | — | **Chưa đối soát** | **Chưa đối soát** | **Chưa đối soát** | **Chưa đối soát** |
+
+Số liệu của Nguyễn Gia Huy là bản trích xuất đến `a2cb8c4`, chưa tính commit cập
+nhật hồ sơ. Các hàng thành viên khác được giữ theo bản kê khai của nhóm; chưa
+đối soát lại nên chưa chốt tổng cộng hoặc tỷ lệ đóng góp.

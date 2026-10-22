@@ -17,7 +17,7 @@
 | 1 | Nguyễn Ngọc Minh Tuấn | 23120102 | Có dùng | Claude 3.5 Sonnet | 35% |
 | 2 | Dương Nhật Cường | 23120223 | Có dùng | OpenCode / ChatGPT | 35% |
 | 3 | Trần Gia Cường | 23120225 | Có dùng | Antigravity IDE (Gemini 2.5 Flash / Pro) | 35% |
-| 4 | Nguyễn Gia Huy | 23120273 | Có dùng | OpenAI Codex / Google Gemini API | 40% |
+| 4 | Nguyễn Gia Huy | 23120273 | Có dùng | OpenAI Codex | 40% |
 
 ---
 
@@ -70,14 +70,22 @@
 
 ### 2.4. Sinh viên 4: Nguyễn Gia Huy (MSSV: 23120273)
 - **Tình trạng sử dụng:** Có sử dụng
-- **Công cụ:** OpenAI Codex / Google Gemini API (google-generativeai SDK)
+- **Công cụ:** OpenAI Codex
+- **Thời điểm cập nhật:** 22/10/2026 (giờ Việt Nam).
 - **Mục đích sử dụng:**
-  - Hỗ trợ hoàn thiện logic kết nối Gemini API thật trong file script `.github/scripts/ai_triage.py`.
-  - Tư vấn thiết kế kịch bản bài tập lớp "Pipeline Postmortem" thời lượng 20-25 phút và barem chấm điểm.
+  - Đọc kế hoạch tuần 6, xác định thứ tự thực hiện các nhiệm vụ của Nguyễn Gia Huy.
+  - Hỗ trợ soạn bản nháp `Activity_Worksheet.md`: hoạt động 23 phút, câu hỏi điều tra SQLite lock, coupon percent, async delay và phân biệt cache miss với lỗi pipeline.
+  - Rà soát mã nguồn và tài liệu hiện có để xác định phiên bản sự cố, lập danh mục nguồn log cần thu thập trong `Materials/Sample_Logs/README.md`.
 - **Prompt tiêu biểu:**
-  > *"Cung cấp đoạn mã Python sử dụng google-generativeai gọi model gemini-1.5-flash để phân tích raw test failure logs và trả về cấu trúc JSON nghiêm ngặt gồm root_cause_hypotheses, evidence_lines, và recommended_fixes."*
+  > "hãy đọc nhiệm vụ tuần 6 của tôi"
+  >
+  > "bắt đầu từ đâu đây kkk"
+  - Sau khi Codex đề xuất chuẩn bị nhánh riêng và viết bản nháp Worksheet trước, sinh viên trả lời "ok". Đây là các lời nhắn thực tế trong phiên, không phải prompt kỹ thuật được dựng lại.
 - **Đánh giá phản hồi & Hiệu chỉnh thủ công:**
-  - AI sinh code ban đầu dùng SDK phiên bản cũ gây lỗi cú pháp khi gọi API. Sinh viên đã tự tra cứu tài liệu mới nhất của Google GenAI SDK để sửa lại cấu trúc khởi tạo client và parse JSON an toàn khi Gemini trả về markdown code blocks.
+  - AI tạo khung bài tập có lịch 23 phút, chỗ điền câu trả lời và phân bổ 10 điểm; phù hợp để rà soát trước khi chốt dữ liệu đầu vào.
+  - Codex đối chiếu mã hiện tại và commit `6129c98`: công thức coupon trên main đã được sửa, nên log tuần 5 được ghi rõ là sự cố lịch sử. Log local và nguồn CI còn thiếu được phân biệt trong danh mục.
+  - Đã kiểm tra các liên kết nội bộ và code fence Markdown; chưa có phản biện của nhóm, thử hoạt động trên lớp hoặc ảnh preview do sinh viên cung cấp trong phiên này.
+  - Chưa soạn Answer Key, chưa thu thập bộ raw CI logs tuần 6, chưa gọi Gemini thật hoặc chạy benchmark 10 lượt trên CI trong phiên này. Không ghi nhận các bước đó là đã hoàn thành.
 
 ---
 
