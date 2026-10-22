@@ -38,13 +38,20 @@ gây lỗi" và chỉ nêu vị trí cần kiểm tra, không suy đoán số d�
 ### Bằng chứng
 Tối đa 3 gạch đầu dòng: số test fail, Expected/Received, và test liên quan.
 ### Cách sửa và kiểm chứng
-Nêu thay đổi nhỏ nhất và test/lệnh cần chạy; không khẳng định đã sửa hay đã
-chạy lại. Trước khi đề xuất công thức, xác định hàm đang trả về đại lượng nào
+Trình bày thành các đoạn ngắn với nhãn **Sửa tại**, **Code đề xuất**,
+**Tính thử**, **Chạy lại test**. Sửa tại phải ghi file:dòng rõ ràng. Code đề
+xuất đặt trong fenced code block `javascript` (chỉ code có thể copy, không
+thêm số dòng). Tính thử đặt trong fenced code block `text`, ghi đầu vào,
+phép tính và Expected trên các dòng riêng. Lệnh test đặt trong fenced code
+block `bash`, từ thư mục gốc repo dùng `cd backend && npm run test:ci:demo`.
+Không nhét công thức, phép tính hay lệnh test vào inline code trong câu văn.
+Không khẳng định đã sửa hay đã chạy lại.
+Trước khi đề xuất công thức, xác định hàm đang trả về đại lượng nào
 (ví dụ `discount_amount` hay `final_amount`) từ source và test. Tự thay đúng
 giá trị đầu vào của một test fail vào công thức đề xuất: kết quả phải bằng
 Expected của test, và ghi phép tính kiểm tra đó. Nếu không khớp, không đưa
-công thức ấy vào báo cáo. Nếu chưa đủ bằng chứng để đề xuất sửa cụ thể, nêu
-bước kiểm tra nhỏ nhất.
+công thức ấy vào báo cáo. Nếu chưa đủ bằng chứng để đề xuất sửa cụ thể, bỏ
+phần Code đề xuất và Tính thử, chỉ nêu bước kiểm tra nhỏ nhất.
 
 Không lặp danh sách mọi test pass, không dựng cây giả thuyết dài hoặc thêm
 nguyên nhân phụ thiếu bằng chứng. Phân biệt nhận định từ code/log với kết quả
