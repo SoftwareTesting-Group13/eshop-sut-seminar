@@ -71,21 +71,22 @@
 ### 2.4. Sinh viên 4: Nguyễn Gia Huy (MSSV: 23120273)
 - **Tình trạng sử dụng:** Có sử dụng
 - **Công cụ:** OpenAI Codex
-- **Thời điểm cập nhật:** 22/10/2026 (giờ Việt Nam).
 - **Mục đích sử dụng:**
-  - Đọc kế hoạch tuần 6, xác định thứ tự thực hiện các nhiệm vụ của Nguyễn Gia Huy.
-  - Hỗ trợ soạn bản nháp `Activity_Worksheet.md`: hoạt động 23 phút, câu hỏi điều tra SQLite lock, coupon percent, async delay và phân biệt cache miss với lỗi pipeline.
-  - Rà soát mã nguồn và tài liệu hiện có để xác định phiên bản sự cố, lập danh mục nguồn log cần thu thập trong `Materials/Sample_Logs/README.md`.
+  - Hỗ trợ thiết kế `Activity_Worksheet.md` cho hoạt động nhóm "Pipeline Postmortem": phân tích lỗi SQLite lock, coupon percent, async delay và trạng thái cache trong pipeline.
+  - Gợi ý phân bổ thời gian, thang điểm và cách trình bày câu hỏi; soạn hướng dẫn điều phối và danh mục nguồn log phục vụ bài tập.
+  - Hỗ trợ W6-18: tìm run GitHub Actions, tải log thật, trích dòng bằng chứng và lưu metadata; phân biệt lỗi cài dependency với trạng thái cache miss.
+  - Hỗ trợ W6-17: soạn Answer Key cho 10 câu của Worksheet, đối chiếu số liệu/log/code và chia barem từng ý.
 - **Prompt tiêu biểu:**
-  > "hãy đọc nhiệm vụ tuần 6 của tôi"
+  > **W6-16:** *"Tinh gọn Worksheet Pipeline Postmortem trong 20–25 phút về SQLite lock, coupon percent, async delay và cache; chia thang điểm 10, thêm chỗ trả lời và tách hướng dẫn điều phối. Sinh viên đọc log/code và đề xuất cách kiểm chứng, không bắt buộc chạy test trên lớp."*
   >
-  > "bắt đầu từ đâu đây kkk"
-  - Sau khi Codex đề xuất chuẩn bị nhánh riêng và viết bản nháp Worksheet trước, sinh viên trả lời "ok". Đây là các lời nhắn thực tế trong phiên, không phải prompt kỹ thuật được dựng lại.
+  > *"Thực hiện W6-18: thu thập Sample CI Failure Logs cho bài tập Pipeline Postmortem."*
 - **Đánh giá phản hồi & Hiệu chỉnh thủ công:**
-  - AI tạo khung bài tập có lịch 23 phút, chỗ điền câu trả lời và phân bổ 10 điểm; phù hợp để rà soát trước khi chốt dữ liệu đầu vào.
-  - Codex đối chiếu mã hiện tại và commit `6129c98`: công thức coupon trên main đã được sửa, nên log tuần 5 được ghi rõ là sự cố lịch sử. Log local và nguồn CI còn thiếu được phân biệt trong danh mục.
-  - Đã kiểm tra các liên kết nội bộ và code fence Markdown; chưa có phản biện của nhóm, thử hoạt động trên lớp hoặc ảnh preview do sinh viên cung cấp trong phiên này.
-  - Chưa soạn Answer Key, chưa thu thập bộ raw CI logs tuần 6, chưa gọi Gemini thật hoặc chạy benchmark 10 lượt trên CI trong phiên này. Không ghi nhận các bước đó là đã hoàn thành.
+  - Bản nháp ban đầu có nhiều câu hỏi phụ, dễ vượt thời lượng. Sau trao đổi, nội dung được tinh gọn thành hoạt động 23 phút, tổng 10 điểm; sinh viên đọc hồ sơ và viết lệnh kiểm tra đề xuất. Hướng dẫn tổ chức được tách sang `Materials/Worksheet_Facilitator_Notes.md`, phần trình bày giới hạn hai nhóm, mỗi nhóm 60 giây.
+  - Codex đã đối chiếu mã nguồn và log tham khảo, phát hiện công thức coupon hiện tại đã được sửa nên ghi rõ log tuần 5 thuộc phiên bản sự cố cũ; đồng thời kiểm tra liên kết và định dạng Markdown. Sinh viên còn cần rà soát nội dung, chọn log CI thật và kiểm tra bố cục trước khi nghiệm thu.
+  - Đã tải 6 log job CI qua REST API, lưu bản raw, trích đoạn đánh số dòng, metadata và source đúng commit. Đối chiếu cache cho thấy miss vẫn có run pass; một run khác fail vì package/lockfile không đồng bộ. Các số `~60s/~5s` trong script cũ là nội dung ghi cứng, không dùng làm số đo.
+  - Không tìm thấy SQLite lock trong 25 run lịch sử đã rà soát nên đã tạo demo trên nhánh riêng, không sửa code nghiệp vụ. Run `39741620266`, SHA `485a778`, có job parallel báo SQLITE_BUSY và serial pass. Đây là tái hiện có kiểm soát bằng hai kết nối trong một tiến trình, không phải bằng chứng SUT lỗi do nhiều Jest worker. Codex kiểm tra log/source; sinh viên còn cần đối chiếu và chụp ảnh minh chứng.
+  - Đã có bản soạn Answer Key với đáp án, log, file/hàm/dòng và revision, nguyên nhân cùng hướng sửa/cách xác nhận từng câu; barem đề xuất 3 + 3 + 3 + 1 = 10 chưa được nhóm duyệt. Đối chiếu coupon xác định discount_amount âm, final_amount dương vượt tổng, khác diễn giải điều kiện ở kế hoạch dòng 68. Đáp án giữ rõ nguồn CI/local và giới hạn giả thuyết; sinh viên còn cần đọc lại, thử chấm và chụp preview.
+  - Đã rà soát để đóng gói local bộ Worksheet, Answer Key và 6 raw log CI. Có 2 ảnh Worksheet, 1 ảnh barem và 7 ảnh CI/index do sinh viên chụp, Codex đã mở kiểm tra. Barem chưa được nhóm duyệt; chưa push tài liệu, thử chấm với lớp, kiểm chứng Gemini hoặc đo 10 lượt CI.
 
 ---
 

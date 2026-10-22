@@ -1,0 +1,38 @@
+# Trích đoạn CI thật; Lxxxx là số dòng trong bản raw đã che dữ liệu.
+# Giữ timestamp; chỉ bỏ ANSI màu ở bản trích. Các khoảng không liệt kê đã lược bỏ.
+# Run: https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/38790291172
+
+# Raw lines 124-149
+L0124 | 2026-10-15T19:00:20.9954304Z with:
+L0125 | 2026-10-15T19:00:20.9954718Z   path: backend/node_modules
+L0126 | 2026-10-15T19:00:20.9955348Z   key: Linux-node22-3572f38c27b0dec222dcf04a579de74d67f647cd34523411f1c367eee1bb35e7
+L0127 | 2026-10-15T19:00:20.9956026Z   restore-keys: Linux-node22-
+L0128 | 
+L0129 | 2026-10-15T19:00:20.9956504Z   enableCrossOsArchive: false
+L0130 | 2026-10-15T19:00:20.9956948Z   fail-on-cache-miss: false
+L0131 | 2026-10-15T19:00:20.9957380Z   lookup-only: false
+L0132 | 2026-10-15T19:00:20.9957789Z   save-always: false
+L0133 | 2026-10-15T19:00:20.9958193Z ##[endgroup]
+L0134 | 2026-10-15T19:00:21.1065504Z (node:2336) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+L0135 | 2026-10-15T19:00:21.1067208Z (Use `node --trace-deprecation ...` to show where the warning was created)
+L0136 | 2026-10-15T19:00:21.2510755Z Cache not found for input keys: Linux-node22-3572f38c27b0dec222dcf04a579de74d67f647cd34523411f1c367eee1bb35e7, Linux-node22-
+L0137 | 2026-10-15T19:00:21.2650381Z ##[group]Run npm ci
+L0138 | 2026-10-15T19:00:21.2650901Z npm ci
+L0139 | 2026-10-15T19:00:21.2878992Z shell: /usr/bin/bash -e {0}
+L0140 | 2026-10-15T19:00:21.2879513Z ##[endgroup]
+L0141 | 2026-10-15T19:00:22.1830948Z npm error code EUSAGE
+L0142 | 2026-10-15T19:00:22.1834664Z npm error
+L0143 | 2026-10-15T19:00:22.1836401Z npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
+L0144 | 2026-10-15T19:00:22.1837781Z npm error
+L0145 | 2026-10-15T19:00:22.1838375Z npm error Missing: @emnapi/core@1.11.3 from lock file
+L0146 | 2026-10-15T19:00:22.1839153Z npm error Missing: @emnapi/runtime@1.11.3 from lock file
+L0147 | 2026-10-15T19:00:22.1840247Z npm error Invalid: lock file's @emnapi/wasi-threads@1.2.1 does not satisfy @emnapi/wasi-threads@1.2.3
+L0148 | 2026-10-15T19:00:22.1841275Z npm error Missing: @emnapi/core@1.10.0 from lock file
+L0149 | 2026-10-15T19:00:22.1842027Z npm error Missing: @emnapi/runtime@1.10.0 from lock file
+
+# Raw lines 168-171
+L0168 | 2026-10-15T19:00:22.1855222Z npm error Run "npm help ci" for more info
+L0169 | 2026-10-15T19:00:22.1856361Z npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-10-15T19_00_21_352Z-debug-0.log
+L0170 | 2026-10-15T19:00:22.2247386Z ##[error]Process completed with exit code 1.
+L0171 | 2026-10-15T19:00:22.2408282Z Post job cleanup.
+

@@ -1,0 +1,37 @@
+# Source: backend/server.js @ 6129c98350db5294f7c3127741ab5a564cab4b66
+# Exact source lines; no redactions. Lines outside this range omitted.
+S0363 | app.post("/api/apply-coupon", (req, res) => {
+S0364 |   const { code, total_amount, user_id } = req.body;
+S0365 | 
+S0366 |   if (!code)
+S0367 |     return res.status(400).json({ error: "Vui lòng nhập mã giảm giá" });
+S0368 | 
+S0369 |   db.get(
+S0370 |     "SELECT * FROM coupons WHERE code = ? AND is_active = 1",
+S0371 |     [code],
+S0372 |     (err, coupon) => {
+S0373 |       if (!coupon) {
+S0374 |         return res
+S0375 |           .status(404)
+S0376 |           .json({ error: "Mã giảm giá không tồn tại hoặc đã bị vô hiệu hóa" });
+S0377 |       }
+S0378 | 
+S0379 |       if (total_amount > coupon.min_order_amount) {
+S0380 |         const now = new Date();
+S0381 |         const expiry = new Date(coupon.expired_at);
+S0382 |         if (expiry < now) {
+S0383 |           return res.status(400).json({ error: "Mã giảm giá đã hết hạn" });
+S0384 |         }
+S0385 | 
+S0386 |         if (user_id) {
+S0387 |           db.get(
+S0388 |             "SELECT COUNT(*) as usage_count FROM coupon_usage WHERE coupon_id = ? AND user_id = ?",
+S0389 |             [coupon.id, user_id],
+S0390 |             (err, result) => {
+S0391 |               if (result.usage_count >= coupon.max_uses_per_user) {
+S0392 |                 return res.status(400).json({
+S0393 |                   error: `Bạn đã sử dụng mã này ${coupon.max_uses_per_user} lần (đã đạt giới hạn)`,
+S0394 |                 });
+S0395 |               }
+S0396 | 
+S0397 |               let discount_amount = 0;

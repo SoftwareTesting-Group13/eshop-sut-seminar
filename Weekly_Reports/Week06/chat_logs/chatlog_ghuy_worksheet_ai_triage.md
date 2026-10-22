@@ -4,7 +4,7 @@
 - **Công cụ:** OpenAI Codex; không xác định thêm tên phiên bản model từ phiên làm việc.
 - **Thời điểm:** 22/10/2026, Asia/Saigon.
 - **Nhánh:** `feature/giahuy-week6-worksheet`.
-- **Phạm vi phiên hiện tại:** bản nháp W6-16 và danh mục nguồn để chuẩn bị W6-18.
+- **Phạm vi phiên hiện tại:** đóng gói bản soạn W6-16/W6-17/W6-18, có nguồn và ảnh; barem đề xuất chưa được nhóm duyệt.
 
 ## 1. Mục tiêu công việc
 
@@ -12,23 +12,15 @@
 "Pipeline Postmortem". Chuẩn bị câu hỏi, phân công, lịch hoạt động, chỗ trả lời
 và nguồn tham khảo; không coi bản nháp là bộ đề đã có log CI và đáp án hoàn chỉnh.
 
-## 2. Prompt tiêu biểu thực tế
+## 2. Prompt tiêu biểu
 
-Người thực hiện:
+**W6-16 — Bản rút gọn của prompt rà soát Worksheet:**
 
-> hãy đọc nhiệm vụ tuần 6 của tôi
+> *"Tinh gọn Worksheet Pipeline Postmortem trong 20–25 phút về SQLite lock, coupon percent, async delay và cache; chia thang điểm 10, thêm chỗ trả lời và tách hướng dẫn điều phối. Sinh viên đọc log/code và đề xuất cách kiểm chứng, không bắt buộc chạy test trên lớp."*
 
-> bắt đầu từ đâu đây kkk
+**W6-17 — Bản rút gọn của prompt hoàn thiện Answer Key:**
 
-Codex đề xuất bắt đầu với phác thảo Worksheet, rồi chọn log CI, viết Answer Key,
-kiểm chứng Gemini và đo 10 lượt Flaky. Trước khi sửa file, chuẩn bị nhánh riêng.
-
-Người thực hiện đồng ý:
-
-> ok
-
-Đây là các lời nhắn thực tế và phần tóm tắt phản hồi, không phải bản xuất đầy đủ
-mọi thao tác công cụ hoặc một prompt kỹ thuật được dựng lại.
+> *"Hoàn thiện Answer Key khớp từng câu Worksheet: đáp án, bằng chứng log, file/hàm/dòng tại revision đã kiểm tra, nguyên nhân, hướng sửa và cách xác nhận. Đề xuất barem 10 điểm có điểm thành phần; chấp nhận lời giải khác có bằng chứng. Kiểm tra discount_amount/final_amount, ghi sai khác với kế hoạch, tránh lộ đáp án và bổ sung ghi chú điều phối."*
 
 ## 3. Nhật ký phản hồi AI và sản phẩm
 
@@ -60,14 +52,147 @@ mọi thao tác công cụ hoặc một prompt kỹ thuật được dựng lạ
 
 - Đọc bản nháp và điều chỉnh độ khó/ngôn ngữ cho lớp; chưa có xác nhận đã rà
   soát hoặc trao đổi thống nhất với các thành viên khác trong phiên này.
-- Thu thập log GitHub Actions thật và metadata để chốt câu hỏi, đặc biệt hồ sơ
-  SQLite và cache. Log local hiện có chỉ là tài liệu tham khảo khi soạn nháp.
+- Đối chiếu nguồn CI SQLite/coupon/cache tại mục 7–8. Log local hiện có chỉ là
+  tài liệu tham khảo khi soạn nháp; không thay thế log CI.
 - Mở Markdown Preview, kiểm tra bố cục và lưu ảnh thật
   `Weekly_Reports/Week06/screenshots/ghuy_01_worksheet_preview.png`.
-- Soạn Answer Key ở W6-17; chỉ nghiệm thu W6-16 sau khi đủ nội dung, nguồn và
+- Rà soát Answer Key W6-17 (đã soạn tại mục 9); chỉ nghiệm thu W6-16 sau khi đủ nội dung, nguồn và
   bằng chứng theo checklist. Chưa tạo PR, chưa push trong bước bản nháp.
 
 ## 5. Trạng thái các phần tiếp theo
 
-W6-17 đến W6-20 chưa được thực hiện trong phiên này. Chưa dùng API key, chưa
-gọi Gemini, chưa chạy benchmark 10 lượt, chưa tạo đáp án hoặc tự ký xác nhận mới.
+W6-17 đã có bản soạn tại mục 9; W6-18 cập nhật ở mục 7–8. W6-19 và W6-20 chưa
+thực hiện trong phiên này. Chưa gọi Gemini, chạy benchmark 10 lượt hoặc tự ký
+xác nhận mới.
+
+## 6. Cập nhật thiết kế Worksheet — 22/10/2026
+
+Nội dung rà soát tương ứng với prompt W6-16 tại mục 2: tinh gọn câu hỏi,
+làm rõ cách làm bài và tách ghi chú tổ chức.
+
+Codex chỉnh phiếu thành các câu hỏi ngắn, giữ 23 phút và 10 điểm. Sinh viên
+đọc hồ sơ và viết lệnh đề xuất; không bắt buộc cài repo hoặc chạy test trong giờ.
+Hai nhóm được chọn trình bày tối đa 60 giây/nhóm; mọi nhóm nộp phiếu.
+
+Tạo `Materials/Worksheet_Facilitator_Notes.md` chứa hướng dẫn chuẩn bị trích đoạn,
+điều phối và câu hỏi mở rộng, đồng thời liên kết từ danh mục Sample Logs.
+Chưa đưa trích đoạn CI vào phiếu vì bộ nguồn thật còn thiếu. Chưa có thử nghiệm
+thời lượng với sinh viên, Answer Key hoặc ảnh preview mới.
+
+## 7. Thu thập Sample CI Failure Logs — W6-18
+
+Prompt thực tế (trích phần mở đầu; lời nhắn đầy đủ còn quy định nguồn, che dữ
+liệu nhạy cảm, cấu trúc file, cách đánh giá cache và danh sách ảnh minh chứng):
+
+> Thực hiện W6-18: thu thập Sample CI Failure Logs cho bài tập Pipeline Postmortem.
+
+Codex kiểm tra workflow/source, xác nhận máy chưa có gh CLI. GitHub REST API
+cho đọc metadata công khai; tải log chưa xác thực trả HTTP 403. Sau đó dùng
+credential GitHub sẵn có từ Git Credential Manager để tải log, không lưu token.
+
+- Rà soát toàn bộ log Backend Test của 25 run được API liệt kê, theo attempt
+  mới nhất; không tìm thấy `SQLITE_BUSY` hoặc `database is locked`.
+- Chọn run `38866929295` cho coupon: Received -9000000, final_amount 10000000;
+  source `6129c98` khớp phiên bản lỗi. Không đổi code nghiệp vụ để tạo lỗi.
+- Chọn `38795826028` (miss, pass), `38847386315` (hit, pass) và `38790291172`
+  (miss, npm ci EUSAGE do lockfile không đồng bộ; test skipped) cho cache.
+- Lưu 4 log job đầy đủ, excerpt có số dòng raw, metadata job/step/SHA/UTC,
+  checksum, workflow snapshots và source coupon trong `Materials/Sample_Logs/`.
+- Giữ nguyên dấu che `***` của GitHub; không phát hiện token cần che thêm theo
+  các mẫu đã kiểm tra. Bản trích chỉ bỏ ANSI và khoảng dòng được ghi rõ.
+- Phân biệt số echo ghi cứng ~60s/~5s với timestamp thực tế; không dùng hai run
+  khác commit làm benchmark kiểm soát. Run cold được chọn cài dependency 4 giây.
+
+Tại cuối lượt thu thập ban đầu, index ghi hướng dẫn bổ sung SQLite và ảnh cần
+chụp; chưa tái hiện demo hoặc push. Kết quả SQLite tiếp theo cập nhật ở mục 8.
+Không dùng log local làm bằng chứng CI.
+
+Kiểm tra của Codex: SHA-256 và số dòng của cả 4 raw log khớp metadata; từng
+dòng excerpt khớp dòng raw sau khi bỏ ANSI; liên kết index/ghi chú điều phối
+hợp lệ, quét mẫu token không có kết quả và `git diff --check` không báo lỗi.
+Đặt quy tắc LF cho log/JSON để checksum ổn định khi checkout trên Windows.
+
+## 8. Bổ sung CI SQLite từ nhánh demo riêng
+
+Chuẩn bị worktree tách biệt từ `f50f68e` trên nhánh
+`test/giahuy-sqlite-lock-demo`. Commit `d35b932` thêm mã demo, workflow và log
+local; không sửa code nghiệp vụ hoặc dùng database SUT. Hai kết nối trong một
+tiến trình cùng ghi database tạm, `busyTimeout=0`, journal DELETE. Chế độ
+parallel giữ transaction A khi B INSERT; serial COMMIT A trước khi B ghi.
+
+Local: parallel SQLITE_BUSY / exit 1; serial hai dòng committed / exit 0.
+Đã push riêng nhánh demo. Job cài dependency của lượt CI đầu kéo dài; commit
+`485a778` bổ sung timeout và bỏ npm audit tùy chọn, giữ nguyên mã tái hiện.
+
+Run [39741620266](https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39741620266),
+attempt 1, SHA `485a77881b7c7be487af71805147bca1a1ae9d0e`:
+
+- Job `SQLite demo (parallel)` (`119699936256`): dependency install success,
+  demo SQLITE_BUSY / exit 1, job failure; upload log thành công.
+- Job `SQLite demo (serial)` (`119699936524`): COMMIT trước B INSERT,
+  `PASS committedWrites=2`, job success; upload log thành công.
+- Cùng Linux / Node 22.23.3 / SQLite 3.52.0; workflow failure là kết quả dự
+  kiến của job parallel, không tự coi các failure khác là SQLite evidence.
+
+Đã tải raw hai job, excerpt L0145–L0163, metadata và snapshot mã/workflow cùng
+SHA về nhánh Worksheet. Nguồn được ghi rõ là CI reproduction có kiểm soát,
+không phải lỗi lịch sử của SUT hay phép chạy nhiều Jest worker. Đã điều chỉnh
+A2/A3 của Worksheet cho đúng hai kết nối và hai chế độ demo.
+
+Tài liệu và log mới trên nhánh Worksheet vẫn local; demo chưa merge main.
+W6-18 có đủ ba loại nguồn yêu cầu và 7 ảnh ghuy_03a–ghuy_03g do sinh viên chụp,
+Codex đã mở kiểm tra; còn chờ rà soát cuối/commit. Hồ sơ C async vẫn dùng log local.
+
+## 9. Soạn Answer Key và barem — W6-17
+
+Đã tạo `Activity_Worksheet_AnswerKey.md` bám 10 câu A1–A3, B1–B3, C1–C3,
+D1. Mỗi câu tối đa 1 điểm, chia tiêu chí 0.25/0.5 điểm; tổng 10. Có đáp án,
+dẫn chứng dòng log/source, lệnh kiểm chứng đề xuất và cách chấp nhận câu trả
+lời tương đương. Không yêu cầu sinh viên chạy test trên lớp.
+
+- A: dùng cặp CI SQLite demo cùng SHA; phân biệt hai kết nối trong một tiến
+  trình với nhiều Jest worker, lệnh Node chỉ chạy trên nhánh demo có source.
+- B: đối chiếu input, hai giá trị Received và công thức sự cố; không quy toàn
+  bộ lỗi biên coupon cho một công thức hoặc khẳng định đã sửa/chạy lại test.
+- C: nguồn local; phân biệt độ trễ cấu hình với timestamp, hai test có hai tác
+  vụ riêng; await trong finally chỉ cleanup, cần await hoàn tất trước assertion.
+- D: install EUSAGE do package/lockfile lệch; cache miss không tự gây failure,
+  Jest skipped và không có Quality Gate trong workflow lịch sử được phát.
+
+Cập nhật liên kết Answer Key trong ghi chú điều phối và báo cáo, ghi nhận ảnh
+install failure đã nhận. Thời điểm soạn ban đầu chưa có ảnh preview Answer
+Key; ảnh và rà soát cuối cập nhật ở mục 10. W6-19/W6-20 chưa bắt đầu.
+
+Kiểm tra Codex: 10 mã câu trong đáp án khớp Worksheet; từng barem cộng đúng
+1 điểm, tổng 10; phép tính coupon sai/đúng khớp các giá trị đã dẫn. Liên kết
+file và code fence Markdown hợp lệ, `git diff --check` không báo lỗi. Không
+chạy backend test hoặc sửa nghiệp vụ trong bước soạn tài liệu này.
+
+### Rà soát bổ sung W6-17
+
+Bổ sung nguồn code/revision, nguyên nhân và tiêu chí xác nhận sau sửa cho từng
+câu; ghi barem 10 điểm là đề xuất chưa được nhóm duyệt. Lưu snapshot code C
+ở `575e6be` sau khi đối chiếu khớp file làm việc; log local C không ghi SHA lúc
+chạy nên không coi revision lượt chạy cũ đã được truy nguyên chắc chắn.
+
+Đối chiếu kế hoạch dòng 68 với source và test coupon tại `6129c98`: công thức
+sai làm discount_amount âm, rồi final_amount tăng vượt tổng. Không lặp mô tả
+âm do “tiền giảm lớn hơn tổng”; kiểm tra guard và phân biệt lỗi ngưỡng min.
+Ghi rõ cache miss khác failure install và demo SQLite khác lỗi SUT do Jest.
+
+Rà mã câu đề/đáp án một-một; phần thông tin điều kiện thí nghiệm trên phiếu là
+dữ liệu đề bài, các ô kết quả/công thức/giả thuyết vẫn trống. Bổ sung hướng dẫn
+phát dữ liệu và giữ Answer Key riêng trong tài liệu điều phối. Chưa có lượt
+chạy bản sửa, nhóm duyệt barem hoặc thử chấm mới được xác nhận.
+
+## 10. Rà soát bản đóng gói local
+
+Đã mở kiểm tra ảnh `ghuy_02_answerkey_rubric.png`: có đáp án A1, nguồn code và
+bảng chia điểm 0.5 + 0.5. Hai ảnh Worksheet và 7 ảnh CI/index cũng đã kiểm tra,
+đưa vào bộ tài liệu cùng các liên kết minh chứng. Giữ nguyên ghi chú barem
+đề xuất chưa được nhóm duyệt; chưa có thử chấm, thử thời lượng với lớp hoặc
+thông báo chấp thuận của nhóm được ghi nhận.
+
+Đóng gói tài liệu/log/ảnh trên `feature/giahuy-week6-worksheet`; chưa push
+nhánh tài liệu hoặc merge main. Nhánh demo SQLite đã push riêng trước đó.
+Không thay đổi code nghiệp vụ trong lượt đóng gói này.

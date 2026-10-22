@@ -1,0 +1,24 @@
+# Controlled GitHub Actions demo, not a historical EShop failure.
+# Run: https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39741620266
+# Lxxxx refers to the sanitized complete job raw log; ANSI removed.
+# Raw lines 145-163; all other lines omitted.
+
+L0145 | 2026-10-22T07:36:15.1846831Z node backend/demos/sqlite-lock.demo.cjs "$DEMO_MODE" 2>&1 | tee "ci-artifacts/ghuy_sqlite_${DEMO_MODE}.txt"
+L0146 | 2026-10-22T07:36:15.1901960Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+L0147 | 2026-10-22T07:36:15.1902324Z env:
+L0148 | 2026-10-22T07:36:15.1902525Z   DEMO_MODE: serial
+L0149 | 2026-10-22T07:36:15.1902736Z ##[endgroup]
+L0150 | 2026-10-22T07:36:15.2316385Z 2026-10-22T07:36:15.227Z [SQLITE-DEMO] mode=serial processCount=1 connectionCount=2 busyTimeoutMs=0
+L0151 | 2026-10-22T07:36:15.2318227Z 2026-10-22T07:36:15.231Z [SQLITE-DEMO] node=v22.23.3 platform=linux temporaryDb=true
+L0152 | 2026-10-22T07:36:15.2319863Z 2026-10-22T07:36:15.231Z [SQLITE-DEMO] run=39741620266 attempt=1 sha=485a77881b7c7be487af71805147bca1a1ae9d0e
+L0153 | 2026-10-22T07:36:15.2470740Z 2026-10-22T07:36:15.246Z [SQLITE-DEMO] sqlite=3.52.0 journalMode=DELETE sharedFile=true
+L0154 | 2026-10-22T07:36:15.2475088Z 2026-10-22T07:36:15.247Z [SQLITE-DEMO] writer=A INSERT succeeded; write transaction remains open
+L0155 | 2026-10-22T07:36:15.2485154Z 2026-10-22T07:36:15.248Z [SQLITE-DEMO] writer=A COMMIT completed before writer=B starts
+L0156 | 2026-10-22T07:36:15.2486717Z 2026-10-22T07:36:15.248Z [SQLITE-DEMO] writer=B attempting INSERT while writerATransactionOpen=false
+L0157 | 2026-10-22T07:36:15.2500270Z 2026-10-22T07:36:15.249Z [SQLITE-DEMO] PASS committedWrites=2
+L0158 | 2026-10-22T07:36:15.2505839Z 2026-10-22T07:36:15.250Z [SQLITE-DEMO] Temporary database and connections cleaned up
+L0159 | 2026-10-22T07:36:15.2640491Z ##[group]Run actions/upload-artifact@v6
+L0160 | 2026-10-22T07:36:15.2640816Z with:
+L0161 | 2026-10-22T07:36:15.2641035Z   name: ghuy-sqlite-serial
+L0162 | 2026-10-22T07:36:15.2641300Z   path: ci-artifacts/ghuy_sqlite_*.txt
+L0163 | 2026-10-22T07:36:15.2641577Z   if-no-files-found: warn
