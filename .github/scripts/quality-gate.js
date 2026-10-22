@@ -9,7 +9,7 @@
  * eshop-ci.yml`. Nó là nguồn sự thật duy nhất (single source of truth) cho
  * ngưỡng chất lượng, kiểm tra 3 tiêu chí bắt buộc:
  *
- *   1. TEST GATE   — 100% test suites phải PASS (0 suite fail, 0 test fail).
+ *   1. TEST GATE   — 100% test suites và test cases phải PASS, không skip.
  *   2. COVERAGE GATE — line coverage phải lớn hơn 70%.
  *                     Các metric khác vẫn có trong báo cáo để theo dõi.
  *   3. LCOV GATE   — Báo cáo LCOV phải được sinh ra (coverage/lcov.info).
@@ -21,7 +21,7 @@
  * CÁCH CHẠY
  *   - Trong CI (tự động, bước "Run Quality Gate" của workflow).
  *   - Local (kiểm chứng thủ công trước khi push):
- *       cd backend && npm run test:ci && cd ..
+ *       cd backend && NODE_ENV=test npm run test:ci && cd ..
  *       node .github/scripts/quality-gate.js
  *
  * BIẾN MÔI TRƯỜNG (có thể ghi đè bằng Repository/Organization Variables):
@@ -132,6 +132,7 @@ function checkTestGate() {
       passedTests: 0,
       failedTests: 0,
       failedSuiteNames: [],
+      cases: [],
     };
   }
 
@@ -145,13 +146,22 @@ function checkTestGate() {
   const failedSuiteNames = (results.testResults || [])
     .filter((suite) => suite.status !== "passed")
     .map((suite) => path.relative(path.join(REPO_ROOT, "backend"), suite.name));
+  const cases = (results.testResults || []).flatMap((suite) =>
+    (suite.assertionResults || []).map((test) => ({
+      name: test.fullName || test.title,
+      status: test.status,
+    })),
+  );
 
   const reasons = [];
   if (totalSuites === 0) reasons.push("Không có test suite nào được chạy.");
+  if (totalTests === 0) reasons.push("Không có test case nào được chạy.");
   if (failedSuites > 0) {
     reasons.push(`${failedSuites}/${totalSuites} test suite FAIL (${failedSuiteNames.join(", ")}).`);
   }
   if (failedTests > 0) reasons.push(`${failedTests} test case FAIL.`);
+  if (passedSuites !== totalSuites) reasons.push(`Chỉ ${passedSuites}/${totalSuites} test suite PASS.`);
+  if (passedTests !== totalTests) reasons.push(`Chỉ ${passedTests}/${totalTests} test case PASS (có thể có test bị skip).`);
 
   return {
     ok: reasons.length === 0,
@@ -164,6 +174,7 @@ function checkTestGate() {
     passedTests,
     failedTests,
     failedSuiteNames,
+    cases,
   };
 }
 
@@ -269,6 +280,14 @@ function buildMarkdown({ testGate, coverageGate, lcovGate, verdict }) {
     md.push(
       `- Test cases: **${testGate.passedTests}/${testGate.totalTests} PASS** (${testGate.failedTests} FAIL)`,
     );
+    if (testGate.cases.length) {
+      md.push("");
+      md.push("| Case | Kết quả |");
+      md.push("| :--- | :--- |");
+      for (const test of testGate.cases) {
+        md.push(`| ${test.name.replaceAll("|", "\\|")} | ${test.status === "passed" ? "✅ PASS" : `❌ ${test.status.toUpperCase()}`} |`);
+      }
+    }
   } else {
     md.push(`- ❌ Không đọc được kết quả test: ${testGate.reason}`);
   }
@@ -309,7 +328,7 @@ function buildMarkdown({ testGate, coverageGate, lcovGate, verdict }) {
   md.push("");
   md.push("#### 3️⃣ LCOV Report");
   md.push("");
-  if (lcovGate.available) {
+  if (lcovGate.ok) {
     md.push(
       `- ✅ Đã sinh báo cáo LCOV: \`${relPath(LCOV_FILE)}\` (${lcovGate.records} file, ${lcovGate.sizeKb.toFixed(1)} KB)`,
     );
@@ -341,6 +360,9 @@ function main() {
   if (testGate.available) {
     out(`      Suites : ${testGate.passedSuites}/${testGate.totalSuites} pass, ${testGate.failedSuites} fail`);
     out(`      Tests  : ${testGate.passedTests}/${testGate.totalTests} pass, ${testGate.failedTests} fail`);
+    for (const test of testGate.cases) {
+      out(`      ${test.status.toUpperCase()}: ${test.name}`);
+    }
     if (testGate.failedSuiteNames.length) {
       out(`      Failed : ${testGate.failedSuiteNames.join(", ")}`);
     }

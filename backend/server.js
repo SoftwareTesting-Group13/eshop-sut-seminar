@@ -3,7 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const db = require("./database");
 const jwt = require("jsonwebtoken");
-const { calculateDiscount } = require("./coupon-discount");
+const { validateCoupon, buildCouponResult } = require("./coupon-discount");
 
 const app = express();
 const PORT = 3000;
@@ -364,64 +364,36 @@ app.get("/api/coupons", authenticateToken, (req, res) => {
 app.post("/api/apply-coupon", (req, res) => {
   const { code, total_amount, user_id } = req.body;
 
-  if (!code)
-    return res.status(400).json({ error: "Vui lòng nhập mã giảm giá" });
+  if (!code) {
+    const problem = validateCoupon({ code });
+    return res.status(problem.status).json({ error: problem.error });
+  }
 
   db.get(
     "SELECT * FROM coupons WHERE code = ? AND is_active = 1",
     [code],
     (err, coupon) => {
-      if (!coupon) {
-        return res
-          .status(404)
-          .json({ error: "Mã giảm giá không tồn tại hoặc đã bị vô hiệu hóa" });
-      }
+      const problem = validateCoupon({ code, totalAmount: total_amount, coupon });
+      if (problem) return res.status(problem.status).json({ error: problem.error });
 
-      if (total_amount >= coupon.min_order_amount) {
-        const now = new Date();
-        const expiry = new Date(coupon.expired_at);
-        if (expiry < now) {
-          return res.status(400).json({ error: "Mã giảm giá đã hết hạn" });
-        }
-
-        if (user_id) {
-          db.get(
-            "SELECT COUNT(*) as usage_count FROM coupon_usage WHERE coupon_id = ? AND user_id = ?",
-            [coupon.id, user_id],
-            (err, result) => {
-              if (result.usage_count >= coupon.max_uses_per_user) {
-                return res.status(400).json({
-                  error: `Bạn đã sử dụng mã này ${coupon.max_uses_per_user} lần (đã đạt giới hạn)`,
-                });
-              }
-
-              const discount_amount = calculateDiscount(total_amount, coupon);
-
-              const final_amount = total_amount - discount_amount;
-              return res.json({
-                success: true,
-                coupon_id: coupon.id,
-                discount_amount,
-                final_amount,
-                message: `Áp dụng thành công! Giảm ${coupon.type === "percent" ? coupon.discount_value + "%" : coupon.discount_value.toLocaleString() + " ₫"}`,
-              });
-            },
-          );
-        } else {
-          const discount_amount = calculateDiscount(total_amount, coupon);
-          const final_amount = total_amount - discount_amount;
-          return res.json({
-            success: true,
-            coupon_id: coupon.id,
-            discount_amount,
-            final_amount,
-            message: `Áp dụng thành công! Giảm ${coupon.type === "percent" ? coupon.discount_value + "%" : coupon.discount_value.toLocaleString() + " ₫"}`,
-          });
-        }
-      } else {
-        return res.status(400).json({
-          error: `Đơn hàng chưa đủ giá trị tối thiểu ${coupon.min_order_amount.toLocaleString()} ₫ để áp dụng mã này`,
+      const respond = (usageCount) => {
+        const result = buildCouponResult({
+          totalAmount: total_amount,
+          coupon,
+          userId: user_id,
+          usageCount,
         });
+        return res.status(result.status).json(result.body);
+      };
+
+      if (user_id) {
+        db.get(
+          "SELECT COUNT(*) as usage_count FROM coupon_usage WHERE coupon_id = ? AND user_id = ?",
+          [coupon.id, user_id],
+          (err, result) => respond(result.usage_count),
+        );
+      } else {
+        respond(0);
       }
     },
   );
