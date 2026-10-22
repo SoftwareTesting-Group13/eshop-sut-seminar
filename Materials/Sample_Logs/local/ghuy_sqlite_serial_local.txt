@@ -1,0 +1,8 @@
+2026-10-22T07:17:47.531Z [SQLITE-DEMO] mode=serial processCount=1 connectionCount=2 busyTimeoutMs=0
+2026-10-22T07:17:47.535Z [SQLITE-DEMO] node=v24.22.0 platform=win32 temporaryDb=true
+2026-10-22T07:17:47.544Z [SQLITE-DEMO] sqlite=3.52.0 journalMode=DELETE sharedFile=true
+2026-10-22T07:17:47.545Z [SQLITE-DEMO] writer=A INSERT succeeded; write transaction remains open
+2026-10-22T07:17:47.548Z [SQLITE-DEMO] writer=A COMMIT completed before writer=B starts
+2026-10-22T07:17:47.548Z [SQLITE-DEMO] writer=B attempting INSERT while writerATransactionOpen=false
+2026-10-22T07:17:47.552Z [SQLITE-DEMO] PASS committedWrites=2
+2026-10-22T07:17:47.553Z [SQLITE-DEMO] Temporary database and connections cleaned up

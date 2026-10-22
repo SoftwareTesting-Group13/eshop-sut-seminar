@@ -1,0 +1,9 @@
+2026-10-22T07:17:47.462Z [SQLITE-DEMO] mode=parallel processCount=1 connectionCount=2 busyTimeoutMs=0
+2026-10-22T07:17:47.466Z [SQLITE-DEMO] node=v24.22.0 platform=win32 temporaryDb=true
+2026-10-22T07:17:47.477Z [SQLITE-DEMO] sqlite=3.52.0 journalMode=DELETE sharedFile=true
+2026-10-22T07:17:47.479Z [SQLITE-DEMO] writer=A INSERT succeeded; write transaction remains open
+2026-10-22T07:17:47.479Z [SQLITE-DEMO] writer=B attempting INSERT while writerATransactionOpen=true
+2026-10-22T07:17:47.479Z [SQLITE-DEMO] writer=B INSERT failed code=SQLITE_BUSY message=SQLITE_BUSY: database is locked
+2026-10-22T07:17:47.480Z [SQLITE-DEMO] writer=A ROLLBACK completed during cleanup
+2026-10-22T07:17:47.481Z [SQLITE-DEMO] Temporary database and connections cleaned up
+Error: SQLITE_BUSY: database is locked

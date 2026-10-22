@@ -1,0 +1,25 @@
+{
+  "source": "LOCAL controlled reproduction; NOT GitHub Actions",
+  "recordedAtUtc": "2026-10-22T07:17:47.572Z",
+  "node": "v24.22.0",
+  "platform": "win32",
+  "dependencySource": "Existing worksheet workspace backend/node_modules; no installation in demo worktree",
+  "results": [
+    {
+      "mode": "parallel",
+      "exitCode": 1,
+      "hasSqliteBusy": true,
+      "twoWritesCommitted": false
+    },
+    {
+      "mode": "serial",
+      "exitCode": 0,
+      "hasSqliteBusy": false,
+      "twoWritesCommitted": true
+    }
+  ],
+  "command": "node backend/demos/sqlite-lock.demo.cjs parallel|serial",
+  "runUrl": null,
+  "commitShaAtExecution": null,
+  "note": "Executed on uncommitted demo files based on f50f68e; no CI run exists."
+}
