@@ -26,6 +26,8 @@
   - [1.1 Purpose of This Guide](#11-purpose-of-this-guide)
   - [1.2 CI/CD as an Automated Test Harness](#12-cicd-as-an-automated-test-harness)
   - [1.3 SUT System Architecture & Monorepo Structure](#13-sut-system-architecture--monorepo-structure)
+    - [1.3.1 Architectural Diagram: Monorepo & CI/CD Test Harness](#131-architectural-diagram-monorepo--cicd-test-harness)
+    - [1.3.2 Monorepo Directory Layout & Component Roles](#132-monorepo-directory-layout--component-roles)
 - [2. Installation, Prerequisites & Environment Setup](#2-installation-prerequisites--environment-setup)
   - [2.1 Hardware and Software Requirements](#21-hardware-and-software-requirements)
   - [2.2 Repository Cloning](#22-repository-cloning)
@@ -41,6 +43,9 @@
   - [4.1 Pipeline Design Principles](#41-pipeline-design-principles)
   - [4.2 Dependency Caching Strategy (`actions/cache`)](#42-dependency-caching-strategy-actionscache)
   - [4.3 Quality Gates & Fail-Fast Mechanism](#43-quality-gates--fail-fast-mechanism)
+    - [4.3.1 Conceptual Foundation: Fail-Fast in CI/CD Test Harnesses](#431-conceptual-foundation-fail-fast-in-cicd-test-harnesses)
+    - [4.3.2 Architectural Diagram: CI/CD Pipeline & Quality Gate Fail-Fast Flow](#432-architectural-diagram-cicd-pipeline--quality-gate-fail-fast-flow)
+    - [4.3.3 Execution Lifecycle Step-by-Step Breakdown](#433-execution-lifecycle-step-by-step-breakdown)
   - [4.4 Pull Request Branch Protection Rules](#44-pull-request-branch-protection-rules)
 - [5. Advanced Pipeline Features](#5-advanced-pipeline-features)
   - [5.1 Code Coverage Enforcement (LCOV Reporting)](#51-code-coverage-enforcement-lcov-reporting)
@@ -48,6 +53,12 @@
   - [5.3 Specialized Assistant: AI-Powered Log Triage](#53-specialized-assistant-ai-powered-log-triage)
 - [6. Deep-Dive Analysis of 3 Mandatory Failure Modes](#6-deep-dive-analysis-of-3-mandatory-failure-modes)
   - [6.1 Failure Mode 1: SQLite File Lock Concurrency (`SQLITE_BUSY`)](#61-failure-mode-1-sqlite-file-lock-concurrency-sqlite_busy)
+    - [6.1.1 Overview & Failure Context](#611-overview--failure-context)
+    - [6.1.2 Root Cause Analysis & Diagram](#612-root-cause-analysis)
+    - [6.1.3 Reproducing Code Snippet & Command](#613-reproducing-code-snippet--command)
+    - [6.1.4 Failure Symptoms & Error Logs](#614-failure-symptoms--error-logs)
+    - [6.1.5 Step-by-Step Fix & Mitigation](#615-step-by-step-fix--mitigation)
+    - [6.1.6 Verification & Regression Testing](#616-verification--regression-testing)
   - [6.2 Failure Mode 2: Coupon Percent Formula Bug](#62-failure-mode-2-coupon-percent-formula-bug)
   - [6.3 Failure Mode 3: Flaky Test Induced by Async Delays](#63-failure-mode-3-flaky-test-induced-by-async-delays)
 - [7. References & AI Disclosure Statement](#7-references--ai-disclosure-statement)
@@ -79,9 +90,89 @@ In modern software engineering, automated unit and integration tests only delive
 2. **Quality Gate via Branch Protection:** Pull Requests cannot be merged into the `main` branch unless the automated test suite reports a 100% pass rate and satisfies minimum code coverage thresholds (≥ 80%). If a regression is introduced, the Quality Gate triggers a **Fail-Fast** shutdown, locking the GitHub merge button.
 
 ### 1.3 SUT System Architecture & Monorepo Structure
-The target System Under Test is **EShop**, an e-commerce platform organized as a modular repository with a Node.js/Express backend, SQLite relational persistence, Jest test runner, and multiple client interfaces:
+The target System Under Test is **EShop**, an e-commerce platform organized as a modular repository with a Node.js/Express backend, SQLite relational persistence, Jest test runner, and multiple client interfaces.
 
+#### 1.3.1 Architectural Diagram: Monorepo & CI/CD Test Harness
+The following architectural diagram illustrates the structural organization of the EShop Monorepo and its interaction with the Automated Test Harness and GitHub Actions CI/CD infrastructure:
+
+```mermaid
+%%{init: {
+  'flowchart': {
+    'nodeSpacing': 30,
+    'rankSpacing': 45,
+    'curve': 'basis',
+    'htmlLabels': true,
+    'subGraphTitleMargin': {
+      'top': 15,
+      'bottom': 10
+    }
+  },
+  'themeVariables': {
+    'fontSize': '20px',
+    'fontFamily': 'Segoe UI, Helvetica, Arial, sans-serif'
+  }
+}}%%
+flowchart TB
+    %% Group 1: Frontend Clients
+    subgraph Frontend ["<span style='font-size:30px; font-weight:600;'>1. Frontend Presentation Layer</span>"]
+        WebClient["<b><span style='font-size:28px;'>React Customer Portal</span></b><br/><span style='font-size:22px;'>(frontend-web)</span>"]
+        AdminClient["<b><span style='font-size:28px;'>React Admin Dashboard</span></b><br/><span style='font-size:22px;'>(frontend-admin)</span>"]
+        MobileClient["<b><span style='font-size:28px;'>Mobile App Client</span></b><br/><span style='font-size:22px;'>(frontend-mobile)</span>"]
+    end
+
+    %% Group 2: Backend SUT
+    subgraph Backend ["<span style='font-size:26px; font-weight:600;'>2. Backend Application & Storage (SUT)</span>"]
+        ExpressServer["<b><span style='font-size:28px;'>Express.js Server Core</span></b><br/><span style='font-size:22px;'>(server.js)</span>"]
+        APIRoutes["<b><span style='font-size:28px;'>REST API Controllers</span></b><br/><span style='font-size:22px;'>(Auth, Products, Coupons)</span>"]
+        SQLiteDB[("<b><span style='font-size:28px;'>SQLite3 Relational DB</span></b><br/><span style='font-size:22px;'>(database.sqlite)</span>")]
+        
+        ExpressServer --> APIRoutes
+        APIRoutes -->|SQL Read/Write| SQLiteDB
+    end
+
+    %% Group 3: Automated Test Harness
+    subgraph TestHarness ["<span style='font-size:28px; font-weight:600;'>3. Automated Test Harness (Jest)</span>"]
+        JestRunner["<b><span style='font-size:28px;'>Jest Test Engine</span></b><br/><span style='font-size:22px;'>(--runInBand, --forceExit)</span>"]
+        SupertestAgent["<b><span style='font-size:28px;'>Supertest HTTP Agent</span></b><br/><span style='font-size:22px;'>(In-Memory Virtual Calls)</span>"]
+        TestSuites["<b><span style='font-size:28px;'>Automated Test Suites</span></b><br/><span style='font-size:22px;'>(Unit & Integration)</span>"]
+        CoverageReport["<b><span style='font-size:28px;'>Coverage Engine</span></b><br/><span style='font-size:22px;'>(LCOV & HTML Reporters)</span>"]
+
+        TestSuites --> JestRunner
+        JestRunner --> SupertestAgent
+        JestRunner --> CoverageReport
+    end
+
+    %% Group 4: CI/CD Pipeline
+    subgraph CIInfrastructure ["<span style='font-size:24px; font-weight:600;'>4. CI/CD (GitHub Actions)</span>"]
+        GHAWorkflow["<b><span style='font-size:28px;'>Workflow Automation</span></b><br/><span style='font-size:22px;'>(.github/workflows/eshop-ci.yml)</span>"]
+        RunnerEnv["<b><span style='font-size:28px;'>Clean-Room Runner</span></b><br/><span style='font-size:22px;'>(ubuntu-latest Container)</span>"]
+        CacheStore["<b><span style='font-size:28px;'>Dependency Cache</span></b><br/><span style='font-size:22px;'>(actions/cache for ~/.npm)</span>"]
+        QualityGate{"<b><span style='font-size:28px;'>Quality Gate Check</span></b><br/><span style='font-size:22px;'>Pass 100% & Coverage ≥ 80%</span>"}
+        BranchProtection["<b><span style='font-size:28px;'>Branch Protection Rules</span></b><br/><span style='font-size:22px;'>(Hard-Lock Merge Button)</span>"]
+        AITriageService["<b><span style='font-size:24px;'>AI Log Triage Assistant</span></b><br/><span style='font-size:20px;'>(ai_triage.py + Gemini API)</span>"]
+
+        GHAWorkflow --> RunnerEnv
+        RunnerEnv --> CacheStore
+        QualityGate -->|PASS: Allowed| BranchProtection
+        QualityGate -->|FAIL: Blocked| BranchProtection
+        QualityGate -->|FAIL: Analyze Logs| AITriageService
+        AITriageService --> GHAWorkflow
+    end
+
+    %% Cross-Component Connections
+    Frontend -->|HTTP REST API Requests| ExpressServer
+    SupertestAgent -.->|In-Memory API Calls| ExpressServer
+    JestRunner -.->|Sequential File Locks| SQLiteDB
+
+    RunnerEnv ==>|Executes Test Suite| JestRunner
+    JestRunner -.->|Exit Code 0 or 1| QualityGate
+    CoverageReport -.->|Coverage LCOV| QualityGate
 ```
+
+
+#### 1.3.2 Monorepo Directory Layout & Component Roles
+```
+
 eshop-sut-seminar/
 ├── .github/
 │   ├── scripts/
@@ -224,7 +315,114 @@ Ran all test suites.
 *(To be detailed in Phase 3 & 4: npm cache directory caching, hashFiles('**/package-lock.json'), cold run vs warm run comparison).*
 
 ### 4.3 Quality Gates & Fail-Fast Mechanism
-*(To be detailed in Phase 3 & 4: Automated evaluation of test exit codes, LCOV threshold validation, halting downstream jobs immediately upon failure).*
+
+#### 4.3.1 Conceptual Foundation: Fail-Fast in CI/CD Test Harnesses
+In continuous testing, a **Quality Gate** is an automated milestone within the delivery pipeline that enforces strict non-negotiable criteria before code can progress or merge into protected branches. The **Fail-Fast** engineering principle dictates that whenever a critical assertion or baseline requirement is violated, the pipeline terminates execution immediately without wasting computational time or cloud runner quota on subsequent stages.
+
+In the EShop CI/CD Test Harness, the Quality Gate enforces a dual-criteria policy:
+1. **Zero-Defect Unit Criterion:** 100% of all unit and integration test suites must terminate with `Exit Code 0`. Even a single failed assertion aborts the run immediately.
+2. **Minimum Coverage Threshold Criterion:** Total code coverage (Line, Function, Statement) measured via LCOV must meet or exceed the mandatory **80% threshold** (`Coverage ≥ 80%`).
+
+---
+
+#### 4.3.2 Architectural Diagram: CI/CD Pipeline & Quality Gate Fail-Fast Flow
+The following sequence illustrates the complete execution lifecycle from developer commit to branch protection gating and automated failure recovery:
+
+```mermaid
+%%{init: {
+  'flowchart': {
+    'nodeSpacing': 30,
+    'rankSpacing': 40,
+    'curve': 'basis',
+    'htmlLabels': true,
+    'subGraphTitleMargin': {
+      'top': 25,
+      'bottom': 15
+    }
+  },
+  'themeVariables': {
+    'fontSize': '18px',
+    'fontFamily': 'Segoe UI, Helvetica, Arial, sans-serif'
+  }
+}}%%
+flowchart TB
+    %% Stage 1: Trigger & Environment
+    subgraph TriggerStage ["<span style='font-size:22px; font-weight:600;'>1. Trigger & Clean-Room Provisioning</span>"]
+        DevAction["<b><span style='font-size:24px;'>Developer Git Action</span></b><br/><span style='font-size:20px;'>(git push / open Pull Request)</span>"]
+        GHAEvent["<b><span style='font-size:24px;'>GitHub Actions Event Trigger</span></b><br/><span style='font-size:20px;'>(on: pull_request, push to main)</span>"]
+        CleanRunner["<b><span style='font-size:24px;'>Clean-Room Runner VM</span></b><br/><span style='font-size:20px;'>(ubuntu-latest Isolated Container)</span>"]
+        RepoCheckout["<b><span style='font-size:24px;'>Source Code Checkout</span></b><br/><span style='font-size:20px;'>(actions/checkout@v4)</span>"]
+
+        DevAction --> GHAEvent
+        GHAEvent --> CleanRunner
+        CleanRunner --> RepoCheckout
+    end
+
+    %% Stage 2: Cache & Execution
+    subgraph ExecutionStage ["<span style='font-size:20px; font-weight:600;'>2. Dependency Cache & Test Harness Execution</span>"]
+        CacheEval{"<b><span style='font-size:24px;'>Dependency Cache Check</span></b><br/><span style='font-size:20px;'>hashFiles('**/package-lock.json')</span>"}
+        CacheHit["<b><span style='font-size:24px;'>Cache HIT (~8s)</span></b><br/><span style='font-size:20px;'>(Restore ~/.npm from Cache)</span>"]
+        CacheMiss["<b><span style='font-size:24px;'>Cache MISS (~45s)</span></b><br/><span style='font-size:20px;'>(Fresh npm ci from Registry)</span>"]
+        JestRun["<b><span style='font-size:24px;'>Jest Test Runner Execution</span></b><br/><span style='font-size:20px;'>(npm test -- --runInBand --coverage)</span>"]
+        ArtifactGen["<b><span style='font-size:24px;'>Test Reports Generated</span></b><br/><span style='font-size:20px;'>(JUnit XML & LCOV lcov.info)</span>"]
+
+        RepoCheckout --> CacheEval
+        CacheEval -->|Cache Hit| CacheHit
+        CacheEval -->|Cache Miss| CacheMiss
+        CacheHit --> JestRun
+        CacheMiss --> JestRun
+        JestRun --> ArtifactGen
+    end
+
+    %% Stage 3: Quality Gate Decision
+    subgraph QualityGateStage ["<span style='font-size:22px; font-weight:600;'>3. Quality Gate Evaluation (Dual Check)</span>"]
+        GateEngine{"<b><span style='font-size:24px;'>Quality Gate Decision Engine</span></b><br/><span style='font-size:20px;'>100% Tests Pass (Exit 0) AND Coverage ≥ 80%?</span>"}
+        ArtifactGen --> GateEngine
+    end
+
+    %% Stage 4A: Success Path
+    subgraph SuccessPath ["<span style='font-size:22px; font-weight:600;'>4A. Success Pathway (Green Check)</span>"]
+        StatusPass["<b><span style='font-size:24px;'>Status Check: SUCCESS</span></b><br/><span style='font-size:20px;'>(ci/eshop-unit-test: PASS)</span>"]
+        UploadArt["<b><span style='font-size:24px;'>Upload Artifacts</span></b><br/><span style='font-size:20px;'>(actions/upload-artifact@v4)</span>"]
+        BranchUnlock["<b><span style='font-size:24px;'>Branch Protection Satisfied</span></b><br/><span style='font-size:20px;'>(All Required Status Checks Green)</span>"]
+        MergeEnabled["<b><span style='font-size:24px;'>PR Merge Button Unlocked</span></b><br/><span style='font-size:20px;'>(Pull Request Approved for main)</span>"]
+
+        StatusPass --> UploadArt
+        UploadArt --> BranchUnlock
+        BranchUnlock --> MergeEnabled
+    end
+
+    %% Stage 4B: Fail-Fast Path
+    subgraph FailFastPath ["<span style='font-size:22px; font-weight:600;'>4B. Fail-Fast Pathway (Red Cross)</span>"]
+        StatusFail["<b><span style='font-size:24px;'>Fail-Fast Triggered</span></b><br/><span style='font-size:20px;'>(Exit Code = 1 | Coverage < 80%)</span>"]
+        AbortJob["<b><span style='font-size:24px;'>Abort Downstream Tasks</span></b><br/><span style='font-size:20px;'>(Halt execution to save compute)</span>"]
+        BranchLock["<b><span style='font-size:24px;'>Branch Protection Hard-Lock</span></b><br/><span style='font-size:20px;'>(Merge pull request' button disabled)</span>"]
+        AIAssistant["<b><span style='font-size:24px;'>AI Log Triage Assistant</span></b><br/><span style='font-size:20px;'>(ai_triage.py + Google Gemini API)</span>"]
+        PRAnnotation["<b><span style='font-size:24px;'>Structured PR Annotation</span></b><br/><span style='font-size:20px;'>(Hypothesis tree & root cause analysis)</span>"]
+
+        StatusFail --> AbortJob
+        StatusFail --> BranchLock
+        StatusFail --> AIAssistant
+        AIAssistant --> PRAnnotation
+    end
+
+    %% Decision Route Connections
+    GateEngine ==>|PASS: Zero Errors & Coverage ≥ 80%| StatusPass
+    GateEngine ==>|FAIL: Assertion Error or Coverage < 80%| StatusFail
+```
+
+---
+
+#### 4.3.3 Execution Lifecycle Step-by-Step Breakdown
+
+| Stage | Action / Component | Operational Mechanism & Verification |
+| :--- | :--- | :--- |
+| **1. Trigger** | `pull_request` / `push` | Triggered whenever code is proposed against `main`. Initializes a clean-room ephemeral container (`ubuntu-latest`) to eliminate environmental flakiness. |
+| **2. Caching** | `actions/cache@v4` | Evaluates checksum hash `hashFiles('**/package-lock.json')`. On a cache hit, dependency restoration drops from ~45 seconds to ~8 seconds, saving 82% runner time. |
+| **3. Test Harness** | `npm test -- --runInBand` | Executes test suites deterministically on a single thread to prevent SQLite write lock collisions (`SQLITE_BUSY`). Generates LCOV and JUnit XML. |
+| **4. Quality Gate** | Dual Validation Engine | Verifies both the Jest exit code (`exit 0`) and coverage metrics (`coverage ≥ 80%`). If any assertion fails, the Fail-Fast mechanism interrupts the pipeline immediately. |
+| **5A. Merge Pass** | Branch Protection | When all required status checks turn green, GitHub's Branch Protection Rules allow the *"Merge pull request"* button to unlock. |
+| **5B. Fail Triage** | Specialized AI Assistant | If the gate fails, GitHub Actions invokes `.github/scripts/ai_triage.py` using `GEMINI_API_KEY`, parsing the raw failure stack trace and annotating the Pull Request with an actionable fix. |
 
 ### 4.4 Pull Request Branch Protection Rules
 *(To be detailed in Phase 3 & 4: Required Status Checks configuration on `main`, merge-blocking demonstrations).*
@@ -288,6 +486,82 @@ The failure stems from the convergence of two distinct architectural behaviors:
    To minimize test execution time, Jest inspects the available CPU cores (`os.cpus().length`) and spawns a pool of worker processes (defaulting to `CPUs - 1`) to execute separate test suites concurrently. Each test worker loads the Express application and independently opens its own connection pool to the single `database.sqlite` file.
 3. **Lock Collision Trigger:**  
    When `Worker 1` (executing `tests/auth.test.js`) performs a write operation (e.g., seeding a user via `POST /api/register`), SQLite elevates its lock to `EXCLUSIVE`. Simultaneously, `Worker 2` (executing another suite) attempts to insert or modify records. Because the default busy handler timeout in basic SQLite drivers is set to 0 milliseconds, the OS lock manager immediately rejects Worker 2's system call, throwing `SQLITE_BUSY: database is locked`.
+
+---
+
+#### 6.1.2.1 Architectural Diagram: SQLite Concurrency File-Locking & Mitigation Mechanism
+The following architectural diagram illustrates the file-locking collision between concurrent Jest worker threads and contrasts it with the sequential single-threaded execution enforced by `--runInBand`:
+
+```mermaid
+%%{init: {
+  'flowchart': {
+    'nodeSpacing': 30,
+    'rankSpacing': 35,
+    'curve': 'basis',
+    'htmlLabels': true,
+    'subGraphTitleMargin': {
+      'top': 25,
+      'bottom': 15
+    }
+  },
+  'themeVariables': {
+    'fontSize': '16px',
+    'fontFamily': 'Segoe UI, Helvetica, Arial, sans-serif'
+  },
+  'themeCSS': '.flowchart-link { stroke-width: 2.5px !important; } .marker { stroke-width: 2.5px !important; }'
+}}%%
+flowchart TB
+    %% Scenario A: Parallel Multi-Worker Collision (Placed on Top)
+    subgraph ParallelConflict ["<span style='font-size:22px; font-weight:600;'>A. Concurrent Write Collision (Default: Without --runInBand)</span>"]
+        JestPoolA["<b><span style='font-size:20px;'>Jest Worker Pool</span></b><br/><span style='font-size:15px;'>(Parallel Workers: --maxWorkers=4)</span>"]
+        Worker1A["<b><span style='font-size:18px;'>Worker 1: auth.test.js</span></b><br/><span style='font-size:14px;'>(POST /api/register)</span>"]
+        Worker2A["<b><span style='font-size:18px;'>Worker 2: coupon.test.js</span></b><br/><span style='font-size:14px;'>(POST /api/coupons)</span>"]
+        
+        OSLockA[("<b><span style='font-size:20px;'>SQLite File Lock Manager</span></b><br/><span style='font-size:14px;'>(database.sqlite - Single-Writer Model)</span>")]
+        LockStateA["<b><span style='font-size:18px;'>EXCLUSIVE Lock Active</span></b><br/><span style='font-size:14px;'>(Held by Worker 1 Transaction)</span>"]
+        LockDeniedA["<b><span style='font-size:18px;'>OS Lock Rejected (fcntl EWOULDBLOCK)</span></b><br/><span style='font-size:14px;'>(Timeout = 0ms, Write Denied)</span>"]
+        CrashErrorA["<b><span style='font-size:20px;'>Crash: SQLITE_BUSY</span></b><br/><span style='font-size:14px;'>('database is locked' -> Pipeline Exit Code 1)</span>"]
+
+        JestPoolA --> Worker1A
+        JestPoolA --> Worker2A
+        Worker1A -->|1. BEGIN IMMEDIATE - Write| OSLockA
+        Worker2A -.->|2. Concurrent Write Attempt| OSLockA
+        OSLockA --> LockStateA
+        LockStateA -->|3. Immediate Rejection| LockDeniedA
+        LockDeniedA --> CrashErrorA
+    end
+
+    %% Vertical stacking link between Scenario A and Scenario B
+    CrashErrorA ~~~ JestSingleB
+
+    %% Scenario B: Serialized Execution with --runInBand (Placed Below)
+    subgraph SerializedSuccess ["<span style='font-size:22px; font-weight:600;'>B. Deterministic Serialization (Mitigation: --runInBand)</span>"]
+        JestSingleB["<b><span style='font-size:20px;'>Jest Single Main Thread</span></b><br/><span style='font-size:15px;'>(Sequential In-Band: --runInBand or -i)</span>"]
+        Suite1B["<b><span style='font-size:18px;'>Suite 1: auth.test.js</span></b><br/><span style='font-size:14px;'>(Acquires Lock -> Writes -> Releases)</span>"]
+        Suite2B["<b><span style='font-size:18px;'>Suite 2: coupon.test.js</span></b><br/><span style='font-size:14px;'>(Queued until Suite 1 Terminates)</span>"]
+        
+        OSLockB[("<b><span style='font-size:20px;'>SQLite File Lock Manager</span></b><br/><span style='font-size:14px;'>(database.sqlite - Orderly Transitions)</span>")]
+        LockStateB["<b><span style='font-size:18px;'>Sequential Lock Cycles</span></b><br/><span style='font-size:14px;'>(UNLOCKED ↔ EXCLUSIVE Clean Handoff)</span>"]
+        SuccessPassB["<b><span style='font-size:20px;'>100% Deterministic Pass</span></b><br/><span style='font-size:14px;'>(Zero Lock Collisions -> CI Exit Code 0)</span>"]
+
+        JestSingleB --> Suite1B
+        Suite1B -->|1. Write & Commit Transaction| OSLockB
+        Suite1B ==>|2. Suite 1 Completes| Suite2B
+        Suite2B -->|3. Clean Lock Acquisition & Write| OSLockB
+        OSLockB --> LockStateB
+        LockStateB --> SuccessPassB
+    end
+
+    %% Color-coded node styles
+    classDef failNode fill:#fef2f2,stroke:#dc2626,stroke-width:2px;
+    classDef passNode fill:#f0fdf4,stroke:#16a34a,stroke-width:2px;
+    classDef dbNode fill:#f0f9ff,stroke:#0284c7,stroke-width:2px;
+
+    class LockDeniedA,CrashErrorA failNode;
+    class SuccessPassB,Suite1B,Suite2B,LockStateB passNode;
+    class OSLockA,OSLockB dbNode;
+    linkStyle default stroke-width:2.5px;
+```
 
 ---
 

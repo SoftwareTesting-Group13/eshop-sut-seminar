@@ -32,11 +32,22 @@
 ### Prompt 4 (Soạn thảo Failure Mode 1):
 > *"Soạn thảo Failure Mode 1 — SQLite Concurrency Lock"*
 
-### Prompt 5 (Hỏi sâu về cờ lệnh kỹ thuật Jest):
-> *"Thêm cờ --runInBand (hoặc -i) để làm gì?"*
-
-### Prompt 6 (Soạn thảo Failure Mode 2 & Quản lý hồ sơ tuần):
+### Prompt 5 (Soạn thảo Failure Mode 2 & Quản lý hồ sơ tuần):
 > *"Soạn thảo Failure Mode 2 — Coupon Percent Formula Bug. Tạo file chatlogs. Điền các file liên quan mỗi ghi thực hiện xong 1 bước/commit nào đó."*
+
+### Prompt 6 (Soạn thảo Failure Mode 3 & Đổi tên chat log):
+> *"Soạn thảo Failure Mode 3 — Flaky Test do Async Delay (sleep vs await). Đổi tên chatlog thành chatlog_gcuong_user_guide.md. Git commit và push."*
+
+### Prompt 7 (Thiết kế Sơ đồ 1 - Kiến trúc Monorepo & Test Harness):
+> *"Thiết kế Sơ đồ 1 — Kiến trúc Tổng thể Monorepo & Test Harness: Thể hiện rõ các thành phần React Frontend, Express Backend API, SQLite3 Storage, và Jest Test Harness Engine kết nối với GitHub Actions. Cú pháp Mermaid graph TD rõ ràng, có phân nhóm subgraph."*
+
+### Prompt 8 (Thiết kế Sơ đồ 2 - Luồng CI/CD Pipeline & Quality Gate Fail-Fast):
+> *"Thiết kế Sơ đồ 2 — Luồng CI/CD Pipeline & Quality Gate Fail-Fast"*  
+> *Yêu cầu căn chỉnh:* Căn lề trái các tựa đề subgraph, làm đậm mũi tên liên kết, đẩy hình thoi quyết định xuống thấp tránh đè tựa đề mà không thay đổi font size hay cấu trúc sơ đồ.
+
+### Prompt 9 (Thiết kế Sơ đồ 3 - Cơ chế SQLite Concurrency File-Locking):
+> *"Thiết kế Sơ đồ 3 — Cơ chế SQLite Concurrency File-Locking"*  
+> *Khắc phục lỗi render:* Xử lý lỗi Parse error Mermaid do dấu ngoặc đơn `(Write)` trong nhãn cạnh và ký hiệu `<->`.
 
 ---
 
@@ -73,6 +84,30 @@
 - So sánh sự khác biệt môi trường: máy local (chạy nhanh, 20ms xong) nên sleep(100ms) pass; trong khi runner CI (GitHub Actions) bị nghẽn CPU/IO (mất 200ms) dẫn đến assertion kiểm tra sớm và fail ngẫu nhiên (Flake rate 40-50%).
 - Đối chiếu kịch bản synthetic test `backend/demos/flaky-delay.demo.js` với 3 profile `fast`, `slow`, `random`.
 - Đề xuất 3 mẫu thiết kế bất đồng bộ tất định (Deterministic Asynchronous Patterns): `await Promise`, `events.once`, và polling điều kiện `waitForCondition`.
+
+### 3.6. Về Sơ đồ 1 (Kiến trúc Tổng thể Monorepo & Test Harness):
+- Thiết kế sơ đồ Mermaid cú pháp `flowchart TB` phân chia 4 phân nhóm `subgraph` rõ ràng:
+  1. *Presentation Layer (Clients):* React Customer Web Portal, React Admin Dashboard, Mobile Client.
+  2. *Application Layer (Backend SUT):* Express.js Core Server, REST API Controllers, SQLite3 Relational Database (`database.sqlite`).
+  3. *Automated Test Harness:* Jest Engine (`--runInBand`, `--forceExit`), Supertest Agent, Test Suites (`health`, `auth`, `coupon`), Coverage Engine (LCOV).
+  4. *CI/CD Infrastructure:* GitHub Actions Runner, Dependency Cache (`~/.npm`), Quality Gate Check (Pass 100%, Coverage ≥ 80%), Branch Protection (Hard-Lock Merge Button), AI Log Triage Assistant (`ai_triage.py` + Gemini API).
+- Thể hiện đầy đủ các luồng tương tác: HTTP REST calls, Supertest in-memory calls ảo, SQLite file locks tuần tự, và Quality Gate hai trạng thái PASS/FAIL.
+- Tối ưu kích thước chữ: in đậm các tựa đề khối chức năng, giữ tựa đề subgraph gọn gàng và điều chỉnh khoảng cách phân tầng `rankSpacing` tránh đè chữ.
+
+### 3.7. Về Sơ đồ 2 (Luồng CI/CD Pipeline & Quality Gate Fail-Fast):
+- Thiết kế sơ đồ Mermaid quy chuẩn 5 giai đoạn thực thi trong CI/CD:
+  1. *Stage 1 (Trigger & Clean-Room):* Developer Push / Pull Request $\rightarrow$ Kích hoạt GitHub Actions event $\rightarrow$ Khởi tạo VM container độc lập sạch sẽ (`ubuntu-latest`) $\rightarrow$ Checkout mã nguồn (`actions/checkout@v4`).
+  2. *Stage 2 (Dependency Cache & Test Harness):* Kiểm tra checksum hash `package-lock.json` phân nhánh **Cache HIT (~8s)** từ local `~/.npm` vs **Cache MISS (~45s)** từ npm Registry $\rightarrow$ Chạy `JestRunner` (`--runInBand --coverage`) $\rightarrow$ Xuất báo cáo JUnit XML & LCOV `lcov.info`.
+  3. *Stage 3 (Quality Gate Dual-Check):* Khối hình thoi thẩm định đồng thời: **100% Tests Pass (Exit 0)** VÀ **Coverage $\ge$ 80%**.
+  4. *Stage 4A (Success Pathway - Nhánh Xanh):* Trạng thái `PASS` $\rightarrow$ Upload Artifacts $\rightarrow$ Đáp ứng Branch Protection $\rightarrow$ Mở khóa nút **"Merge pull request"**.
+  5. *Stage 4B (Fail-Fast Pathway - Nhánh Đỏ):* Trạng thái `FAIL` $\rightarrow$ Ngắt pipeline tức thì (**Fail-Fast**) để tiết kiệm quota runner $\rightarrow$ Khóa cứng nút Merge $\rightarrow$ Khởi chạy `ai_triage.py` (Gemini API) phân tích log lỗi $\rightarrow$ Comment Hypothesis Tree và hướng dẫn khắc phục lên PR.
+- **Kỹ thuật xử lý giao diện Mermaid:** Bổ sung điểm neo vô hình (`sp2[ ]:::spacer` với `~~~ CacheEval`) và thuộc tính `white-space: nowrap;` để đẩy hình thoi xuống thấp hơn 1 tầng, giải quyết dứt điểm hiện tượng đỉnh nhọn của hình thoi chèn lên tựa đề nhóm; tăng độ dày nét mũi tên bằng `linkStyle default stroke-width: 2.5px`.
+
+### 3.8. Về Sơ đồ 3 (Cơ chế SQLite Concurrency File-Locking):
+- Xây dựng mô hình đối sánh trực quan song song (Side-by-Side Comparison) giữa hai trạng thái kiến trúc:
+  - *Nhánh A (Xung đột Concurrency đa luồng không có `--runInBand`):* Khi Jest chạy đa luồng mặc định (`--maxWorkers=4`), Worker 1 thực thi `auth.test.js` chiếm giữ `EXCLUSIVE Lock`. Cùng lúc đó, Worker 2 thực thi `coupon.test.js` gửi thao tác ghi. Hệ điều hành (thông qua cơ chế file lock `fcntl` / `LockFile`) lập tức từ chối vì timeout = 0ms $\rightarrow$ Quăng lỗi `SQLITE_BUSY: database is locked` $\rightarrow$ Pipeline ngắt với Exit Code 1.
+  - *Nhánh B (Tuần tự hóa In-Band với cờ `--runInBand` / `-i`):* Bắt buộc Jest chạy đơn luồng trên Main Process. Suite 1 chạy xong, commit và nhả lock thì Suite 2 mới bắt đầu chiếm lock $\rightarrow$ Chu kỳ lock (`UNLOCKED` $\leftrightarrow$ `EXCLUSIVE`) diễn ra nhịp nhàng, triệt tiêu race condition $\rightarrow$ 100% Deterministic Pass với Exit Code 0.
+- **Xử lý lỗi Parse Error cú pháp Mermaid:** Khắc phục lỗi parser do dấu ngoặc đơn chưa đóng gói `(Write)` trong nhãn cạnh bằng cách chuẩn hóa sang `1. BEGIN IMMEDIATE - Write`, và thay chuỗi `<->` bằng ký tự Unicode `↔`.
 
 ---
 
