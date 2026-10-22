@@ -66,19 +66,36 @@ git log --oneline --graph -n 20
 * `style(guide): review academic english grammar, markdown formatting and link integrity`
 
 ### 3.4. Thành viên 4: Nguyễn Gia Huy (`GiaHuyHCMUS05`)
-*Nhánh làm việc: `feature/giahuy-week6-worksheet`.*
+*Nhánh tài liệu: `feature/giahuy-week6-worksheet`; nhánh demo riêng:
+`test/giahuy-sqlite-lock-demo`.*
 
-**Nhật ký thật trích xuất đến `a2cb8c4`, giờ Việt Nam (UTC+7):**
+**Snapshot 5 commit đến `a15d7c6`, giờ Việt Nam (UTC+7):**
 
 * **[a2cb8c4]** 22/10/2026 11:46 — `docs(worksheet): draft Pipeline Postmortem classroom activity`.
-* Phạm vi: 2 file mới, 226 dòng thêm, 0 dòng xóa. Đây là commit bản nháp,
-  chưa phải nghiệm thu toàn bộ W6-16. Chưa gồm commit cập nhật hồ sơ này.
+  Phạm vi: 2 file mới, 226 dòng thêm, 0 dòng xóa; bản nháp W6-16.
+* **[4495d10]** 22/10/2026 — `docs(reports): record Gia Huy week 6 worksheet draft progress`.
+  Phạm vi: 4 file báo cáo, 115 dòng thêm, 22 dòng xóa; local trên nhánh tài liệu.
+* **[d35b932]** 22/10/2026 14:18 — `test(sqlite): prepare isolated lock reproduction for worksheet A`.
+  Phạm vi: 6 file, 237 dòng thêm, 0 dòng xóa; mã demo, workflow và log local.
+  Đã push nhánh `test/giahuy-sqlite-lock-demo`; không push tài liệu Worksheet
+  hoặc merge demo vào main.
+* **[485a778]** 22/10/2026 — `ci(sqlite): bound demo setup and skip optional npm audit`.
+  Phạm vi: 1 file workflow, 3 dòng thêm, 1 dòng xóa; đã push nhánh demo.
+  Run CI nguồn SQLite: `39741620266` (parallel failure / serial success).
+
+* **[a15d7c6]** 22/10/2026 — `docs(week6): package worksheet answer key and verified CI evidence`.
+  Phạm vi: 48 file, 4608 dòng thêm, 195 dòng xóa và 10 ảnh PNG (không tính
+  dòng cho binary). Gồm Worksheet, Answer Key, 6 raw log CI, source/metadata,
+  hướng dẫn và hồ sơ. Barem vẫn là đề xuất chưa được nhóm duyệt; commit local,
+  chưa push nhánh tài liệu.
+
+Tổng snapshot 5 commit: 5189 dòng thêm, 218 dòng xóa. Chưa tính commit cập
+nhật snapshot này để tránh tự tham chiếu hash/thống kê của chính nó.
 
 **Các bước còn dự kiến, chưa ghi nhận là commit đã có:**
 
-* Hoàn thiện Worksheet sau khi rà soát và chọn bộ log CI.
-* Soạn `Activity_Worksheet_AnswerKey.md` với barem chi tiết.
-* Đóng gói sample CI logs có nguồn kiểm chứng.
+* Nhóm duyệt barem và góp ý bản soạn; cập nhật sau khi có xác nhận thực tế.
+* Thử chấm/tổng duyệt với người tham gia khi nhóm tổ chức; chưa ghi nhận đã thử.
 * Kiểm chứng Gemini API thật và đo 10 lượt Flaky trên CI.
 
 ---
@@ -90,9 +107,10 @@ git log --oneline --graph -n 20
 | 1 | Nguyễn Ngọc Minh Tuấn | `nnmt2810` | 5 | ~650 | ~120 | 25% |
 | 2 | Dương Nhật Cường | `cuogne` | 5 | ~580 | ~90 | 25% |
 | 3 | Trần Gia Cường | `trancuonG05` | 5 | ~920 | ~110 | 25% |
-| 4 | Nguyễn Gia Huy | `GiaHuyHCMUS05` | 1 | 226 | 0 | Chưa đối soát |
+| 4 | Nguyễn Gia Huy | `GiaHuyHCMUS05` | 5 | 5189 | 218 | Chưa đối soát |
 | **Tổng cộng** | **Nhóm 13** | — | **Chưa đối soát** | **Chưa đối soát** | **Chưa đối soát** | **Chưa đối soát** |
 
-Số liệu của Nguyễn Gia Huy là bản trích xuất đến `a2cb8c4`, chưa tính commit cập
-nhật hồ sơ. Các hàng thành viên khác được giữ theo bản kê khai của nhóm; chưa
+Số liệu của Nguyễn Gia Huy gồm đúng `a2cb8c4`, `4495d10`, `d35b932`, `485a778`
+và `a15d7c6` trên hai nhánh, chưa tính commit cập nhật snapshot này.
+Các hàng thành viên khác được giữ theo bản kê khai của nhóm; chưa
 đối soát lại nên chưa chốt tổng cộng hoặc tỷ lệ đóng góp.

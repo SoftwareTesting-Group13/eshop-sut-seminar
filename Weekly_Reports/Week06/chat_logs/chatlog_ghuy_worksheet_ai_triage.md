@@ -196,3 +196,10 @@ thông báo chấp thuận của nhóm được ghi nhận.
 Đóng gói tài liệu/log/ảnh trên `feature/giahuy-week6-worksheet`; chưa push
 nhánh tài liệu hoặc merge main. Nhánh demo SQLite đã push riêng trước đó.
 Không thay đổi code nghiệp vụ trong lượt đóng gói này.
+
+**Commit bản đóng gói:** `a15d7c6` —
+`docs(week6): package worksheet answer key and verified CI evidence`.
+Đã kiểm tra một-một 10 câu/10 điểm, liên kết/Markdown, checksum và ánh xạ
+excerpt của 6 raw log, mẫu secret và ảnh thật. Whitespace gốc trong file bằng
+chứng được giữ nguyên, chỉ miễn kiểm tra whitespace riêng các thư mục archive.
+Nhật ký Git cập nhật snapshot qua commit này; không tự ghi nhận nhóm duyệt.
