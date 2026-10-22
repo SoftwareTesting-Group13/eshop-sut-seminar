@@ -1,8 +1,10 @@
 # AI Log Triage — Nguyễn Gia Huy, Tuần 5
 
-`ai_triage.py` đọc log kiểm thử, gọi Gemini API và xuất Cây giả thuyết bằng
-tiếng Việt: **Hiện tượng → Nguyên nhân khả dĩ → Bằng chứng → Cách kiểm chứng →
-Hướng khắc phục**. Chỉ dùng thư viện chuẩn Python (3.9 trở lên), không cần cài SDK.
+`ai_triage.py` đọc log kiểm thử và (khi có) source liên quan, gọi Gemini API
+để tạo báo cáo tiếng Việt ngắn gọn: **Tóm tắt → Vị trí và cơ chế → Bằng chứng →
+Cách sửa và kiểm chứng**. Source được đánh số dòng để AI có thể chỉ chính xác
+vị trí lỗi; khi thiếu bằng chứng, báo cáo phải nói rõ chưa xác định được dòng.
+Chỉ dùng thư viện chuẩn Python, không cần cài SDK.
 
 ## Chạy từ thư mục gốc repo (PowerShell)
 
@@ -25,11 +27,11 @@ Hướng khắc phục**. Chỉ dùng thư viện chuẩn Python (3.9 trở lên
 2. Kiểm tra đầu vào bằng dry run, không cần API key:
 
    ```powershell
-   python .github/scripts/ai_triage.py --log-file Weekly_Reports/Week05/coupon_failure_mode2_huy.txt --dry-run
+   python .github/scripts/ai_triage.py --log-file Weekly_Reports/Week05/coupon_failure_mode2_huy.txt --source-file backend/coupon-discount.js --dry-run
    ```
 
    Phần `Log sẽ gửi` cần có tên test và các dòng `Expected` / `Received`.
-   Dry run chỉ hiển thị prompt và log, chưa có kết quả phân tích của LLM.
+   Dry run hiển thị prompt, log và source có số dòng; chưa có kết quả phân tích của LLM.
 
 3. Để gọi API thật, tạo key tại [Google AI Studio](https://aistudio.google.com/api-keys)
    và nhập vào biến môi trường của terminal hiện tại:
@@ -48,13 +50,13 @@ Hướng khắc phục**. Chỉ dùng thư viện chuẩn Python (3.9 trở lên
 4. Phân tích thật và lưu Markdown:
 
    ```powershell
-   python .github/scripts/ai_triage.py --log-file Weekly_Reports/Week05/coupon_failure_mode2_huy.txt --output Weekly_Reports/Week05/triage_coupon.md
+   python .github/scripts/ai_triage.py --log-file Weekly_Reports/Week05/coupon_failure_mode2_huy.txt --source-file backend/coupon-discount.js --output Weekly_Reports/Week05/triage_coupon.md
    $triageExitCode = $LASTEXITCODE
    Write-Output "AI triage exit code: $triageExitCode"
    ```
 
    Khi thành công, báo cáo xuất ra terminal và file Markdown. Đối chiếu phân tích
-   với log, dữ liệu coupon và công thức trong `backend/server.js` trước khi kết luận.
+   với log, dữ liệu coupon và công thức trong source tại commit đang xét trước khi kết luận.
    Một lần test thất bại chưa đủ để xác định flaky.
 
 Hoặc đọc log từ stdin:
@@ -73,13 +75,18 @@ Bỏ `--dry-run` để gọi API thật qua stdin. Mỗi lần gọi thật sử
 python -B -m unittest discover -s .github/scripts/tests -v
 ```
 
-Kết quả hiện tại: **6/6 test đạt**. Các test dùng phản hồi API giả lập, không gửi
-log ra mạng. Kết quả offline và dry run chưa xác nhận kết nối Gemini thật.
+Các test dùng phản hồi API giả lập, không gửi log hay source ra mạng.
 
 ## Cấu hình và minh chứng
 
 Model mặc định là `gemini-3.5-flash-lite`; đổi bằng `--model TEN_MODEL` hoặc
-biến `GEMINI_MODEL`. Script lấy tối đa 100 dòng cuối và 20.000 ký tự cuối.
+biến `GEMINI_MODEL`. Script lấy tối đa 100 dòng cuối và 20.000 ký tự cuối của log.
+`--source-file` là tùy chọn; source được đánh số dòng và giới hạn ở 300 dòng,
+20.000 ký tự. Trong CI, workflow gửi `backend/coupon-discount.js` tại commit
+đang chạy. Nếu không có source, báo cáo chỉ có thể chỉ vị trí nghi ngờ từ log.
+Trong GitHub Actions, prompt cũng có permalink tới file ở commit được kiểm thử
+để AI có thể gắn link trực tiếp đến dòng liên quan trong comment PR.
+Khi chạy thủ công với log cũ, dùng source từ đúng commit tạo ra log đó.
 Đổi số dòng bằng `--max-lines`, timeout mặc định 60 giây bằng `--timeout`.
 
 Exit code: **0** khi thành công hoặc dry run, **1** khi có lỗi xử lý, **2** khi
@@ -102,8 +109,8 @@ Lưu ảnh trong `Weekly_Reports/Week05/screenshots/`:
 - `04_ai_triage_dry_run.png`, `04_ai_triage_dry_run_02.png`: lệnh dry run, prompt và log đầu vào.
 - `04_ai_triage_result.png`: bổ sung khi có phân tích LLM thật để đối chiếu.
 
-Script đã chuyển từ OpenAI sang Gemini sau lỗi hết credits. Hiện đã kiểm chứng
-offline và dry run; chưa có kết quả phân tích thành công từ Gemini API thật.
+Script đã chuyển từ OpenAI sang Gemini sau lỗi hết credits. Báo cáo AI là gợi ý
+để dev đối chiếu lại với source và test trước khi sửa.
 
 Tham khảo: [Gemini API](https://ai.google.dev/api/generate-content),
 [API keys](https://ai.google.dev/gemini-api/docs/api-key),

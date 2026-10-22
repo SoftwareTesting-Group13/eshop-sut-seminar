@@ -147,6 +147,7 @@ jobs:
           if [ -n "$GEMINI_API_KEY" ]; then
             python3 .github/scripts/ai_triage.py \
               --log-file backend/coverage/jest-console.log \
+              --source-file backend/coupon-discount.js \
               --output backend/coverage/ai-triage.md
           else
             echo 'AI triage skipped: add GEMINI_API_KEY to repository secrets.' >> "$GITHUB_STEP_SUMMARY"
