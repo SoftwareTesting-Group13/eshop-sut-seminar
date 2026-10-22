@@ -1,0 +1,172 @@
+name: Gia Huy W6 Empirical Metrics
+run-name: W6 metrics ${{ inputs.experiment || 'registration' }} pair ${{ inputs.pair || '-' }}
+
+# Only this measurement workflow is dispatched. No PR comments or deployment.
+on:
+  push:
+    branches: [test/giahuy-week6-metrics]
+    paths: ['.github/workflows/ghuy-week6-metrics.yml', '.github/scripts/ghuy_measure_*']
+  workflow_dispatch:
+    inputs:
+      experiment:
+        description: Unique experiment ID (letters, digits, dash)
+        required: true
+        type: string
+      pair:
+        description: Pair index 1..10
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  flaky-pair:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.23.3'
+      - name: Install pinned dependencies
+        timeout-minutes: 2
+        working-directory: backend
+        run: npm ci --no-audit --no-fund
+      - name: Measure selected before and after tests
+        env:
+          GHUY_PAIR_INDEX: ${{ inputs.pair }}
+          GHUY_EXPERIMENT: ${{ inputs.experiment }}
+        run: node .github/scripts/ghuy_measure_flaky.cjs
+      - name: Upload pair evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ghuy-pair-${{ inputs.pair }}
+          path: ci-artifacts/metrics
+          if-no-files-found: warn
+      - name: Expose test or infrastructure failure in run history
+        run: |
+          node -e 'const r=require("./ci-artifacts/metrics/pair-results.json").results;for(const x of r)console.log(x.variant,x.classification);if(r.some(x=>!x.valid||x.classification!=="test_pass"))process.exitCode=1'
+
+  cache-cold:
+    if: inputs.pair == '1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    outputs:
+      key: ${{ steps.key.outputs.value }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.23.3'
+      - name: Isolated cache key
+        id: key
+        env:
+          EXPERIMENT: ${{ inputs.experiment }}
+        run: |
+          python3 - <<'PY'
+          import os,re,hashlib
+          from pathlib import Path
+          tag=os.environ['EXPERIMENT']
+          assert re.fullmatch(r'[A-Za-z0-9-]{1,80}',tag)
+          lock=hashlib.sha256(Path('backend/package-lock.json').read_bytes()).hexdigest()
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f: f.write(f'value=ghuy-w620-{tag}-Linux-node22.23.3-{lock}\n')
+          PY
+      - name: Start dependency preparation interval
+        run: |
+          mkdir -p ci-artifacts/cache
+          python3 -c 'import time,pathlib;pathlib.Path("ci-artifacts/cache/start.txt").write_text(str(time.monotonic_ns()))'
+      - name: Restore isolated cache
+        id: restore
+        uses: actions/cache/restore@v5
+        with:
+          path: backend/node_modules
+          key: ${{ steps.key.outputs.value }}
+      - name: Install dependencies on miss
+        if: steps.restore.outputs.cache-hit != 'true'
+        timeout-minutes: 2
+        working-directory: backend
+        run: npm ci --no-audit --no-fund
+      - name: Stop dependency preparation interval
+        env:
+          CACHE_HIT: ${{ steps.restore.outputs.cache-hit }}
+          CACHE_MODE: cold
+          CACHE_KEY: ${{ steps.key.outputs.value }}
+        run: python3 .github/scripts/ghuy_measure_cache.py
+      - name: Save only experiment cache
+        uses: actions/cache/save@v5
+        with:
+          path: backend/node_modules
+          key: ${{ steps.key.outputs.value }}
+      - name: Upload cold evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ghuy-cache-cold
+          path: ci-artifacts/cache
+          if-no-files-found: warn
+
+  cache-warm:
+    if: inputs.pair == '1'
+    needs: cache-cold
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.23.3'
+      - name: Start dependency preparation interval
+        run: |
+          mkdir -p ci-artifacts/cache
+          python3 -c 'import time,pathlib;pathlib.Path("ci-artifacts/cache/start.txt").write_text(str(time.monotonic_ns()))'
+      - name: Restore isolated cache
+        id: restore
+        uses: actions/cache/restore@v5
+        with:
+          path: backend/node_modules
+          key: ${{ needs.cache-cold.outputs.key }}
+      - name: Install dependencies on miss
+        if: steps.restore.outputs.cache-hit != 'true'
+        timeout-minutes: 2
+        working-directory: backend
+        run: npm ci --no-audit --no-fund
+      - name: Stop dependency preparation interval
+        env:
+          CACHE_HIT: ${{ steps.restore.outputs.cache-hit }}
+          CACHE_MODE: warm
+          CACHE_KEY: ${{ needs.cache-cold.outputs.key }}
+        run: python3 .github/scripts/ghuy_measure_cache.py
+      - name: Upload warm evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ghuy-cache-warm
+          path: ci-artifacts/cache
+          if-no-files-found: warn
+
+  ai-evaluation:
+    if: always() && inputs.pair == '1'
+    needs: flaky-pair
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v6
+        with:
+          name: ghuy-pair-1
+          path: ci-artifacts/metrics
+      - name: Measure one real AI call if configured
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-3.5-flash-lite
+        run: python3 .github/scripts/ghuy_measure_ai.py
+      - name: Upload AI evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ghuy-ai-metrics
+          path: ci-artifacts/ai-metrics
+          if-no-files-found: warn
