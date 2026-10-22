@@ -36,7 +36,7 @@
 5. **Về mặt Đo đạc Thực nghiệm (Empirical Metrics) & AI Triage:**
    - Đã có [Empirical Metrics W6-20](../../Empirical_Metrics.md), [protocol](../../Materials/Empirical_Metrics/ghuy_protocol.md), raw artifacts và CSV từ 10 workflow runs (20 invocation): before 5/10 fail, after 0/10 fail, giảm 50 điểm phần trăm. Profile fast/slow được chọn trước; không suy rộng thành flake rate tự nhiên hoặc kết luận đã loại hết flaky.
    - Một cặp cache riêng xác nhận miss/hit cùng key/SHA/image: khoảng chuẩn bị dependency 6.283604/2.330145 giây, speedup 2.697×; tách khỏi npm ci step và tổng job. Image giữa 10 cặp thay đổi được ghi thành giới hạn, không loại mẫu.
-   - API Gemini gọi thật một lần trong workflow đo: HTTP 200, JSON hợp lệ, nhận body khoảng 2.456 giây. Đã đối chiếu riêng chẩn đoán với tham chiếu (1 giả thuyết có bằng chứng/1); không coi JSON hợp lệ là độ chính xác. W6-19 chưa nghiệm thu riêng, W6-20 còn chờ ảnh history/metrics và nhóm rà soát số liệu.
+   - API Gemini gọi thật một lần trong workflow đo: HTTP 200, JSON hợp lệ, nhận body khoảng 2.456 giây. Đã đối chiếu riêng chẩn đoán với tham chiếu (1 giả thuyết có bằng chứng/1); không coi JSON hợp lệ là độ chính xác. W6-19 đã kiểm chứng kỹ thuật bằng script/unit test kế thừa tuần 5, chưa nghiệm thu riêng theo đầy đủ evidence; W6-20 có 5 ảnh history/metrics/cache/API được mở kiểm tra, còn chờ nhóm rà soát số liệu.
 
 6. **Về mặt Đóng gói & Pre-share:**
    - Đóng gói toàn bộ sản phẩm mốc 90% lên Google Drive và GitHub Releases sẵn sàng nộp và chia sẻ cho lớp trước buổi báo cáo ít nhất 3 ngày làm việc.
@@ -50,7 +50,7 @@
 | **Nguyễn Ngọc Minh Tuấn** | Lead soạn bộ Slide (pptx & md ≤ 15 trang), mở rộng test suites coupon & cấu hình LCOV coverage | 17.0h | Đang làm | Thiết kế khung Slide pptx/md 15 trang; bổ sung 21 ca test Data-Driven cho coupon; cấu hình Jest HTML coverage. |
 | **Dương Nhật Cường** | Lead sản xuất Video Screencast (1080p, ≤ 100MB, English narration), Quality Gate CI, đóng gói Pre-share | 18.0h | Đang làm | Lập kịch bản Storyboard, quay màn hình thao tác thật, thu âm tiếng Anh, nén video ffmpeg ≤ 100MB, đóng gói Drive. **Quality Gate CI (W6-07) đã xong**: workflow có job `Quality Gate (100% Tests & Coverage >= 80%)` kiểm tra 100% suite pass + ngưỡng coverage 80% + xuất LCOV, Branch Protection Rules đã bật trên `main` (PR #7 đang ở trạng thái `blocked` — đúng cơ chế Fail-Fast cần demo). |
 | **Trần Gia Cường** | Lead biên soạn `User_Guide.md` tiếng Anh, phân tích 3 Failure Modes, vẽ sơ đồ Mermaid, Step-by-Step Guide | 17.5h | Đang làm | Hoàn thành khung 7 mục User Guide tiếng Anh, phân tích sâu 3 Failure Modes, tích hợp sơ đồ Mermaid, kiểm tra liên kết. |
-| **Nguyễn Gia Huy** | Lead thiết kế `Activity_Worksheet.md` & Answer Key, nâng cấp AI Triage Gemini API, đo đạc Metrics Flake Rate | 18.0h | Đang làm | W6-16–18: đã commit tài liệu/log/ảnh local, barem chưa được nhóm duyệt. W6-20: đo đủ 10 cặp CI, có CSV/raw, cache miss/hit và một API triage thật; chờ ảnh history và rà soát nhóm. W6-19 chưa nghiệm thu riêng. 18.0h là giờ kế hoạch. |
+| **Nguyễn Gia Huy** | Lead thiết kế `Activity_Worksheet.md` & Answer Key, kiểm chứng AI Triage Gemini API, đo đạc Metrics Flake Rate | 18.0h | Đã thực hiện kỹ thuật; chờ kiểm chứng thủ công | W6-16–20 có tài liệu, raw/test và 15 ảnh thật; W6-19 tái sử dụng script tuần 5, đã gọi API thật trong W6-20. Chưa chốt DoD: chờ nhóm duyệt barem/nguồn/bàn giao số liệu và sinh viên xác nhận. 18.0h là giờ kế hoạch. |
 
 ---
 
@@ -122,7 +122,16 @@ Bộ ảnh W6-18 ghuy_03a–ghuy_03g đầy đủ.
    - Trạng thái: Đã có [preview Worksheet](screenshots/ghuy_01_worksheet_preview.png), [ảnh tiếp theo](screenshots/ghuy_01b_worksheet_preview.png) và [Answer Key/barem](screenshots/ghuy_02_answerkey_rubric.png). Codex đã mở kiểm tra; barem chưa được nhóm duyệt.
 2. **Minh chứng ghuy-2: Kết quả chạy AI Triage Gemini API & Thống kê 10 runs Flake Rate**
    - File: `ghuy_04_ai_triage_gemini_output.png`, `ghuy_05_flake_rate_10runs.png`
-   - Trạng thái: Đã có số liệu 10 cặp CI và một output Gemini thật trong W6-20; còn chờ ảnh chụp history/metrics/API. Hướng dẫn tại [screenshots/README.md](screenshots/README.md); chưa tạo ảnh thay thế.
+   - Trạng thái: Đã có số liệu 10 cặp CI và một output Gemini thật trong W6-20; đã nhận và mở kiểm tra 5 ảnh history/metrics/cache cold/warm/API. Hướng dẫn tại [screenshots/README.md](screenshots/README.md); chưa tạo ảnh thay thế.
+   - Ảnh thật: [API](screenshots/ghuy_04_ai_triage_gemini_output.png), [10 runs](screenshots/ghuy_05_flake_rate_10runs.png), [bảng metrics](screenshots/ghuy_06_empirical_metrics.png), [cold](screenshots/ghuy_07_cache_cold.png), [warm](screenshots/ghuy_07_cache_warm.png).
+
+**Rà soát cuối W6-16–20:** Log và phạm vi kiểm tra tại [verification/README.md](verification/README.md).
+Backend nhánh tài liệu pass 37/37; AI offline 6/6 và dry-run exit 0. Main mới
+`634c131` chạy cô lập: backend 58/58, AI 8/10; hai fail do assertion đường dẫn
+Windows là baseline, không sửa/skip. Tái tính 10 cặp và 97 checksum metrics
+khớp; database/Checklist không thay đổi. Nhánh tài liệu chưa tích hợp 16 commit
+của main mới; cần cập nhật và kiểm thử lại trước PR. Chưa push hoặc tạo PR trong
+lượt rà soát. Tỷ lệ AI/chữ ký/tự kiểm chứng và trao đổi nhóm chưa xác nhận thay.
 
 ---
 

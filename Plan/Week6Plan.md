@@ -281,11 +281,11 @@ Mỗi task lớn nên được chia nhỏ thành các **Phase** và phân rã th
 | **13**| `W6-13` | Mở rộng test suites coupon & cấu hình LCOV coverage | N.N.M.Tuấn | 4.0h | Chat log, Git commit, HTML Coverage log | Ngày 4 | [ ] | Báo cáo độ bao phủ mã nguồn backend |
 | **14**| `W6-14` | Kiểm tra tính nhất quán giữa Slide, Guide và Code | N.N.M.Tuấn | 2.5h | Chat log, Git commit, Checklist đối soát | Ngày 5 | [ ] | Thống nhất 100% thuật ngữ và số liệu |
 | **15**| `W6-15` | Soạn kịch bản thuyết minh trực tiếp buổi seminar | N.N.M.Tuấn | 3.0h | Chat log, Git commit, Script timeline | Ngày 6 | [ ] | File `Presentation_Script.md` phân vai rõ |
-| **16**| `W6-16` | Thiết kế bài tập lớp `Activity_Worksheet.md` | N.G.Huy | 4.0h | Chat log, Git commit, Worksheet preview | Ngày 2 | [ ] | Kịch bản 20–25m "Pipeline Postmortem" |
-| **17**| `W6-17` | Soạn thảo `Activity_Worksheet_AnswerKey.md` | N.G.Huy | 3.0h | Chat log, Git commit, Barem chi tiết | Ngày 3 | [ ] | Barem chấm điểm & giải thích chi tiết |
-| **18**| `W6-18` | Trích xuất Sample Failure Logs làm đề bài tập | N.G.Huy | 2.5h | Chat log, Raw CI logs, Git commit | Ngày 4 | [ ] | Thư mục `Materials/Sample_Logs/` đầy đủ |
-| **19**| `W6-19` | Kết nối & kiểm chứng Gemini API thật trong AI Triage | N.G.Huy | 4.5h | Chat log, Git commit, JSON output terminal | Ngày 5 | [ ] | Script xuất Cây giả thuyết hoàn chỉnh |
-| **20**| `W6-20` | Chạy đo đạc Flake Rate (10 runs) & tổng hợp Metrics | N.G.Huy | 4.0h | Chat log, 10 CI run screenshots, Git commit | Ngày 5 | [ ] | Bảng số liệu hoàn chỉnh đưa vào Slide/Guide |
+| **16**| `W6-16` | Thiết kế bài tập lớp `Activity_Worksheet.md` | N.G.Huy | 4.0h | Chat log, Git commit, Worksheet preview | Ngày 2 | [ ] Đã thực hiện; chờ kiểm chứng thủ công | Worksheet 23 phút/10 điểm, 2 ảnh; chờ thống nhất kịch bản với nhóm |
+| **17**| `W6-17` | Soạn thảo `Activity_Worksheet_AnswerKey.md` | N.G.Huy | 3.0h | Chat log, Git commit, Barem chi tiết | Ngày 3 | [ ] Đã thực hiện; chờ nhóm duyệt | Đủ 10 đáp án/điểm thành phần và ảnh; barem đề xuất |
+| **18**| `W6-18` | Trích xuất Sample Failure Logs làm đề bài tập | N.G.Huy | 2.5h | Chat log, Raw CI logs, Git commit | Ngày 4 | [ ] Đã thực hiện; chờ xác nhận nguồn | 6 raw CI logs, metadata/source và 7 ảnh; SQLite là demo riêng |
+| **19**| `W6-19` | Kết nối & kiểm chứng Gemini API thật trong AI Triage | N.G.Huy | 4.5h | Chat log, Git commit, JSON output terminal | Ngày 5 | [ ] Đã kiểm chứng kỹ thuật; chờ nghiệm thu riêng | Script/unit test kế thừa tuần 5; 6/6 offline và Gemini HTTP 200 trong W6-20; chờ nhóm đối chiếu |
+| **20**| `W6-20` | Chạy đo đạc Flake Rate (10 runs) & tổng hợp Metrics | N.G.Huy | 4.0h | Chat log, 10 CI run screenshots, Git commit | Ngày 5 | [ ] Đã thực hiện; chờ bàn giao nhóm | 10 runs/20 invocation, CSV/raw, cache/AI, 5 ảnh; chưa xác nhận đưa số liệu vào Slide/Guide |
 | **21**| `W6-21` | Tổng hợp hồ sơ Weekly Report Tuần 6 (PDF, AI, Git) | D.N.Cường | 2.0h | Chat log, Commit logs, Báo cáo hoàn tất | Ngày 6 | [ ] | Thư mục `Weekly_Reports/Week06/` hoàn tất |
 
 ---

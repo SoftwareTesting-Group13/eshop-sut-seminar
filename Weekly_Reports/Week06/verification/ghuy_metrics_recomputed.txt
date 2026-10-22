@@ -1,0 +1,1 @@
+{"metrics": {"before": {"valid_invocations": 10, "test_failures": 5, "failure_rate": 0.5}, "after": {"valid_invocations": 10, "test_failures": 0, "failure_rate": 0.0}}, "reduction_pp": 50.0, "cache_speedup": 2.6966579340834755, "ai_status": "success"}

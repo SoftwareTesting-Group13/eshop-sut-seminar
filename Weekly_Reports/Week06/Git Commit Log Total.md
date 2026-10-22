@@ -69,7 +69,7 @@ git log --oneline --graph -n 20
 *Nhánh tài liệu: `feature/giahuy-week6-worksheet`; nhánh demo riêng:
 `test/giahuy-sqlite-lock-demo`; nhánh đo W6-20: `test/giahuy-week6-metrics`.*
 
-**Snapshot 8 commit đến `68051e3`, giờ Việt Nam (UTC+7):**
+**Snapshot 9 commit đến `f0cadc4`, giờ Việt Nam (UTC+7):**
 
 * **[a2cb8c4]** 22/10/2026 11:46 — `docs(worksheet): draft Pipeline Postmortem classroom activity`.
   Phạm vi: 2 file mới, 226 dòng thêm, 0 dòng xóa; bản nháp W6-16.
@@ -99,15 +99,22 @@ git log --oneline --graph -n 20
   10 workflow runs, raw artifacts, CSV, checksum và đánh giá AI; commit local,
   chưa push nhánh tài liệu. Before 5/10 fail, after 0/10; giới hạn demo được ghi rõ.
 
-Tổng snapshot 8 commit: 13842 dòng thêm, 237 dòng xóa. Chưa tính commit cập
-nhật snapshot này để tránh tự tham chiếu hash/thống kê của chính nó.
+* **[f0cadc4]** 22/10/2026 — `docs(reports): record W6-20 measurement commits and verified totals`.
+  Phạm vi: 2 file, 23 dòng thêm, 7 dòng xóa; commit ghi nhận snapshot trước.
+
+Tổng snapshot 9 commit: 13865 dòng thêm, 244 dòng xóa. Số liệu lấy từ
+`git show --numstat` từng hash, không tính dòng binary; chưa tính thay đổi
+đang sửa hoặc commit tương lai. [JSON đối soát](verification/ghuy_final_checks.json)
+lưu full hash, author/email, thời điểm và thống kê từng commit.
+`be4323d` là script Gemini/unit test đã có từ tuần 5, không cộng vào tuần 6.
 
 **Các bước còn dự kiến, chưa ghi nhận là commit đã có:**
 
 * Nhóm duyệt barem và góp ý bản soạn; cập nhật sau khi có xác nhận thực tế.
 * Thử chấm/tổng duyệt với người tham gia khi nhóm tổ chức; chưa ghi nhận đã thử.
-* Chụp ảnh history/metrics W6-20 và nhóm rà soát số liệu đã đo; chưa ghi nhận
-  ảnh hoặc đánh giá chéo mới. W6-19 chưa nghiệm thu riêng dù W6-20 có một API call thật.
+* Đã nhận 5 ảnh history/metrics/cache/API W6-20, đang ở working tree, chưa commit.
+  Chờ nhóm rà soát/bàn giao số liệu. W6-19 có API thật từ W6-20, chưa nghiệm thu
+  riêng theo toàn bộ evidence kế hoạch. Xem [log kiểm chứng](verification/README.md).
 
 ---
 
@@ -118,11 +125,12 @@ nhật snapshot này để tránh tự tham chiếu hash/thống kê của chín
 | 1 | Nguyễn Ngọc Minh Tuấn | `nnmt2810` | 5 | ~650 | ~120 | 25% |
 | 2 | Dương Nhật Cường | `cuogne` | 5 | ~580 | ~90 | 25% |
 | 3 | Trần Gia Cường | `trancuonG05` | 5 | ~920 | ~110 | 25% |
-| 4 | Nguyễn Gia Huy | `GiaHuyHCMUS05` | 8 | 13842 | 237 | Chưa đối soát |
+| 4 | Nguyễn Gia Huy | `GiaHuyHCMUS05` | 9 | 13865 | 244 | Chưa đối soát |
 | **Tổng cộng** | **Nhóm 13** | — | **Chưa đối soát** | **Chưa đối soát** | **Chưa đối soát** | **Chưa đối soát** |
 
 Số liệu của Nguyễn Gia Huy gồm đúng `a2cb8c4`, `4495d10`, `d35b932`, `485a778`,
-`a15d7c6`, `c63f346`, `ba4b02b` và `68051e3` trên ba nhánh, chưa tính commit
-cập nhật snapshot này.
+`a15d7c6`, `c63f346`, `ba4b02b`, `68051e3` và `f0cadc4` trên ba nhánh,
+chưa tính thay đổi đang sửa. Không cộng các commit nguồn/demo đã thuộc lịch sử
+khác thêm lần nữa; đây là tổng churn của 9 commit, không phải số dòng sản phẩm cuối.
 Các hàng thành viên khác được giữ theo bản kê khai của nhóm; chưa
 đối soát lại nên chưa chốt tổng cộng hoặc tỷ lệ đóng góp.

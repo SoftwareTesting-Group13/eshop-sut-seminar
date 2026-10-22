@@ -68,7 +68,7 @@ thấy nội dung [Answer Key](../../../Activity_Worksheet_AnswerKey.md) sau b�
 đáp án A1, nguồn code/revision và bảng chia điểm 0.5 + 0.5. Đây là minh chứng
 bản soạn, không phải bằng chứng nhóm duyệt barem hoặc thử chấm với lớp.
 
-### Minh chứng W6-20 — Dữ liệu đã đo, ảnh chờ chụp
+### Minh chứng W6-20 — Đã nhận và kiểm tra 5 ảnh
 
 Nguồn: [Empirical Metrics](../../../Empirical_Metrics.md), experiment
 `ghuy-20261022-110838`, SHA `ba4b02b`.
@@ -78,13 +78,19 @@ Nguồn: [Empirical Metrics](../../../Empirical_Metrics.md), experiment
   pair 1–10. Không tính run registration hoặc EShop CI chạy kèm.
 - `ghuy_06_empirical_metrics.png`: Markdown Preview của báo cáo, bảng
   before 5/10 fail, after 0/10, giảm 50 điểm phần trăm và phương pháp 10 cặp.
-- `ghuy_07_cache_cold_warm.png`: trong [run pair 1](https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600),
-  chụp cache-cold/cache-warm có miss/hit cùng key và output interval của bước
-  Stop dependency preparation interval. Có thể chia hai ảnh `_cold`/`_warm`.
+- [ghuy_07_cache_cold.png](ghuy_07_cache_cold.png) và
+  [ghuy_07_cache_warm.png](ghuy_07_cache_warm.png): trong
+  [run pair 1](https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600),
+  output bước Stop dependency preparation interval có cache_hit false/true,
+  cùng key, run ID/SHA và khoảng chuẩn bị dependency 6.283604498/2.330145184 giây.
 - `ghuy_04_ai_triage_gemini_output.png`: job ai-evaluation của pair 1, bước
   Measure one real AI call if configured, thấy HTTP 200, latency, JSON validity;
   có thể kèm Markdown analysis từ artifact. Không chụp key/secrets.
 
-Ảnh chưa được cung cấp trong lượt đo; không đánh dấu đã có ảnh. History có
+Đã mở kiểm tra 5 ảnh thật do sinh viên chụp và đổi tên từ Screenshot mặc định.
+Ảnh history thấy đủ pair 1–10; ảnh báo cáo thấy bảng 5/10 và 0/10 cùng công thức;
+ảnh AI thấy HTTP 200, latency 2455.726275 ms và response_json_valid true.
+Ảnh GitHub không chứa thanh địa chỉ; đối chiếu nguồn bằng experiment/pair,
+run ID/SHA trong output và metadata đã lưu. History có
 5 run đỏ do before fail dự kiến, after vẫn chạy; số workflow run không đồng
 nhất với số invocation. 10/10 after pass chỉ mô tả mẫu demo đã đo.

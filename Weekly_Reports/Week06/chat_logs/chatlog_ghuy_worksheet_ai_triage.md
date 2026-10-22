@@ -6,6 +6,11 @@
 - **Nhánh:** `feature/giahuy-week6-worksheet`.
 - **Phạm vi phiên hiện tại:** W6-16–18 đã đóng gói local; W6-20 đã đo 10 cặp CI/cache/AI và tổng hợp dữ liệu. Barem vẫn là đề xuất chưa được nhóm duyệt.
 
+**Phạm vi bản ghi:** Đây là nhật ký tóm tắt, không phải transcript nguyên văn.
+Các prompt tiêu biểu được rút gọn theo yêu cầu lưu trước đó. Không có bản xuất
+đầy đủ lịch sử để kiểm chứng nguyên văn mọi lượt; prompt có dấu `*` không lưu.
+Phần kiểm chứng của Codex không thay cho xác nhận tự kiểm chứng của sinh viên.
+
 ## 1. Mục tiêu công việc
 
 Đọc kế hoạch tuần 6, bắt đầu với Worksheet 20–25 phút cho hoạt động lớp
@@ -253,3 +258,35 @@ versions giữa runs được giữ trong báo cáo, không lọc bỏ hoặc ch
 Commit triển khai đo: `ba4b02b` trên nhánh metrics đã push. Commit kết quả:
 `68051e3` trên nhánh tài liệu, local; chứa báo cáo, CSV/raw/metadata và các cập
 nhật khai báo/báo cáo. Chưa push nhánh tài liệu hoặc merge main.
+
+## 12. Rà soát cuối và cập nhật minh chứng
+
+Đã nhận, mở kiểm tra và đổi tên 5 ảnh W6-20 thật; tổng bộ ảnh Huy hiện có 15
+PNG. Nội dung gồm history pair 1–10, bảng before/after, cache cold/warm và API
+HTTP 200. Cập nhật này thay trạng thái chờ ảnh tại mục 11; không ghi nhận có
+ảnh trao đổi nhóm khi chưa được cung cấp.
+
+Codex đã chạy `npm test` tại backend: 7 suites, 37/37 pass; Python unittest
+offline 6/6 và CLI dry-run exit 0. Demo fast 2/2 pass; slow sleep fail/await
+pass đúng thiết kế, raw failure được giữ nguyên. Tái tính offline khớp batch
+10 runs/20 invocation; kiểm tra 97 checksum metrics, 6 raw log và các dòng
+excerpt/source đều đạt. Không có API call hoặc workflow dispatch mới.
+
+Main nhóm hiện `634c131`, được xác minh qua `git ls-remote`. Nhánh tài liệu
+chưa chứa 16 commit của main mới. Snapshot main chạy cô lập có backend 58/58
+pass; AI offline 8/10, hai test so sánh đường dẫn Windows với chuỗi POSIX bị
+fail. Đây là baseline của main mới, không sửa/skip để báo pass. Script trên
+main đã đổi prompt/source context so với SHA CI đo, cần tích hợp và kiểm thử
+lại trước PR. Không khẳng định API thật đã kiểm chứng phiên bản main mới.
+
+W6-19 đã có bằng chứng kết nối Gemini thật và cây giả thuyết trong W6-20;
+script/unit test kế thừa `be4323d` tuần 5, không dựng commit nâng cấp tuần 6.
+Tỷ lệ AI, chữ ký, tự đọc hiểu và evidence trao đổi nhóm để sinh viên xác nhận.
+Giữ barem đề xuất, chưa nhóm duyệt. Log kiểm chứng được giữ tại
+[verification/README.md](../verification/README.md); file tổng hợp rà soát riêng
+đã được sinh viên xóa khi tinh gọn tài liệu.
+
+Git snapshot cập nhật qua `f0cadc4`: 9 commit thật trên 3 nhánh, +13865/-244;
+không tính binary, file đang sửa hoặc commit tương lai. Database và Checklist
+không đổi hash, không restore database. Chưa stage/commit/push hoặc tạo PR
+trong lượt rà soát này; chỉ đề xuất các nhóm commit theo diff thực tế.

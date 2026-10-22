@@ -1,0 +1,24 @@
+
+> backend@1.0.0 test:flaky
+> jest --config demos/jest.flaky.config.cjs --runInBand
+
+  console.log
+    [FM3][sleep] profile=fast workDelayMs=20 waitMs=100 ready=true
+
+      at Object.log (demos/flaky-delay.demo.js:32:15)
+
+  console.log
+    [FM3][await] profile=fast workDelayMs=20 ready=true
+
+      at Object.log (demos/flaky-delay.demo.js:45:13)
+
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        0.604 s
+Ran all test suites.
+npm notice
+npm notice New major version of npm available! 11.19.1 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
