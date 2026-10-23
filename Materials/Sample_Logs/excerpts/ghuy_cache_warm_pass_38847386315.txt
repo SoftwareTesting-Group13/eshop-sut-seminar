@@ -1,0 +1,42 @@
+# Trích đoạn CI thật; Lxxxx là số dòng trong bản raw đã che dữ liệu.
+# Giữ timestamp; chỉ bỏ ANSI màu ở bản trích. Các khoảng không liệt kê đã lược bỏ.
+# Run: https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/38847386315
+
+# Raw lines 139-164
+L0139 | 2026-10-16T03:49:01.4492531Z ##[group]Run actions/cache@v4
+L0140 | 2026-10-16T03:49:01.4492870Z with:
+L0141 | 2026-10-16T03:49:01.4493148Z   path: backend/node_modules
+L0142 | 2026-10-16T03:49:01.4493559Z   key: Linux-node22-2f3eac8abb565c22115e9ae737db1bc744052bd101c014226be205b3294cfa18
+L0143 | 2026-10-16T03:49:01.4493964Z   restore-keys: Linux-node22-
+L0144 | 
+L0145 | 2026-10-16T03:49:01.4494265Z   enableCrossOsArchive: false
+L0146 | 2026-10-16T03:49:01.4494557Z   fail-on-cache-miss: false
+L0147 | 2026-10-16T03:49:01.4494839Z   lookup-only: false
+L0148 | 2026-10-16T03:49:01.4495100Z   save-always: false
+L0149 | 2026-10-16T03:49:01.4495369Z ##[endgroup]
+L0150 | 2026-10-16T03:49:01.5245144Z (node:2124) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+L0151 | 2026-10-16T03:49:01.5246257Z (Use `node --trace-deprecation ...` to show where the warning was created)
+L0152 | 2026-10-16T03:49:01.6371594Z Cache hit for: Linux-node22-2f3eac8abb565c22115e9ae737db1bc744052bd101c014226be205b3294cfa18
+L0153 | 2026-10-16T03:49:01.6446718Z (node:2124) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+L0154 | 2026-10-16T03:49:02.4938556Z Received 15224339 of 15224339 (100.0%), 20.5 MBs/sec
+L0155 | 2026-10-16T03:49:02.4939264Z Cache Size: ~15 MB (15224339 B)
+L0156 | 2026-10-16T03:49:02.4957586Z [command]/usr/bin/tar -xf /home/runner/work/_temp/8782aefe-2e7f-4b8d-8723-6c6738fa49e9/cache.tzst -P -C /home/runner/work/eshop-sut-seminar/eshop-sut-seminar --use-compress-program unzstd
+L0157 | 2026-10-16T03:49:02.7335782Z Cache restored successfully
+L0158 | 2026-10-16T03:49:02.7396224Z Cache restored from key: Linux-node22-2f3eac8abb565c22115e9ae737db1bc744052bd101c014226be205b3294cfa18
+L0159 | 2026-10-16T03:49:02.7520284Z ##[group]Run echo "### EShop CI — Cache Report :package:" >> "$GITHUB_STEP_SUMMARY"
+L0160 | 2026-10-16T03:49:02.7520680Z echo "### EShop CI — Cache Report :package:" >> "$GITHUB_STEP_SUMMARY"
+L0161 | 2026-10-16T03:49:02.7520920Z echo "" >> "$GITHUB_STEP_SUMMARY"
+L0162 | 2026-10-16T03:49:02.7521119Z echo "- Cache hit: \`true\`" >> "$GITHUB_STEP_SUMMARY"
+L0163 | 2026-10-16T03:49:02.7521345Z if [ "true" = "true" ]; then
+L0164 | 2026-10-16T03:49:02.7521665Z   echo "- Bước cài dependency (khôi phục từ cache, bỏ qua \`npm ci\`)" >> "$GITHUB_STEP_SUMMARY"
+
+# Raw lines 232-239
+L0232 | 2026-10-16T03:49:07.1248520Z 
+L0233 | 2026-10-16T03:49:07.1253624Z Test Suites: 4 passed, 4 total
+L0234 | 2026-10-16T03:49:07.1253897Z Tests:       6 passed, 6 total
+L0235 | 2026-10-16T03:49:07.1254116Z Snapshots:   0 total
+L0236 | 2026-10-16T03:49:07.1254347Z Time:        4.061 s
+L0237 | 2026-10-16T03:49:07.1254549Z Ran all test suites.
+L0238 | 2026-10-16T03:49:07.1912932Z Post job cleanup.
+L0239 | 2026-10-16T03:49:07.2657104Z Cache hit occurred on the primary key Linux-node22-2f3eac8abb565c22115e9ae737db1bc744052bd101c014226be205b3294cfa18, not saving cache.
+

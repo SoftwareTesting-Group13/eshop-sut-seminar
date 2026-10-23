@@ -1,0 +1,30 @@
+
+> backend@1.0.0 test
+> jest --runInBand --detectOpenHandles --forceExit --coverage
+
+--------------------|---------|----------|---------|---------|---------------------------------------------------------------------------------
+File                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                                               
+--------------------|---------|----------|---------|---------|---------------------------------------------------------------------------------
+All files           |   74.52 |    57.44 |   77.92 |   78.81 |                                                                                 
+ coupon-discount.js |     100 |      100 |     100 |     100 |                                                                                 
+ database.js        |   97.77 |       50 |     100 |   97.77 | 10                                                                              
+ server.js          |   68.65 |    50.42 |   76.05 |   73.56 | 39,42,55-64,70-79,89-96,114-115,120-134,148,227,404-410,464-465,485-522,530-531 
+--------------------|---------|----------|---------|---------|---------------------------------------------------------------------------------
+
+=============================== Coverage summary ===============================
+Statements   : 74.52% ( 234/314 )
+Branches     : 57.44% ( 81/141 )
+Functions    : 77.92% ( 60/77 )
+Lines        : 78.81% ( 227/288 )
+================================================================================
+
+Test Suites: 7 passed, 7 total
+Tests:       61 passed, 61 total
+Snapshots:   0 total
+Time:        7.377 s, estimated 13 s
+Ran all test suites.
+npm notice
+npm notice New major version of npm available! 11.19.1 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

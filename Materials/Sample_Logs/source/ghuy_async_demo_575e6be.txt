@@ -1,0 +1,52 @@
+# Source: backend/demos/flaky-delay.demo.js @ 575e6be97db370143bc0c31ed88741b91acca0ca
+# Exact source lines; no redactions. Lines outside this range omitted.
+S0001 | // Week 5 / Failure Mode 3: synthetic async-delay demo, independent of the SUT DB.
+S0002 | // The assertion stays the same; injected work duration changes between runs.
+S0003 | jest.useRealTimers();
+S0004 | 
+S0005 | const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+S0006 | const profile = process.env.FLAKY_PROFILE || 'random';
+S0007 | const waitMs = 100;
+S0008 | 
+S0009 | if (!['fast', 'slow', 'random'].includes(profile)) {
+S0010 |   throw new Error('FLAKY_PROFILE must be fast, slow, or random.');
+S0011 | }
+S0012 | 
+S0013 | // Wide margins keep the controlled fast/slow demonstrations easy to reproduce.
+S0014 | // Random selects one duration per run; this is fault injection, not measured CI data.
+S0015 | const workDelayMs = profile === 'fast' ? 20
+S0016 |   : profile === 'slow' ? 200
+S0017 |     : Math.random() < 0.5 ? 20 : 200;
+S0018 | 
+S0019 | function startAsyncWork() {
+S0020 |   const state = { ready: false };
+S0021 |   const completed = sleep(workDelayMs).then(() => {
+S0022 |     state.ready = true;
+S0023 |   });
+S0024 |   return { state, completed };
+S0025 | }
+S0026 | 
+S0027 | describe('Failure Mode 3 - async delay / sleep-based flaky test', () => {
+S0028 |   test('sleep-based wait can inspect work before completion', async () => {
+S0029 |     const job = startAsyncWork();
+S0030 |     try {
+S0031 |       await sleep(waitMs);
+S0032 |       console.log(
+S0033 |         `[FM3][sleep] profile=${profile} workDelayMs=${workDelayMs} waitMs=${waitMs} ready=${job.state.ready}`,
+S0034 |       );
+S0035 |       expect(job.state.ready).toBe(true);
+S0036 |     } finally {
+S0037 |       // Drain the operation even after an assertion failure, avoiding leaked timers.
+S0038 |       await job.completed;
+S0039 |     }
+S0040 |   });
+S0041 | 
+S0042 |   test('await completion waits for the work instead of guessing a delay', async () => {
+S0043 |     const job = startAsyncWork();
+S0044 |     await job.completed;
+S0045 |     console.log(
+S0046 |       `[FM3][await] profile=${profile} workDelayMs=${workDelayMs} ready=${job.state.ready}`,
+S0047 |     );
+S0048 |     expect(job.state.ready).toBe(true);
+S0049 |   });
+S0050 | });

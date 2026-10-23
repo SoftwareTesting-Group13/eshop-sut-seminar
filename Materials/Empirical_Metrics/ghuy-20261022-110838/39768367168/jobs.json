@@ -1,0 +1,191 @@
+[
+  {
+    "id": 119789400662,
+    "run_id": 39768367168,
+    "workflow_name": "W6 metrics ghuy-20261022-110838 pair 2",
+    "head_branch": "test/giahuy-week6-metrics",
+    "run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768367168",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOVJWlos8AAAAb5AEyVg",
+    "head_sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+    "url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/jobs/119789400662",
+    "html_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768367168/job/119789400662",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-22T11:08:43Z",
+    "started_at": "2026-10-22T11:08:45Z",
+    "completed_at": "2026-10-22T11:08:56Z",
+    "name": "flaky-pair",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-10-22T11:08:46Z",
+        "completed_at": "2026-10-22T11:08:47Z"
+      },
+      {
+        "name": "Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-10-22T11:08:47Z",
+        "completed_at": "2026-10-22T11:08:48Z"
+      },
+      {
+        "name": "Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-10-22T11:08:48Z",
+        "completed_at": "2026-10-22T11:08:48Z"
+      },
+      {
+        "name": "Install pinned dependencies",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-10-22T11:08:48Z",
+        "completed_at": "2026-10-22T11:08:51Z"
+      },
+      {
+        "name": "Measure selected before and after tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-10-22T11:08:51Z",
+        "completed_at": "2026-10-22T11:08:52Z"
+      },
+      {
+        "name": "Upload pair evidence",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-10-22T11:08:52Z",
+        "completed_at": "2026-10-22T11:08:53Z"
+      },
+      {
+        "name": "Expose test or infrastructure failure in run history",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-10-22T11:08:53Z",
+        "completed_at": "2026-10-22T11:08:53Z"
+      },
+      {
+        "name": "Post Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 13,
+        "started_at": "2026-10-22T11:08:53Z",
+        "completed_at": "2026-10-22T11:08:53Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 14,
+        "started_at": "2026-10-22T11:08:53Z",
+        "completed_at": "2026-10-22T11:08:53Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-10-22T11:08:53Z",
+        "completed_at": "2026-10-22T11:08:53Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/check-runs/119789400662",
+    "labels": [
+      "ubuntu-24.04"
+    ],
+    "runner_id": 1000000174,
+    "runner_name": "GitHub Actions 1000000174",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 119789405983,
+    "run_id": 39768367168,
+    "workflow_name": "W6 metrics ghuy-20261022-110838 pair 2",
+    "head_branch": "test/giahuy-week6-metrics",
+    "run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768367168",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOVJWlos8AAAAb5AFHHw",
+    "head_sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+    "url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/jobs/119789405983",
+    "html_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768367168/job/119789405983",
+    "status": "completed",
+    "conclusion": "skipped",
+    "created_at": "2026-10-22T11:08:44Z",
+    "started_at": "2026-10-22T11:08:44Z",
+    "completed_at": "2026-10-22T11:08:43Z",
+    "name": "cache-warm",
+    "steps": [],
+    "check_run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/check-runs/119789405983",
+    "labels": [
+      "ubuntu-24.04"
+    ],
+    "runner_id": null,
+    "runner_name": null,
+    "runner_group_id": null,
+    "runner_group_name": null
+  },
+  {
+    "id": 119789406218,
+    "run_id": 39768367168,
+    "workflow_name": "W6 metrics ghuy-20261022-110838 pair 2",
+    "head_branch": "test/giahuy-week6-metrics",
+    "run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768367168",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOVJWlos8AAAAb5AFICg",
+    "head_sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+    "url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/jobs/119789406218",
+    "html_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768367168/job/119789406218",
+    "status": "completed",
+    "conclusion": "skipped",
+    "created_at": "2026-10-22T11:08:44Z",
+    "started_at": "2026-10-22T11:08:44Z",
+    "completed_at": "2026-10-22T11:08:43Z",
+    "name": "cache-cold",
+    "steps": [],
+    "check_run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/check-runs/119789406218",
+    "labels": [
+      "ubuntu-24.04"
+    ],
+    "runner_id": null,
+    "runner_name": null,
+    "runner_group_id": null,
+    "runner_group_name": null
+  },
+  {
+    "id": 119789497136,
+    "run_id": 39768367168,
+    "workflow_name": "W6 metrics ghuy-20261022-110838 pair 2",
+    "head_branch": "test/giahuy-week6-metrics",
+    "run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768367168",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOVJWlos8AAAAb5AKrMA",
+    "head_sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+    "url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/jobs/119789497136",
+    "html_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768367168/job/119789497136",
+    "status": "completed",
+    "conclusion": "skipped",
+    "created_at": "2026-10-22T11:08:56Z",
+    "started_at": "2026-10-22T11:08:56Z",
+    "completed_at": "2026-10-22T11:08:56Z",
+    "name": "ai-evaluation",
+    "steps": [],
+    "check_run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/check-runs/119789497136",
+    "labels": [
+      "ubuntu-24.04"
+    ],
+    "runner_id": null,
+    "runner_name": null,
+    "runner_group_id": null,
+    "runner_group_name": null
+  }
+]

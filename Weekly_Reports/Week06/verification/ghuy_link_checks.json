@@ -1,0 +1,21 @@
+{
+  "checked": 167,
+  "broken": [
+    {
+      "file": "Weekly_Reports/Week06/AI Usage Declaration.md",
+      "target": "./chat_logs/chatlog_mtuan_slides_coupon_tests.md"
+    },
+    {
+      "file": "Weekly_Reports/Week06/AI Usage Declaration.md",
+      "target": "./chat_logs/chatlog_gcuong_user_guide_failure_modes.md"
+    },
+    {
+      "file": "Weekly_Reports/Week06/Weekly_Report_Week06.md",
+      "target": "../../User_Guide.md"
+    },
+    {
+      "file": "Plan/Week6Plan.md",
+      "target": "./../Me/MyPlanW5.md"
+    }
+  ]
+}

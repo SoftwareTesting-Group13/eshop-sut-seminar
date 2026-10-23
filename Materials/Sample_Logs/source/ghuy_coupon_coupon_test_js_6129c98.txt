@@ -1,0 +1,27 @@
+# Source: backend/tests/coupon.test.js @ 6129c98350db5294f7c3127741ab5a564cab4b66
+# Exact source lines; other lines omitted. No redactions.
+S0028 |   }
+S0029 |   throw new Error('Seed data chưa sẵn sàng sau 5s');
+S0030 | });
+S0031 | 
+S0032 | describe('POST /api/apply-coupon — Data-Driven (test.each)', () => {
+S0033 |   // ------------------------------------------------------------------
+S0034 |   // 1. Coupon hợp lệ: kiểm tra discount_amount và final_amount
+S0035 |   // ------------------------------------------------------------------
+S0036 |   describe('Coupon hợp lệ (C1, C2, C3 đều thỏa)', () => {
+S0037 |     test.each([
+S0038 |       { code: 'SAVE10', total: 1000000, discount: 100000, final: 900000, note: 'percent 10%, đơn 1,000,000 [BUG FM2]' },
+S0039 |       { code: 'SAVE10', total: 500000, discount: 50000, final: 450000, note: 'percent 10%, đơn 500,000 [BUG FM2]' },
+S0040 |       { code: 'SAVE10', total: 300000, discount: 30000, final: 270000, note: 'percent, ĐÚNG ngưỡng tối thiểu [BUG biên >=]' },
+S0041 |       { code: 'BIGBUY', total: 600000, discount: 50000, final: 550000, note: 'fixed 50,000, đơn 600,000' },
+S0042 |       { code: 'BIGBUY', total: 500000, discount: 50000, final: 450000, note: 'fixed, ĐÚNG ngưỡng tối thiểu [BUG biên >=]' },
+S0043 |       { code: 'VIP100', total: 400000, discount: 100000, final: 300000, note: 'fixed 100,000, đơn 400,000' },
+S0044 |       { code: 'VIP100', total: 300000, discount: 100000, final: 200000, note: 'fixed, ĐÚNG ngưỡng tối thiểu [BUG biên >=]' },
+S0045 |     ])('$code với đơn $total → giảm $discount, còn $final ($note)', async ({ code, total, discount, final }) => {
+S0046 |       const res = await applyCoupon({ code, total_amount: total });
+S0047 | 
+S0048 |       expect(res.status).toBe(200);
+S0049 |       expect(res.body.success).toBe(true);
+S0050 |       expect(res.body.discount_amount).toBe(discount);
+S0051 |       expect(res.body.final_amount).toBe(final);
+S0052 |     });

@@ -1,0 +1,44 @@
+name: SQLite Lock Teaching Demo
+
+# Run only on the dedicated demo branch; never on main.
+on:
+  push:
+    branches: [test/giahuy-sqlite-lock-demo]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sqlite-demo:
+    name: SQLite demo (${{ matrix.mode }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [parallel, serial]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Install backend dependencies
+        timeout-minutes: 2
+        working-directory: backend
+        run: npm ci --no-audit --no-fund
+      - name: Demonstrate SQLite write ordering
+        shell: bash
+        env:
+          DEMO_MODE: ${{ matrix.mode }}
+        run: |
+          mkdir -p ci-artifacts
+          set -o pipefail
+          node backend/demos/sqlite-lock.demo.cjs "$DEMO_MODE" 2>&1 | tee "ci-artifacts/ghuy_sqlite_${DEMO_MODE}.txt"
+      - name: Upload unmodified demo output
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: ghuy-sqlite-${{ matrix.mode }}
+          path: ci-artifacts/ghuy_sqlite_*.txt
+          if-no-files-found: warn

@@ -1,0 +1,15 @@
+
+> backend@1.0.0 test
+> jest --runInBand --detectOpenHandles --forceExit
+
+
+Test Suites: 7 passed, 7 total
+Tests:       58 passed, 58 total
+Snapshots:   0 total
+Time:        5.126 s
+Ran all test suites.
+npm notice
+npm notice New major version of npm available! 11.19.1 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

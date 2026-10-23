@@ -1,0 +1,7 @@
+# Keep archived log checksums stable on Windows checkouts.
+*.txt text eol=lf
+*.json text eol=lf
+# Preserve original whitespace in evidence and numbered source/excerpts.
+raw/*.txt -whitespace
+excerpts/*.txt -whitespace
+source/*.txt -whitespace
