@@ -1,0 +1,130 @@
+{
+  "source_type": "GitHub Actions controlled SQLite reproduction; complete job log",
+  "run_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39741620266",
+  "run_id": 39741620266,
+  "run_attempt": 1,
+  "commit_sha": "485a77881b7c7be487af71805147bca1a1ae9d0e",
+  "branch": "test/giahuy-sqlite-lock-demo",
+  "event": "push",
+  "workflow_name": "SQLite Lock Teaching Demo",
+  "run_created_at_utc": "2026-10-22T07:36:05Z",
+  "run_conclusion": "failure",
+  "job": {
+    "id": 119699936524,
+    "name": "SQLite demo (serial)",
+    "conclusion": "success",
+    "started_at": "2026-10-22T07:36:07Z",
+    "completed_at": "2026-10-22T07:36:18Z",
+    "html_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39741620266/job/119699936524",
+    "runner_name": "GitHub Actions 1000000088",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-10-22T07:36:08Z",
+        "completed_at": "2026-10-22T07:36:09Z"
+      },
+      {
+        "name": "Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-10-22T07:36:09Z",
+        "completed_at": "2026-10-22T07:36:10Z"
+      },
+      {
+        "name": "Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-10-22T07:36:10Z",
+        "completed_at": "2026-10-22T07:36:10Z"
+      },
+      {
+        "name": "Install backend dependencies",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-10-22T07:36:10Z",
+        "completed_at": "2026-10-22T07:36:15Z"
+      },
+      {
+        "name": "Demonstrate SQLite write ordering",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-10-22T07:36:15Z",
+        "completed_at": "2026-10-22T07:36:15Z"
+      },
+      {
+        "name": "Upload unmodified demo output",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-10-22T07:36:15Z",
+        "completed_at": "2026-10-22T07:36:16Z"
+      },
+      {
+        "name": "Post Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11,
+        "started_at": "2026-10-22T07:36:16Z",
+        "completed_at": "2026-10-22T07:36:16Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 12,
+        "started_at": "2026-10-22T07:36:16Z",
+        "completed_at": "2026-10-22T07:36:16Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 13,
+        "started_at": "2026-10-22T07:36:16Z",
+        "completed_at": "2026-10-22T07:36:16Z"
+      }
+    ]
+  },
+  "download_endpoint": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39741620266/logs",
+  "archive_member": "0_SQLite demo (serial).txt",
+  "extracted_at_utc": "2026-10-22T07:36:35.564676+00:00",
+  "extracted_by": "Codex supporting Nguyen Gia Huy",
+  "method": "Authenticated GitHub REST run log ZIP; one complete top-level job member; UTF-8 LF",
+  "raw_file": "raw/ghuy_sqlite_serial_39741620266.txt",
+  "raw_sha256": "bd6ef99770b0df676b3c3247d205de927f3b9ccf4dc492e6b739b10fe262577f",
+  "raw_line_count": 212,
+  "excerpt_file": "excerpts/ghuy_sqlite_serial_39741620266.txt",
+  "excerpt_raw_line_ranges": [
+    [
+      145,
+      163
+    ]
+  ],
+  "redaction": {
+    "github_masking": "Existing *** unchanged",
+    "additional_token_pattern_replacements": 0,
+    "other_changes": "Raw has no omitted job lines. Excerpt removes ANSI and unselected ranges; ZIP container/other job omitted."
+  },
+  "demo_controls": {
+    "process_count": 1,
+    "connection_count": 2,
+    "busy_timeout_ms": 0,
+    "journal_mode": "DELETE",
+    "ordering": "parallel holds transaction A until B has attempted INSERT; serial commits A before B INSERT",
+    "temporary_db": true,
+    "business_code_modified": false,
+    "jest_workers": false
+  },
+  "source_snapshot": "source/ghuy_sqlite_demo_485a778.txt",
+  "workflow_snapshot": "source/ghuy_sqlite_workflow_485a778.yml"
+}

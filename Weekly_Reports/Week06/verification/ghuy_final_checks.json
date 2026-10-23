@@ -1,0 +1,152 @@
+{
+  "reviewed_at": "2026-10-22T13:21:30.375Z",
+  "head": "f0cadc4e4acaeb7c3aac5f06071fdc283c523f41",
+  "local_main": "f50f68e7bede4a4fd68f2a203ba6cd881c259581",
+  "remote_main_verified": "634c1313d52f9a3242b4ce6f3bf89cd8c512c5b2",
+  "base_repo": "SoftwareTesting-Group13/eshop-sut-seminar",
+  "base_branch": "main",
+  "metrics_checksums": 97,
+  "sample_raw_logs": 6,
+  "excerpt_lines_checked": 186,
+  "source_lines_checked": 242,
+  "worksheet_questions": [
+    "A1",
+    "A2",
+    "A3",
+    "B1",
+    "B2",
+    "B3",
+    "C1",
+    "C2",
+    "C3",
+    "D1"
+  ],
+  "screenshots": [
+    "ghuy_01b_worksheet_preview.png",
+    "ghuy_01_worksheet_preview.png",
+    "ghuy_02_answerkey_rubric.png",
+    "ghuy_03a_coupon_ci_failure.png",
+    "ghuy_03b_cache_miss_pass.png",
+    "ghuy_03c_cache_hit_pass.png",
+    "ghuy_03d_cache_miss_install_failure.png",
+    "ghuy_03e_sample_logs_index.png",
+    "ghuy_03f_sqlite_ci_failure.png",
+    "ghuy_03g_sqlite_serial_pass.png",
+    "ghuy_04_ai_triage_gemini_output.png",
+    "ghuy_05_flake_rate_10runs.png",
+    "ghuy_06_empirical_metrics.png",
+    "ghuy_07_cache_cold.png",
+    "ghuy_07_cache_warm.png"
+  ],
+  "scanned_files": 171,
+  "secret_pattern_hits": [],
+  "junk_files_in_scope": [],
+  "protected_hashes": [
+    {
+      "Path": "C:\\Users\\Gia Huy\\Downloads\\seminar\\eshop-sut-seminar\\backend\\database.sqlite",
+      "Hash": "C63F00544180BA1FBB1427A9B9DD3F1784842698809972F33CE90482E7420BA6"
+    },
+    {
+      "Path": "C:\\Users\\Gia Huy\\Downloads\\seminar\\eshop-sut-seminar\\Plan\\Checklist.md",
+      "Hash": "88D06BC748D417AD0C1C6BC597FC58A306617E805BB44CA60317E4B059837FBA"
+    }
+  ],
+  "commits": [
+    {
+      "hash": "a2cb8c4242698397bce6e358a350efc512e5c080",
+      "date": "2026-10-22T11:46:14+07:00",
+      "author": "GiaHuyHCMUS05",
+      "email": "giahuyst05@gmail.com",
+      "subject": "docs(worksheet): draft Pipeline Postmortem classroom activity",
+      "files": 2,
+      "added": 226,
+      "deleted": 0
+    },
+    {
+      "hash": "4495d10447145e7921b8f831867469b420f864f9",
+      "date": "2026-10-22T11:48:06+07:00",
+      "author": "GiaHuyHCMUS05",
+      "email": "giahuyst05@gmail.com",
+      "subject": "docs(reports): record Gia Huy week 6 worksheet draft progress",
+      "files": 4,
+      "added": 115,
+      "deleted": 22
+    },
+    {
+      "hash": "d35b93243e93ab876ca26919bf33c9fb71e82b85",
+      "date": "2026-10-22T14:18:27+07:00",
+      "author": "GiaHuyHCMUS05",
+      "email": "giahuyst05@gmail.com",
+      "subject": "test(sqlite): prepare isolated lock reproduction for worksheet A",
+      "files": 6,
+      "added": 237,
+      "deleted": 0
+    },
+    {
+      "hash": "485a77881b7c7be487af71805147bca1a1ae9d0e",
+      "date": "2026-10-22T14:35:57+07:00",
+      "author": "GiaHuyHCMUS05",
+      "email": "giahuyst05@gmail.com",
+      "subject": "ci(sqlite): bound demo setup and skip optional npm audit",
+      "files": 1,
+      "added": 3,
+      "deleted": 1
+    },
+    {
+      "hash": "a15d7c6cc871120fc3166f8d2f2df235c013da01",
+      "date": "2026-10-22T17:56:27+07:00",
+      "author": "GiaHuyHCMUS05",
+      "email": "giahuyst05@gmail.com",
+      "subject": "docs(week6): package worksheet answer key and verified CI evidence",
+      "files": 48,
+      "added": 4608,
+      "deleted": 195
+    },
+    {
+      "hash": "c63f3469083eb7615ddc23b1258178d50e8fa919",
+      "date": "2026-10-22T17:57:18+07:00",
+      "author": "GiaHuyHCMUS05",
+      "email": "giahuyst05@gmail.com",
+      "subject": "docs(reports): record reviewed week 6 evidence package commit",
+      "files": 2,
+      "added": 35,
+      "deleted": 10
+    },
+    {
+      "hash": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+      "date": "2026-10-22T18:07:39+07:00",
+      "author": "GiaHuyHCMUS05",
+      "email": "giahuyst05@gmail.com",
+      "subject": "test(metrics): add controlled CI before-after and cache measurements",
+      "files": 5,
+      "added": 442,
+      "deleted": 0
+    },
+    {
+      "hash": "68051e3943e796fed0996156f380c01dc23dbc27",
+      "date": "2026-10-22T18:23:59+07:00",
+      "author": "GiaHuyHCMUS05",
+      "email": "giahuyst05@gmail.com",
+      "subject": "docs(metrics): record ten paired CI runs and measured cache and AI results",
+      "files": 107,
+      "added": 8176,
+      "deleted": 9
+    },
+    {
+      "hash": "f0cadc4e4acaeb7c3aac5f06071fdc283c523f41",
+      "date": "2026-10-22T18:25:20+07:00",
+      "author": "GiaHuyHCMUS05",
+      "email": "giahuyst05@gmail.com",
+      "subject": "docs(reports): record W6-20 measurement commits and verified totals",
+      "files": 2,
+      "added": 23,
+      "deleted": 7
+    }
+  ],
+  "totals": {
+    "commits": 9,
+    "added": 13865,
+    "deleted": 244
+  },
+  "failures": []
+}

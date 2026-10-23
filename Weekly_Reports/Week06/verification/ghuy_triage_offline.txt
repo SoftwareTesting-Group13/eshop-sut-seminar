@@ -1,0 +1,11 @@
+test_api_errors_leave_existing_report_untouched (test_ai_triage.TriageTests.test_api_errors_leave_existing_report_untouched) ... ok
+test_empty_input_or_missing_key_does_not_call_api (test_ai_triage.TriageTests.test_empty_input_or_missing_key_does_not_call_api) ... ok
+test_file_to_api_to_markdown_and_summary (test_ai_triage.TriageTests.test_file_to_api_to_markdown_and_summary) ... ok
+test_invalid_incomplete_and_empty_responses_are_not_success (test_ai_triage.TriageTests.test_invalid_incomplete_and_empty_responses_are_not_success) ... ok
+test_stdin_dry_run_trims_log_and_does_not_call_api (test_ai_triage.TriageTests.test_stdin_dry_run_trims_log_and_does_not_call_api) ... ok
+test_windows_encoding_ansi_and_key_redaction (test_ai_triage.TriageTests.test_windows_encoding_ansi_and_key_redaction) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.117s
+
+OK

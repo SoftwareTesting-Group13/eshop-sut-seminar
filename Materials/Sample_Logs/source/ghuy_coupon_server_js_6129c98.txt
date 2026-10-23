@@ -1,0 +1,39 @@
+# Source: backend/server.js @ 6129c98350db5294f7c3127741ab5a564cab4b66
+# Exact source lines; other lines omitted. No redactions.
+S0398 |               if (coupon.type === "percent") {
+S0399 |                 discount_amount = Math.floor(
+S0400 |                   total_amount * (1 - coupon.discount_value),
+S0401 |                 );
+S0402 |               } else {
+S0403 |                 discount_amount = coupon.discount_value;
+S0404 |               }
+S0405 | 
+S0406 |               const final_amount = total_amount - discount_amount;
+S0407 |               return res.json({
+S0408 |                 success: true,
+S0409 |                 coupon_id: coupon.id,
+S0410 |                 discount_amount,
+S0411 |                 final_amount,
+S0412 |                 message: `Áp dụng thành công! Giảm ${coupon.type === "percent" ? coupon.discount_value + "%" : coupon.discount_value.toLocaleString() + " ₫"}`,
+S0413 |               });
+S0414 |             },
+S0415 |           );
+S0416 |         } else {
+S0417 |           let discount_amount = 0;
+S0418 |           if (coupon.type === "percent") {
+S0419 |             discount_amount = Math.floor(
+S0420 |               total_amount * (1 - coupon.discount_value),
+S0421 |             );
+S0422 |           } else {
+S0423 |             discount_amount = coupon.discount_value;
+S0424 |           }
+S0425 |           const final_amount = total_amount - discount_amount;
+S0426 |           return res.json({
+S0427 |             success: true,
+S0428 |             coupon_id: coupon.id,
+S0429 |             discount_amount,
+S0430 |             final_amount,
+S0431 |             message: `Áp dụng thành công! Giảm ${coupon.type === "percent" ? coupon.discount_value + "%" : coupon.discount_value.toLocaleString() + " ₫"}`,
+S0432 |           });
+S0433 |         }
+S0434 |       } else {

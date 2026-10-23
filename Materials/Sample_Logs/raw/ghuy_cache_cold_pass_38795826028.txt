@@ -1,0 +1,278 @@
+2026-10-15T19:40:35.5182595Z Current runner version: '2.337.0'
+2026-10-15T19:40:35.5201389Z ##[group]Runner Image Provisioner
+2026-10-15T19:40:35.5201933Z Hosted Compute Agent
+2026-10-15T19:40:35.5202383Z Version: 20261012.601
+2026-10-15T19:40:35.5202805Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-15T19:40:35.5203305Z Build Date: 2026-10-12T17:48:21Z
+2026-10-15T19:40:35.5203719Z Worker ID: {32feee56-ce75-4464-948b-bd41b3515f49}
+2026-10-15T19:40:35.5204133Z Region: centralus
+2026-10-15T19:40:35.5204522Z Cloud: Azure
+2026-10-15T19:40:35.5204887Z ##[endgroup]
+2026-10-15T19:40:35.5205941Z ##[group]Operating System
+2026-10-15T19:40:35.5206335Z Ubuntu
+2026-10-15T19:40:35.5206655Z 24.04.5
+2026-10-15T19:40:35.5207005Z LTS
+2026-10-15T19:40:35.5207354Z ##[endgroup]
+2026-10-15T19:40:35.5207738Z ##[group]Runner Image
+2026-10-15T19:40:35.5208124Z Image: ubuntu-24.04
+2026-10-15T19:40:35.5208471Z Version: 20261012.334.1
+2026-10-15T19:40:35.5209307Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-15T19:40:35.5210214Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-15T19:40:35.5210789Z ##[endgroup]
+2026-10-15T19:40:35.5211433Z ##[group]GITHUB_TOKEN Permissions
+2026-10-15T19:40:35.5212756Z Contents: read
+2026-10-15T19:40:35.5213098Z Metadata: read
+2026-10-15T19:40:35.5213496Z ##[endgroup]
+2026-10-15T19:40:35.5214862Z Secret source: Actions
+2026-10-15T19:40:35.5215720Z Cache mode: write
+2026-10-15T19:40:35.5216170Z Prepare workflow directory
+2026-10-15T19:40:35.5479652Z Prepare all required actions
+2026-10-15T19:40:35.5510877Z Getting action download info
+2026-10-15T19:40:35.7648305Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-15T19:40:35.8545714Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-15T19:40:35.9483646Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2026-10-15T19:40:36.1397869Z Complete job name: Backend Test (Node.js 22)
+2026-10-15T19:40:36.1825837Z ##[group]Run actions/checkout@v4
+2026-10-15T19:40:36.1826242Z with:
+2026-10-15T19:40:36.1826521Z   repository: SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-15T19:40:36.1828740Z   token: ***
+2026-10-15T19:40:36.1828963Z   ssh-strict: true
+2026-10-15T19:40:36.1829191Z   ssh-user: git
+2026-10-15T19:40:36.1829427Z   persist-credentials: true
+2026-10-15T19:40:36.1829684Z   clean: true
+2026-10-15T19:40:36.1829920Z   sparse-checkout-cone-mode: true
+2026-10-15T19:40:36.1830191Z   fetch-depth: 1
+2026-10-15T19:40:36.1830414Z   fetch-tags: false
+2026-10-15T19:40:36.1830644Z   show-progress: true
+2026-10-15T19:40:36.1830873Z   lfs: false
+2026-10-15T19:40:36.1831086Z   submodules: false
+2026-10-15T19:40:36.1831317Z   set-safe-directory: true
+2026-10-15T19:40:36.1831578Z   allow-unsafe-pr-checkout: false
+2026-10-15T19:40:36.1831909Z ##[endgroup]
+2026-10-15T19:40:36.2470902Z Syncing repository: SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-15T19:40:36.2472628Z ##[group]Getting Git version info
+2026-10-15T19:40:36.2473336Z Working directory is '/home/runner/work/eshop-sut-seminar/eshop-sut-seminar'
+2026-10-15T19:40:36.2474255Z [command]/usr/bin/git version
+2026-10-15T19:40:36.2551065Z git version 2.55.0
+2026-10-15T19:40:36.2606744Z ##[endgroup]
+2026-10-15T19:40:36.2612335Z Temporarily overriding HOME='/home/runner/work/_temp/484a18ee-189d-4f3e-862e-781f55b22fca' before making global git config changes
+2026-10-15T19:40:36.2613483Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-15T19:40:36.2614532Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/eshop-sut-seminar/eshop-sut-seminar
+2026-10-15T19:40:36.2629847Z Deleting the contents of '/home/runner/work/eshop-sut-seminar/eshop-sut-seminar'
+2026-10-15T19:40:36.2630950Z ##[group]Initializing the repository
+2026-10-15T19:40:36.2631676Z [command]/usr/bin/git init /home/runner/work/eshop-sut-seminar/eshop-sut-seminar
+2026-10-15T19:40:36.2737299Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-15T19:40:36.2738196Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-15T19:40:36.2738988Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-15T19:40:36.2739604Z hint: call:
+2026-10-15T19:40:36.2739957Z hint:
+2026-10-15T19:40:36.2740388Z hint: 	git config --global init.defaultBranch <name>
+2026-10-15T19:40:36.2740885Z hint:
+2026-10-15T19:40:36.2741348Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-15T19:40:36.2742119Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-15T19:40:36.2742737Z hint:
+2026-10-15T19:40:36.2743070Z hint: 	git branch -m <name>
+2026-10-15T19:40:36.2743456Z hint:
+2026-10-15T19:40:36.2743974Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-15T19:40:36.2744891Z Initialized empty Git repository in /home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git/
+2026-10-15T19:40:36.2747115Z [command]/usr/bin/git remote add origin https://github.com/SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-15T19:40:36.2794228Z ##[endgroup]
+2026-10-15T19:40:36.2794903Z ##[group]Disabling automatic garbage collection
+2026-10-15T19:40:36.2796617Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-15T19:40:36.2825639Z ##[endgroup]
+2026-10-15T19:40:36.2826229Z ##[group]Setting up auth
+2026-10-15T19:40:36.2830607Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-15T19:40:36.2856339Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-15T19:40:36.3171977Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-15T19:40:36.3201404Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-15T19:40:36.3370257Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-15T19:40:36.3397631Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-15T19:40:36.3563187Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-15T19:40:36.3594788Z ##[endgroup]
+2026-10-15T19:40:36.3595276Z ##[group]Fetching the repository
+2026-10-15T19:40:36.3600865Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +818f0f71919a127c436f9a80a12028998765562c:refs/remotes/pull/4/merge
+2026-10-15T19:40:36.8255058Z From https://github.com/SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-15T19:40:36.8255839Z  * [new ref]         818f0f71919a127c436f9a80a12028998765562c -> pull/4/merge
+2026-10-15T19:40:36.8258080Z ##[endgroup]
+2026-10-15T19:40:36.8258532Z ##[group]Determining the checkout info
+2026-10-15T19:40:36.8260834Z ##[endgroup]
+2026-10-15T19:40:36.8265806Z [command]/usr/bin/git sparse-checkout disable
+2026-10-15T19:40:36.8313484Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-15T19:40:36.8338740Z ##[group]Checking out the ref
+2026-10-15T19:40:36.8340689Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/4/merge
+2026-10-15T19:40:36.8444555Z Note: switching to 'refs/remotes/pull/4/merge'.
+2026-10-15T19:40:36.8444844Z 
+2026-10-15T19:40:36.8445066Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-15T19:40:36.8445814Z changes and commit them, and you can discard any commits you make in this
+2026-10-15T19:40:36.8446366Z state without impacting any branches by switching back to a branch.
+2026-10-15T19:40:36.8446662Z 
+2026-10-15T19:40:36.8447131Z If you want to create a new branch to retain commits you create, you may
+2026-10-15T19:40:36.8447604Z do so (now or later) by using -c with the switch command. Example:
+2026-10-15T19:40:36.8447871Z 
+2026-10-15T19:40:36.8447998Z   git switch -c <new-branch-name>
+2026-10-15T19:40:36.8448184Z 
+2026-10-15T19:40:36.8448309Z Or undo this operation with:
+2026-10-15T19:40:36.8448493Z 
+2026-10-15T19:40:36.8448604Z   git switch -
+2026-10-15T19:40:36.8448765Z 
+2026-10-15T19:40:36.8449014Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-15T19:40:36.8449332Z 
+2026-10-15T19:40:36.8449688Z HEAD is now at 818f0f7 Merge 86bd9cdafa9b96e88cf4c4dfaeefb18c7e56466b into e601f2198f5d11e23111f1a2d45872b983846171
+2026-10-15T19:40:36.8453133Z ##[endgroup]
+2026-10-15T19:40:36.8484437Z [command]/usr/bin/git log -1 --format=%H
+2026-10-15T19:40:36.8505111Z 818f0f71919a127c436f9a80a12028998765562c
+2026-10-15T19:40:36.8758566Z ##[group]Run actions/setup-node@v4
+2026-10-15T19:40:36.8758898Z with:
+2026-10-15T19:40:36.8759141Z   node-version: 22
+2026-10-15T19:40:36.8759390Z   always-auth: false
+2026-10-15T19:40:36.8759643Z   check-latest: false
+2026-10-15T19:40:36.8761801Z   token: ***
+2026-10-15T19:40:36.8762039Z ##[endgroup]
+2026-10-15T19:40:36.9612479Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-15T19:40:36.9615551Z (node:2106) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-15T19:40:36.9616317Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-15T19:40:36.9617646Z ##[group]Environment details
+2026-10-15T19:40:37.2470200Z node: v22.23.3
+2026-10-15T19:40:37.2470927Z npm: 10.9.9
+2026-10-15T19:40:37.2471479Z yarn: 1.22.22
+2026-10-15T19:40:37.2472876Z ##[endgroup]
+2026-10-15T19:40:37.3055305Z ##[group]Run actions/cache@v4
+2026-10-15T19:40:37.3056398Z with:
+2026-10-15T19:40:37.3057003Z   path: backend/node_modules
+2026-10-15T19:40:37.3058172Z   key: Linux-node22-2f3eac8abb565c22115e9ae737db1bc744052bd101c014226be205b3294cfa18
+2026-10-15T19:40:37.3059487Z   restore-keys: Linux-node22-
+
+2026-10-15T19:40:37.3060264Z   enableCrossOsArchive: false
+2026-10-15T19:40:37.3061019Z   fail-on-cache-miss: false
+2026-10-15T19:40:37.3061730Z   lookup-only: false
+2026-10-15T19:40:37.3062389Z   save-always: false
+2026-10-15T19:40:37.3063023Z ##[endgroup]
+2026-10-15T19:40:37.3776086Z (node:2149) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-15T19:40:37.3778263Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-15T19:40:37.5439124Z Cache not found for input keys: Linux-node22-2f3eac8abb565c22115e9ae737db1bc744052bd101c014226be205b3294cfa18, Linux-node22-
+2026-10-15T19:40:37.5557982Z ##[group]Run npm ci
+2026-10-15T19:40:37.5558603Z [36;1mnpm ci[0m
+2026-10-15T19:40:37.5779311Z shell: /usr/bin/bash -e {0}
+2026-10-15T19:40:37.5779941Z ##[endgroup]
+2026-10-15T19:40:38.7587651Z npm warn deprecated prebuild-install@7.1.3: No longer maintained. Please contact the author of the relevant native addon; alternatives are available.
+2026-10-15T19:40:40.1157094Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-10-15T19:40:41.2766083Z 
+2026-10-15T19:40:41.2766804Z added 426 packages, and audited 427 packages in 4s
+2026-10-15T19:40:41.2767280Z 
+2026-10-15T19:40:41.2767478Z 88 packages are looking for funding
+2026-10-15T19:40:41.2767778Z   run `npm fund` for details
+2026-10-15T19:40:41.2961845Z 
+2026-10-15T19:40:41.2962735Z 24 vulnerabilities (1 low, 20 moderate, 1 high, 2 critical)
+2026-10-15T19:40:41.2963050Z 
+2026-10-15T19:40:41.2963254Z To address issues that do not require attention, run:
+2026-10-15T19:40:41.2963560Z   npm audit fix
+2026-10-15T19:40:41.2963692Z 
+2026-10-15T19:40:41.2964351Z To address all issues (including breaking changes), run:
+2026-10-15T19:40:41.2964676Z   npm audit fix --force
+2026-10-15T19:40:41.2964783Z 
+2026-10-15T19:40:41.2964873Z Run `npm audit` for details.
+2026-10-15T19:40:41.3412552Z ##[group]Run echo "### EShop CI — Cache Report :package:" >> "$GITHUB_STEP_SUMMARY"
+2026-10-15T19:40:41.3412908Z [36;1mecho "### EShop CI — Cache Report :package:" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-15T19:40:41.3413138Z [36;1mecho "" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-15T19:40:41.3413327Z [36;1mecho "- Cache hit: \`\`" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-15T19:40:41.3413510Z [36;1mif [ "" = "true" ]; then[0m
+2026-10-15T19:40:41.3413830Z [36;1m  echo "- Bước cài dependency: **~5s** (khôi phục từ cache, bỏ qua \`npm ci\`)" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-15T19:40:41.3414090Z [36;1melse[0m
+2026-10-15T19:40:41.3414319Z [36;1m  echo "- Bước cài dependency: **~60s** (cache miss, chạy \`npm ci\` đầy đủ)" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-15T19:40:41.3414578Z [36;1mfi[0m
+2026-10-15T19:40:41.3414949Z [36;1mecho "- Số dependency cấp 1 (dependencies): $(node -e "console.log(Object.keys(require('./package.json').dependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-15T19:40:41.3415757Z [36;1mecho "- Số dependency phát triển (devDependencies): $(node -e "console.log(Object.keys(require('./package.json').devDependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-15T19:40:41.3470713Z shell: /usr/bin/bash -e {0}
+2026-10-15T19:40:41.3470886Z ##[endgroup]
+2026-10-15T19:40:41.3994010Z ##[group]Run npm test
+2026-10-15T19:40:41.3994187Z [36;1mnpm test[0m
+2026-10-15T19:40:41.4048469Z shell: /usr/bin/bash -e {0}
+2026-10-15T19:40:41.4048621Z ##[endgroup]
+2026-10-15T19:40:41.4708402Z 
+2026-10-15T19:40:41.4708947Z > backend@1.0.0 test
+2026-10-15T19:40:41.4709396Z > jest --runInBand --detectOpenHandles --forceExit
+2026-10-15T19:40:41.4709711Z 
+2026-10-15T19:40:42.1564451Z PASS tests/auth.test.js
+2026-10-15T19:40:42.1628813Z   ● Console
+2026-10-15T19:40:42.1629018Z 
+2026-10-15T19:40:42.1629115Z     console.log
+2026-10-15T19:40:42.1629465Z       Database initialized and seeded (Phase 2).
+2026-10-15T19:40:42.1629689Z 
+2026-10-15T19:40:42.1629838Z       at Database.log (database.js:113:17)
+2026-10-15T19:40:42.1630013Z 
+2026-10-15T19:40:42.1630123Z     console.log
+2026-10-15T19:40:42.1630327Z       Connected to database
+2026-10-15T19:40:42.1630462Z 
+2026-10-15T19:40:42.1630588Z       at Database.log (database.js:9:17)
+2026-10-15T19:40:42.1630752Z 
+2026-10-15T19:40:42.2744682Z PASS tests/health.test.js
+2026-10-15T19:40:42.2756016Z   ● Console
+2026-10-15T19:40:42.2756166Z 
+2026-10-15T19:40:42.2756304Z     console.log
+2026-10-15T19:40:42.2756589Z       Database initialized and seeded (Phase 2).
+2026-10-15T19:40:42.2756795Z 
+2026-10-15T19:40:42.2756955Z       at Database.log (database.js:113:17)
+2026-10-15T19:40:42.2757116Z 
+2026-10-15T19:40:42.2757203Z     console.log
+2026-10-15T19:40:42.2757392Z       Connected to database
+2026-10-15T19:40:42.2757516Z 
+2026-10-15T19:40:42.2757726Z       at Database.log (database.js:9:17)
+2026-10-15T19:40:42.2757882Z 
+2026-10-15T19:40:44.8497071Z PASS tests/orders.test.js
+2026-10-15T19:40:44.8504957Z   ● Console
+2026-10-15T19:40:44.8505060Z 
+2026-10-15T19:40:44.8505134Z     console.log
+2026-10-15T19:40:44.8505383Z       Database initialized and seeded (Phase 2).
+2026-10-15T19:40:44.8505668Z 
+2026-10-15T19:40:44.8505752Z       at Database.log (database.js:113:17)
+2026-10-15T19:40:44.8505861Z 
+2026-10-15T19:40:44.8505911Z     console.log
+2026-10-15T19:40:44.8506078Z       Connected to database
+2026-10-15T19:40:44.8506166Z 
+2026-10-15T19:40:44.8506235Z       at Database.log (database.js:9:17)
+2026-10-15T19:40:44.8506338Z 
+2026-10-15T19:40:45.5451596Z PASS tests/coupons.test.js
+2026-10-15T19:40:45.5458745Z   ● Console
+2026-10-15T19:40:45.5458860Z 
+2026-10-15T19:40:45.5458940Z     console.log
+2026-10-15T19:40:45.5459185Z       Database initialized and seeded (Phase 2).
+2026-10-15T19:40:45.5459313Z 
+2026-10-15T19:40:45.5459397Z       at Database.log (database.js:113:17)
+2026-10-15T19:40:45.5459908Z 
+2026-10-15T19:40:45.5460002Z     console.log
+2026-10-15T19:40:45.5460121Z       Connected to database
+2026-10-15T19:40:45.5460206Z 
+2026-10-15T19:40:45.5460278Z       at Database.log (database.js:9:17)
+2026-10-15T19:40:45.5460378Z 
+2026-10-15T19:40:45.5470741Z 
+2026-10-15T19:40:45.5475828Z Test Suites: 4 passed, 4 total
+2026-10-15T19:40:45.5476071Z Tests:       6 passed, 6 total
+2026-10-15T19:40:45.5476278Z Snapshots:   0 total
+2026-10-15T19:40:45.5476483Z Time:        3.947 s
+2026-10-15T19:40:45.5655724Z Ran all test suites.
+2026-10-15T19:40:45.6079836Z Post job cleanup.
+2026-10-15T19:40:45.6774291Z (node:2260) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-15T19:40:45.6774748Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-15T19:40:45.6911069Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/eshop-sut-seminar/eshop-sut-seminar --files-from manifest.txt --use-compress-program zstdmt
+2026-10-15T19:40:46.0508652Z (node:2260) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-15T19:40:46.7423950Z Sent 15194670 of 15194670 (100.0%), 20.7 MBs/sec
+2026-10-15T19:40:46.9031016Z Cache saved with key: Linux-node22-2f3eac8abb565c22115e9ae737db1bc744052bd101c014226be205b3294cfa18
+2026-10-15T19:40:46.9133735Z Post job cleanup.
+2026-10-15T19:40:46.9898090Z (node:2280) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-15T19:40:46.9898542Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-15T19:40:47.0033427Z Post job cleanup.
+2026-10-15T19:40:47.0610840Z [command]/usr/bin/git version
+2026-10-15T19:40:47.0642671Z git version 2.55.0
+2026-10-15T19:40:47.0679348Z Temporarily overriding HOME='/home/runner/work/_temp/43793867-2ee8-4fbf-a512-ab17e0f11388' before making global git config changes
+2026-10-15T19:40:47.0680005Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-15T19:40:47.0680716Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/eshop-sut-seminar/eshop-sut-seminar
+2026-10-15T19:40:47.0706845Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-15T19:40:47.0735560Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-15T19:40:47.0933844Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-15T19:40:47.0961746Z http.https://github.com/.extraheader
+2026-10-15T19:40:47.0969610Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-15T19:40:47.1000375Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-15T19:40:47.1246873Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-15T19:40:47.1297153Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-15T19:40:47.1578510Z Cleaning up orphan processes
+2026-10-15T19:40:47.1769960Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4, actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

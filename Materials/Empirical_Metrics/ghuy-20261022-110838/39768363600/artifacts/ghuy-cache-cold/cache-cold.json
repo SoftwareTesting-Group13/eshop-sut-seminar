@@ -1,0 +1,18 @@
+{
+  "mode": "cold",
+  "cache_hit": false,
+  "cache_hit_raw": "",
+  "cache_key": "ghuy-w620-ghuy-20261022-110838-Linux-node22.23.3-78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e",
+  "preparation_interval_seconds": 6.283604498,
+  "boundary": "after start stamp, across restore and conditional npm ci, until stop script begins",
+  "excludes": "checkout, setup-node, save cache, upload artifacts; NOT total job duration",
+  "run_id": "39768363600",
+  "sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+  "runner_os": "Linux",
+  "runner_image": "ubuntu24",
+  "runner_image_version": "20261012.334.1",
+  "node": "v22.23.3",
+  "npm": "10.9.9",
+  "package_lock_sha256": "78485f5b1205265e1ea8d40206e9465968175a90025cd5cddc4888e5f6d5429e",
+  "valid_cache_state": true
+}

@@ -1,0 +1,386 @@
+2026-10-16T07:23:42.7159768Z Current runner version: '2.337.0'
+2026-10-16T07:23:42.7184692Z ##[group]Runner Image Provisioner
+2026-10-16T07:23:42.7185530Z Hosted Compute Agent
+2026-10-16T07:23:42.7186039Z Version: 20261012.601
+2026-10-16T07:23:42.7186649Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-16T07:23:42.7187244Z Build Date: 2026-10-12T17:48:21Z
+2026-10-16T07:23:42.7187775Z Worker ID: {294572e7-7cd3-4c57-92af-fe0e341e4f6d}
+2026-10-16T07:23:42.7188403Z Region: eastus
+2026-10-16T07:23:42.7188876Z Cloud: Azure
+2026-10-16T07:23:42.7189338Z ##[endgroup]
+2026-10-16T07:23:42.7190440Z ##[group]Operating System
+2026-10-16T07:23:42.7190959Z Ubuntu
+2026-10-16T07:23:42.7191776Z 24.04.5
+2026-10-16T07:23:42.7192227Z LTS
+2026-10-16T07:23:42.7192684Z ##[endgroup]
+2026-10-16T07:23:42.7193146Z ##[group]Runner Image
+2026-10-16T07:23:42.7193645Z Image: ubuntu-24.04
+2026-10-16T07:23:42.7194155Z Version: 20261012.334.1
+2026-10-16T07:23:42.7195195Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-16T07:23:42.7196471Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-16T07:23:42.7197261Z ##[endgroup]
+2026-10-16T07:23:42.7198237Z ##[group]GITHUB_TOKEN Permissions
+2026-10-16T07:23:42.7199969Z Contents: read
+2026-10-16T07:23:42.7200520Z Metadata: read
+2026-10-16T07:23:42.7200989Z ##[endgroup]
+2026-10-16T07:23:42.7202958Z Secret source: Actions
+2026-10-16T07:23:42.7203851Z Cache mode: write
+2026-10-16T07:23:42.7204608Z Prepare workflow directory
+2026-10-16T07:23:42.7516798Z Prepare all required actions
+2026-10-16T07:23:42.7554745Z Getting action download info
+2026-10-16T07:23:42.9187526Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-16T07:23:43.1682989Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-16T07:23:43.4724790Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2026-10-16T07:23:44.1174990Z Complete job name: Backend Test (Node.js 22)
+2026-10-16T07:23:44.1897227Z ##[group]Run actions/checkout@v4
+2026-10-16T07:23:44.1898327Z with:
+2026-10-16T07:23:44.1899160Z   repository: SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-16T07:23:44.1906979Z   token: ***
+2026-10-16T07:23:44.1907741Z   ssh-strict: true
+2026-10-16T07:23:44.1908458Z   ssh-user: git
+2026-10-16T07:23:44.1909191Z   persist-credentials: true
+2026-10-16T07:23:44.1909987Z   clean: true
+2026-10-16T07:23:44.1910711Z   sparse-checkout-cone-mode: true
+2026-10-16T07:23:44.1911665Z   fetch-depth: 1
+2026-10-16T07:23:44.1912367Z   fetch-tags: false
+2026-10-16T07:23:44.1913101Z   show-progress: true
+2026-10-16T07:23:44.1913839Z   lfs: false
+2026-10-16T07:23:44.1914520Z   submodules: false
+2026-10-16T07:23:44.1915260Z   set-safe-directory: true
+2026-10-16T07:23:44.1916082Z   allow-unsafe-pr-checkout: false
+2026-10-16T07:23:44.1917210Z ##[endgroup]
+2026-10-16T07:23:44.2775489Z Syncing repository: SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-16T07:23:44.2779066Z ##[group]Getting Git version info
+2026-10-16T07:23:44.2780805Z Working directory is '/home/runner/work/eshop-sut-seminar/eshop-sut-seminar'
+2026-10-16T07:23:44.2783720Z [command]/usr/bin/git version
+2026-10-16T07:23:44.2923304Z git version 2.55.0
+2026-10-16T07:23:44.2939555Z ##[endgroup]
+2026-10-16T07:23:44.2952932Z Temporarily overriding HOME='/home/runner/work/_temp/09be73de-a166-47ed-aa5e-f3c901d5d00d' before making global git config changes
+2026-10-16T07:23:44.2956370Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-16T07:23:44.2959397Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/eshop-sut-seminar/eshop-sut-seminar
+2026-10-16T07:23:44.3008806Z Deleting the contents of '/home/runner/work/eshop-sut-seminar/eshop-sut-seminar'
+2026-10-16T07:23:44.3015863Z ##[group]Initializing the repository
+2026-10-16T07:23:44.3022010Z [command]/usr/bin/git init /home/runner/work/eshop-sut-seminar/eshop-sut-seminar
+2026-10-16T07:23:44.3100222Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-16T07:23:44.3102727Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-16T07:23:44.3105042Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-16T07:23:44.3106868Z hint: call:
+2026-10-16T07:23:44.3107840Z hint:
+2026-10-16T07:23:44.3109027Z hint: 	git config --global init.defaultBranch <name>
+2026-10-16T07:23:44.3110483Z hint:
+2026-10-16T07:23:44.3111974Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-16T07:23:44.3114241Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-16T07:23:44.3116092Z hint:
+2026-10-16T07:23:44.3117269Z hint: 	git branch -m <name>
+2026-10-16T07:23:44.3118398Z hint:
+2026-10-16T07:23:44.3119887Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-16T07:23:44.3122791Z Initialized empty Git repository in /home/runner/work/eshop-sut-seminar/eshop-sut-seminar/.git/
+2026-10-16T07:23:44.3127292Z [command]/usr/bin/git remote add origin https://github.com/SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-16T07:23:44.3161901Z ##[endgroup]
+2026-10-16T07:23:44.3164765Z ##[group]Disabling automatic garbage collection
+2026-10-16T07:23:44.3167151Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-16T07:23:44.3197154Z ##[endgroup]
+2026-10-16T07:23:44.3198947Z ##[group]Setting up auth
+2026-10-16T07:23:44.3202011Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-16T07:23:44.3231551Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-16T07:23:44.3558635Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-16T07:23:44.3590935Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-16T07:23:44.3778284Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-16T07:23:44.3808610Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-16T07:23:44.3995471Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-16T07:23:44.4030905Z ##[endgroup]
+2026-10-16T07:23:44.4032427Z ##[group]Fetching the repository
+2026-10-16T07:23:44.4039111Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6129c98350db5294f7c3127741ab5a564cab4b66:refs/remotes/origin/main
+2026-10-16T07:23:44.7331918Z From https://github.com/SoftwareTesting-Group13/eshop-sut-seminar
+2026-10-16T07:23:44.7334328Z  * [new ref]         6129c98350db5294f7c3127741ab5a564cab4b66 -> origin/main
+2026-10-16T07:23:44.7338887Z ##[endgroup]
+2026-10-16T07:23:44.7340890Z ##[group]Determining the checkout info
+2026-10-16T07:23:44.7343130Z ##[endgroup]
+2026-10-16T07:23:44.7345326Z [command]/usr/bin/git sparse-checkout disable
+2026-10-16T07:23:44.7395714Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-16T07:23:44.7426808Z ##[group]Checking out the ref
+2026-10-16T07:23:44.7429533Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-16T07:23:44.7571413Z Switched to a new branch 'main'
+2026-10-16T07:23:44.7575491Z branch 'main' set up to track 'origin/main'.
+2026-10-16T07:23:44.7581986Z ##[endgroup]
+2026-10-16T07:23:44.7617960Z [command]/usr/bin/git log -1 --format=%H
+2026-10-16T07:23:44.7640388Z 6129c98350db5294f7c3127741ab5a564cab4b66
+2026-10-16T07:23:44.7934746Z ##[group]Run actions/setup-node@v4
+2026-10-16T07:23:44.7935607Z with:
+2026-10-16T07:23:44.7936413Z   node-version: 22
+2026-10-16T07:23:44.7937647Z   always-auth: false
+2026-10-16T07:23:44.7938360Z   check-latest: false
+2026-10-16T07:23:44.8006659Z   token: ***
+2026-10-16T07:23:44.8007552Z ##[endgroup]
+2026-10-16T07:23:44.9171954Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-16T07:23:44.9175673Z (node:2093) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-16T07:23:44.9178012Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-16T07:23:44.9180317Z ##[group]Environment details
+2026-10-16T07:23:45.2822976Z node: v22.23.3
+2026-10-16T07:23:45.2823676Z npm: 10.9.9
+2026-10-16T07:23:45.2824038Z yarn: 1.22.22
+2026-10-16T07:23:45.2824900Z ##[endgroup]
+2026-10-16T07:23:45.3492372Z ##[group]Run actions/cache@v4
+2026-10-16T07:23:45.3492663Z with:
+2026-10-16T07:23:45.3492882Z   path: backend/node_modules
+2026-10-16T07:23:45.3493257Z   key: Linux-node22-2f3eac8abb565c22115e9ae737db1bc744052bd101c014226be205b3294cfa18
+2026-10-16T07:23:45.3493673Z   restore-keys: Linux-node22-
+
+2026-10-16T07:23:45.3493928Z   enableCrossOsArchive: false
+2026-10-16T07:23:45.3494169Z   fail-on-cache-miss: false
+2026-10-16T07:23:45.3494415Z   lookup-only: false
+2026-10-16T07:23:45.3494634Z   save-always: false
+2026-10-16T07:23:45.3494849Z ##[endgroup]
+2026-10-16T07:23:45.4372978Z (node:2135) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-16T07:23:45.4373776Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-16T07:23:45.4906332Z Cache hit for: Linux-node22-2f3eac8abb565c22115e9ae737db1bc744052bd101c014226be205b3294cfa18
+2026-10-16T07:23:45.4985593Z (node:2135) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-16T07:23:45.7616513Z Received 15224339 of 15224339 (100.0%), 65.7 MBs/sec
+2026-10-16T07:23:45.7617325Z Cache Size: ~15 MB (15224339 B)
+2026-10-16T07:23:45.7638851Z [command]/usr/bin/tar -xf /home/runner/work/_temp/efc2bb7c-83df-425d-993d-78a466be5907/cache.tzst -P -C /home/runner/work/eshop-sut-seminar/eshop-sut-seminar --use-compress-program unzstd
+2026-10-16T07:23:46.0538215Z Cache restored successfully
+2026-10-16T07:23:46.0605956Z Cache restored from key: Linux-node22-2f3eac8abb565c22115e9ae737db1bc744052bd101c014226be205b3294cfa18
+2026-10-16T07:23:46.0734863Z ##[group]Run echo "### EShop CI — Cache Report :package:" >> "$GITHUB_STEP_SUMMARY"
+2026-10-16T07:23:46.0735403Z [36;1mecho "### EShop CI — Cache Report :package:" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-16T07:23:46.0735757Z [36;1mecho "" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-16T07:23:46.0736047Z [36;1mecho "- Cache hit: \`true\`" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-16T07:23:46.0736341Z [36;1mif [ "true" = "true" ]; then[0m
+2026-10-16T07:23:46.0736777Z [36;1m  echo "- Bước cài dependency (khôi phục từ cache, bỏ qua \`npm ci\`)" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-16T07:23:46.0737181Z [36;1melse[0m
+2026-10-16T07:23:46.0737519Z [36;1m  echo "- Bước cài dependency (cache miss, chạy \`npm ci\` đầy đủ)" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-16T07:23:46.0737884Z [36;1mfi[0m
+2026-10-16T07:23:46.0738404Z [36;1mecho "- Số dependency cấp 1 (dependencies): $(node -e "console.log(Object.keys(require('./package.json').dependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-16T07:23:46.0739316Z [36;1mecho "- Số dependency phát triển (devDependencies): $(node -e "console.log(Object.keys(require('./package.json').devDependencies||{}).length)")" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-16T07:23:46.1061923Z shell: /usr/bin/bash -e {0}
+2026-10-16T07:23:46.1062220Z ##[endgroup]
+2026-10-16T07:23:46.1702435Z ##[group]Run npm test
+2026-10-16T07:23:46.1702700Z [36;1mnpm test[0m
+2026-10-16T07:23:46.1759191Z shell: /usr/bin/bash -e {0}
+2026-10-16T07:23:46.1759447Z ##[endgroup]
+2026-10-16T07:23:46.2915019Z 
+2026-10-16T07:23:46.2916023Z > backend@1.0.0 test
+2026-10-16T07:23:46.2916482Z > jest --runInBand --detectOpenHandles --forceExit
+2026-10-16T07:23:46.2916702Z 
+2026-10-16T07:23:47.3402664Z FAIL tests/coupon.test.js
+2026-10-16T07:23:47.3420346Z   ● Console
+2026-10-16T07:23:47.3420516Z 
+2026-10-16T07:23:47.3420782Z     console.log
+2026-10-16T07:23:47.3421402Z       Database initialized and seeded (Phase 2).
+2026-10-16T07:23:47.3421676Z 
+2026-10-16T07:23:47.3421923Z       at Database.log (database.js:113:17)
+2026-10-16T07:23:47.3422126Z 
+2026-10-16T07:23:47.3422220Z     console.log
+2026-10-16T07:23:47.3422442Z       Connected to database
+2026-10-16T07:23:47.3422584Z 
+2026-10-16T07:23:47.3422775Z       at Database.log (database.js:9:17)
+2026-10-16T07:23:47.3423016Z 
+2026-10-16T07:23:47.3424135Z   ● POST /api/apply-coupon — Data-Driven (test.each) › Coupon hợp lệ (C1, C2, C3 đều thỏa) › SAVE10 với đơn 1000000 → giảm 100000, còn 900000 (percent 10%, đơn 1,000,000 [BUG FM2])
+2026-10-16T07:23:47.3424719Z 
+2026-10-16T07:23:47.3424909Z     expect(received).toBe(expected) // Object.is equality
+2026-10-16T07:23:47.3425109Z 
+2026-10-16T07:23:47.3425202Z     Expected: 100000
+2026-10-16T07:23:47.3425410Z     Received: -9000000
+2026-10-16T07:23:47.3425530Z 
+2026-10-16T07:23:47.3425840Z     [0m [90m 48 |[39m       expect(res[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+2026-10-16T07:23:47.3426411Z      [90m 49 |[39m       expect(res[33m.[39mbody[33m.[39msuccess)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+2026-10-16T07:23:47.3427075Z     [31m[1m>[22m[39m[90m 50 |[39m       expect(res[33m.[39mbody[33m.[39mdiscount_amount)[33m.[39mtoBe(discount)[33m;[39m
+2026-10-16T07:23:47.3427621Z      [90m    |[39m                                        [31m[1m^[22m[39m
+2026-10-16T07:23:47.3428209Z      [90m 51 |[39m       expect(res[33m.[39mbody[33m.[39mfinal_amount)[33m.[39mtoBe(final)[33m;[39m
+2026-10-16T07:23:47.3428614Z      [90m 52 |[39m     })[33m;[39m
+2026-10-16T07:23:47.3428902Z      [90m 53 |[39m   })[33m;[39m[0m
+2026-10-16T07:23:47.3429067Z 
+2026-10-16T07:23:47.3429209Z       at toBe (tests/coupon.test.js:50:40)
+2026-10-16T07:23:47.3429391Z 
+2026-10-16T07:23:47.3429973Z   ● POST /api/apply-coupon — Data-Driven (test.each) › Coupon hợp lệ (C1, C2, C3 đều thỏa) › SAVE10 với đơn 500000 → giảm 50000, còn 450000 (percent 10%, đơn 500,000 [BUG FM2])
+2026-10-16T07:23:47.3430382Z 
+2026-10-16T07:23:47.3430541Z     expect(received).toBe(expected) // Object.is equality
+2026-10-16T07:23:47.3430728Z 
+2026-10-16T07:23:47.3430851Z     Expected: 50000
+2026-10-16T07:23:47.3431292Z     Received: -4500000
+2026-10-16T07:23:47.3431458Z 
+2026-10-16T07:23:47.3431764Z     [0m [90m 48 |[39m       expect(res[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+2026-10-16T07:23:47.3432350Z      [90m 49 |[39m       expect(res[33m.[39mbody[33m.[39msuccess)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+2026-10-16T07:23:47.3433004Z     [31m[1m>[22m[39m[90m 50 |[39m       expect(res[33m.[39mbody[33m.[39mdiscount_amount)[33m.[39mtoBe(discount)[33m;[39m
+2026-10-16T07:23:47.3433532Z      [90m    |[39m                                        [31m[1m^[22m[39m
+2026-10-16T07:23:47.3434025Z      [90m 51 |[39m       expect(res[33m.[39mbody[33m.[39mfinal_amount)[33m.[39mtoBe(final)[33m;[39m
+2026-10-16T07:23:47.3434473Z      [90m 52 |[39m     })[33m;[39m
+2026-10-16T07:23:47.3434744Z      [90m 53 |[39m   })[33m;[39m[0m
+2026-10-16T07:23:47.3434895Z 
+2026-10-16T07:23:47.3435015Z       at toBe (tests/coupon.test.js:50:40)
+2026-10-16T07:23:47.3435167Z 
+2026-10-16T07:23:47.3436231Z   ● POST /api/apply-coupon — Data-Driven (test.each) › Coupon hợp lệ (C1, C2, C3 đều thỏa) › SAVE10 với đơn 300000 → giảm 30000, còn 270000 (percent, ĐÚNG ngưỡng tối thiểu [BUG biên >=])
+2026-10-16T07:23:47.3436679Z 
+2026-10-16T07:23:47.3436839Z     expect(received).toBe(expected) // Object.is equality
+2026-10-16T07:23:47.3437025Z 
+2026-10-16T07:23:47.3437115Z     Expected: 200
+2026-10-16T07:23:47.3437304Z     Received: 400
+2026-10-16T07:23:47.3437550Z 
+2026-10-16T07:23:47.3438003Z     [0m [90m 46 |[39m       [36mconst[39m res [33m=[39m [36mawait[39m applyCoupon({ code[33m,[39m total_amount[33m:[39m total })[33m;[39m
+2026-10-16T07:23:47.3438469Z      [90m 47 |[39m
+2026-10-16T07:23:47.3438906Z     [31m[1m>[22m[39m[90m 48 |[39m       expect(res[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+2026-10-16T07:23:47.3439377Z      [90m    |[39m                          [31m[1m^[22m[39m
+2026-10-16T07:23:47.3439875Z      [90m 49 |[39m       expect(res[33m.[39mbody[33m.[39msuccess)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+2026-10-16T07:23:47.3440530Z      [90m 50 |[39m       expect(res[33m.[39mbody[33m.[39mdiscount_amount)[33m.[39mtoBe(discount)[33m;[39m
+2026-10-16T07:23:47.3441345Z      [90m 51 |[39m       expect(res[33m.[39mbody[33m.[39mfinal_amount)[33m.[39mtoBe(final)[33m;[39m[0m
+2026-10-16T07:23:47.3441621Z 
+2026-10-16T07:23:47.3441746Z       at toBe (tests/coupon.test.js:48:26)
+2026-10-16T07:23:47.3441917Z 
+2026-10-16T07:23:47.3442523Z   ● POST /api/apply-coupon — Data-Driven (test.each) › Coupon hợp lệ (C1, C2, C3 đều thỏa) › BIGBUY với đơn 500000 → giảm 50000, còn 450000 (fixed, ĐÚNG ngưỡng tối thiểu [BUG biên >=])
+2026-10-16T07:23:47.3442954Z 
+2026-10-16T07:23:47.3443117Z     expect(received).toBe(expected) // Object.is equality
+2026-10-16T07:23:47.3443310Z 
+2026-10-16T07:23:47.3443395Z     Expected: 200
+2026-10-16T07:23:47.3443581Z     Received: 400
+2026-10-16T07:23:47.3443685Z 
+2026-10-16T07:23:47.3444124Z     [0m [90m 46 |[39m       [36mconst[39m res [33m=[39m [36mawait[39m applyCoupon({ code[33m,[39m total_amount[33m:[39m total })[33m;[39m
+2026-10-16T07:23:47.3444574Z      [90m 47 |[39m
+2026-10-16T07:23:47.3445005Z     [31m[1m>[22m[39m[90m 48 |[39m       expect(res[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+2026-10-16T07:23:47.3445446Z      [90m    |[39m                          [31m[1m^[22m[39m
+2026-10-16T07:23:47.3445944Z      [90m 49 |[39m       expect(res[33m.[39mbody[33m.[39msuccess)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+2026-10-16T07:23:47.3446512Z      [90m 50 |[39m       expect(res[33m.[39mbody[33m.[39mdiscount_amount)[33m.[39mtoBe(discount)[33m;[39m
+2026-10-16T07:23:47.3447106Z      [90m 51 |[39m       expect(res[33m.[39mbody[33m.[39mfinal_amount)[33m.[39mtoBe(final)[33m;[39m[0m
+2026-10-16T07:23:47.3447375Z 
+2026-10-16T07:23:47.3447497Z       at toBe (tests/coupon.test.js:48:26)
+2026-10-16T07:23:47.3447647Z 
+2026-10-16T07:23:47.3448229Z   ● POST /api/apply-coupon — Data-Driven (test.each) › Coupon hợp lệ (C1, C2, C3 đều thỏa) › VIP100 với đơn 300000 → giảm 100000, còn 200000 (fixed, ĐÚNG ngưỡng tối thiểu [BUG biên >=])
+2026-10-16T07:23:47.3448668Z 
+2026-10-16T07:23:47.3448821Z     expect(received).toBe(expected) // Object.is equality
+2026-10-16T07:23:47.3449002Z 
+2026-10-16T07:23:47.3449090Z     Expected: 200
+2026-10-16T07:23:47.3449270Z     Received: 400
+2026-10-16T07:23:47.3449384Z 
+2026-10-16T07:23:47.3449813Z     [0m [90m 46 |[39m       [36mconst[39m res [33m=[39m [36mawait[39m applyCoupon({ code[33m,[39m total_amount[33m:[39m total })[33m;[39m
+2026-10-16T07:23:47.3450255Z      [90m 47 |[39m
+2026-10-16T07:23:47.3450661Z     [31m[1m>[22m[39m[90m 48 |[39m       expect(res[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+2026-10-16T07:23:47.3451331Z      [90m    |[39m                          [31m[1m^[22m[39m
+2026-10-16T07:23:47.3451834Z      [90m 49 |[39m       expect(res[33m.[39mbody[33m.[39msuccess)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+2026-10-16T07:23:47.3452489Z      [90m 50 |[39m       expect(res[33m.[39mbody[33m.[39mdiscount_amount)[33m.[39mtoBe(discount)[33m;[39m
+2026-10-16T07:23:47.3453273Z      [90m 51 |[39m       expect(res[33m.[39mbody[33m.[39mfinal_amount)[33m.[39mtoBe(final)[33m;[39m[0m
+2026-10-16T07:23:47.3453549Z 
+2026-10-16T07:23:47.3453677Z       at toBe (tests/coupon.test.js:48:26)
+2026-10-16T07:23:47.3453941Z 
+2026-10-16T07:23:47.3454427Z   ● Failure Mode 2 — discount_amount âm với coupon percent › SAVE10 — nhánh không có user_id (server.js 417-432): discount_amount không được âm
+2026-10-16T07:23:47.3454809Z 
+2026-10-16T07:23:47.3454966Z     expect(received).toBeGreaterThanOrEqual(expected)
+2026-10-16T07:23:47.3455151Z 
+2026-10-16T07:23:47.3455240Z     Expected: >= 0
+2026-10-16T07:23:47.3455437Z     Received:    -9000000
+2026-10-16T07:23:47.3455565Z 
+2026-10-16T07:23:47.3455679Z     [0m [90m 138 |[39m
+2026-10-16T07:23:47.3456061Z      [90m 139 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+2026-10-16T07:23:47.3456765Z     [31m[1m>[22m[39m[90m 140 |[39m     expect(res[33m.[39mbody[33m.[39mdiscount_amount)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+2026-10-16T07:23:47.3457350Z      [90m     |[39m                                      [31m[1m^[22m[39m
+2026-10-16T07:23:47.3457917Z      [90m 141 |[39m     expect(res[33m.[39mbody[33m.[39mdiscount_amount)[33m.[39mtoBeLessThanOrEqual(total)[33m;[39m
+2026-10-16T07:23:47.3458621Z      [90m 142 |[39m     expect(res[33m.[39mbody[33m.[39mfinal_amount)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+2026-10-16T07:23:47.3459313Z      [90m 143 |[39m     expect(res[33m.[39mbody[33m.[39mfinal_amount)[33m.[39mtoBeLessThanOrEqual(total)[33m;[39m[0m
+2026-10-16T07:23:47.3459622Z 
+2026-10-16T07:23:47.3459787Z       at toBeGreaterThanOrEqual (tests/coupon.test.js:140:38)
+2026-10-16T07:23:47.3460004Z 
+2026-10-16T07:23:47.3460464Z   ● Failure Mode 2 — discount_amount âm với coupon percent › SAVE10 — nhánh có user_id (server.js 386-415): discount_amount không được âm
+2026-10-16T07:23:47.3460815Z 
+2026-10-16T07:23:47.3460975Z     expect(received).toBeGreaterThanOrEqual(expected)
+2026-10-16T07:23:47.3461384Z 
+2026-10-16T07:23:47.3461475Z     Expected: >= 0
+2026-10-16T07:23:47.3461668Z     Received:    -9000000
+2026-10-16T07:23:47.3461793Z 
+2026-10-16T07:23:47.3461907Z     [0m [90m 138 |[39m
+2026-10-16T07:23:47.3462301Z      [90m 139 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+2026-10-16T07:23:47.3462974Z     [31m[1m>[22m[39m[90m 140 |[39m     expect(res[33m.[39mbody[33m.[39mdiscount_amount)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+2026-10-16T07:23:47.3463522Z      [90m     |[39m                                      [31m[1m^[22m[39m
+2026-10-16T07:23:47.3464068Z      [90m 141 |[39m     expect(res[33m.[39mbody[33m.[39mdiscount_amount)[33m.[39mtoBeLessThanOrEqual(total)[33m;[39m
+2026-10-16T07:23:47.3464746Z      [90m 142 |[39m     expect(res[33m.[39mbody[33m.[39mfinal_amount)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+2026-10-16T07:23:47.3465423Z      [90m 143 |[39m     expect(res[33m.[39mbody[33m.[39mfinal_amount)[33m.[39mtoBeLessThanOrEqual(total)[33m;[39m[0m
+2026-10-16T07:23:47.3465733Z 
+2026-10-16T07:23:47.3465902Z       at toBeGreaterThanOrEqual (tests/coupon.test.js:140:38)
+2026-10-16T07:23:47.3466102Z 
+2026-10-16T07:23:47.3466526Z   ● Failure Mode 2 — discount_amount âm với coupon percent › SAVE10 — final_amount phải nhỏ hơn tổng đơn (coupon phải làm GIẢM giá)
+2026-10-16T07:23:47.3466878Z 
+2026-10-16T07:23:47.3467004Z     expect(received).toBeLessThan(expected)
+2026-10-16T07:23:47.3467161Z 
+2026-10-16T07:23:47.3467255Z     Expected: < 1000000
+2026-10-16T07:23:47.3467454Z     Received:   10000000
+2026-10-16T07:23:47.3467582Z 
+2026-10-16T07:23:47.3467710Z     [0m [90m 148 |[39m
+2026-10-16T07:23:47.3468091Z      [90m 149 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+2026-10-16T07:23:47.3468843Z     [31m[1m>[22m[39m[90m 150 |[39m     expect(res[33m.[39mbody[33m.[39mfinal_amount)[33m.[39mtoBeLessThan(total)[33m;[39m
+2026-10-16T07:23:47.3469368Z      [90m     |[39m                                   [31m[1m^[22m[39m
+2026-10-16T07:23:47.3469684Z      [90m 151 |[39m   })[33m;[39m
+2026-10-16T07:23:47.3469950Z      [90m 152 |[39m })[33m;[39m[0m
+2026-10-16T07:23:47.3470193Z 
+2026-10-16T07:23:47.3470352Z       at Object.toBeLessThan (tests/coupon.test.js:150:35)
+2026-10-16T07:23:47.3470541Z 
+2026-10-16T07:23:47.4640490Z PASS tests/auth.test.js
+2026-10-16T07:23:47.4651382Z   ● Console
+2026-10-16T07:23:47.4651532Z 
+2026-10-16T07:23:47.4651624Z     console.log
+2026-10-16T07:23:47.4651901Z       Database initialized and seeded (Phase 2).
+2026-10-16T07:23:47.4652093Z 
+2026-10-16T07:23:47.4652225Z       at Database.log (database.js:113:17)
+2026-10-16T07:23:47.4652389Z 
+2026-10-16T07:23:47.4652469Z     console.log
+2026-10-16T07:23:47.4652661Z       Connected to database
+2026-10-16T07:23:47.4652795Z 
+2026-10-16T07:23:47.4652919Z       at Database.log (database.js:9:17)
+2026-10-16T07:23:47.4653115Z 
+2026-10-16T07:23:47.5766603Z PASS tests/health.test.js
+2026-10-16T07:23:47.5774734Z   ● Console
+2026-10-16T07:23:47.5774898Z 
+2026-10-16T07:23:47.5775029Z     console.log
+2026-10-16T07:23:47.5775388Z       Database initialized and seeded (Phase 2).
+2026-10-16T07:23:47.5775724Z 
+2026-10-16T07:23:47.5775913Z       at Database.log (database.js:113:17)
+2026-10-16T07:23:47.5776152Z 
+2026-10-16T07:23:47.5776292Z     console.log
+2026-10-16T07:23:47.5776565Z       Connected to database
+2026-10-16T07:23:47.5776766Z 
+2026-10-16T07:23:47.5776948Z       at Database.log (database.js:9:17)
+2026-10-16T07:23:47.5777177Z 
+2026-10-16T07:23:50.1717414Z PASS tests/orders.test.js
+2026-10-16T07:23:50.1725842Z   ● Console
+2026-10-16T07:23:50.1744083Z 
+2026-10-16T07:23:50.1744695Z     console.log
+2026-10-16T07:23:50.1745287Z       Database initialized and seeded (Phase 2).
+2026-10-16T07:23:50.1745781Z 
+2026-10-16T07:23:50.1746055Z       at Database.log (database.js:113:17)
+2026-10-16T07:23:50.1746356Z 
+2026-10-16T07:23:50.1746535Z     console.log
+2026-10-16T07:23:50.1746839Z       Connected to database
+2026-10-16T07:23:50.1747050Z 
+2026-10-16T07:23:50.1747227Z       at Database.log (database.js:9:17)
+2026-10-16T07:23:50.1747486Z 
+2026-10-16T07:23:50.8807201Z PASS tests/coupons.test.js
+2026-10-16T07:23:50.8817158Z   ● Console
+2026-10-16T07:23:50.8817607Z 
+2026-10-16T07:23:50.8817877Z     console.log
+2026-10-16T07:23:50.8818571Z       Database initialized and seeded (Phase 2).
+2026-10-16T07:23:50.8819063Z 
+2026-10-16T07:23:50.8819398Z       at Database.log (database.js:113:17)
+2026-10-16T07:23:50.8819801Z 
+2026-10-16T07:23:50.8820082Z     console.log
+2026-10-16T07:23:50.8820562Z       Connected to database
+2026-10-16T07:23:50.8820941Z 
+2026-10-16T07:23:50.8821458Z       at Database.log (database.js:9:17)
+2026-10-16T07:23:50.8821875Z 
+2026-10-16T07:23:50.8830543Z 
+2026-10-16T07:23:50.8837840Z Test Suites: 1 failed, 4 passed, 5 total
+2026-10-16T07:23:50.8838527Z Tests:       8 failed, 19 passed, 27 total
+2026-10-16T07:23:50.8839144Z Snapshots:   0 total
+2026-10-16T07:23:50.8839612Z Time:        4.429 s
+2026-10-16T07:23:50.8840056Z Ran all test suites.
+2026-10-16T07:23:50.9093322Z ##[error]Process completed with exit code 1.
+2026-10-16T07:23:50.9233140Z Post job cleanup.
+2026-10-16T07:23:50.9962910Z [command]/usr/bin/git version
+2026-10-16T07:23:51.0002945Z git version 2.55.0
+2026-10-16T07:23:51.0040941Z Temporarily overriding HOME='/home/runner/work/_temp/a4bf85b0-9706-498c-8f33-d39b3279778f' before making global git config changes
+2026-10-16T07:23:51.0052243Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-16T07:23:51.0071309Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/eshop-sut-seminar/eshop-sut-seminar
+2026-10-16T07:23:51.0091940Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-16T07:23:51.0120961Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-16T07:23:51.0382099Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-16T07:23:51.0411130Z http.https://github.com/.extraheader
+2026-10-16T07:23:51.0422259Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-16T07:23:51.0495556Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-16T07:23:51.0679625Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-16T07:23:51.0727647Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-16T07:23:51.1115699Z Cleaning up orphan processes
+2026-10-16T07:23:51.1370077Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4, actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

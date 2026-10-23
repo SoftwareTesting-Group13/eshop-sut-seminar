@@ -1,0 +1,442 @@
+[
+  {
+    "id": 119789387969,
+    "run_id": 39768363600,
+    "workflow_name": "W6 metrics ghuy-20261022-110838 pair 1",
+    "head_branch": "test/giahuy-week6-metrics",
+    "run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOVJWlos8AAAAb5AEAwQ",
+    "head_sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+    "url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/jobs/119789387969",
+    "html_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600/job/119789387969",
+    "status": "completed",
+    "conclusion": "failure",
+    "created_at": "2026-10-22T11:08:41Z",
+    "started_at": "2026-10-22T11:08:43Z",
+    "completed_at": "2026-10-22T11:08:58Z",
+    "name": "flaky-pair",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-10-22T11:08:44Z",
+        "completed_at": "2026-10-22T11:08:45Z"
+      },
+      {
+        "name": "Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-10-22T11:08:45Z",
+        "completed_at": "2026-10-22T11:08:46Z"
+      },
+      {
+        "name": "Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-10-22T11:08:46Z",
+        "completed_at": "2026-10-22T11:08:47Z"
+      },
+      {
+        "name": "Install pinned dependencies",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-10-22T11:08:47Z",
+        "completed_at": "2026-10-22T11:08:52Z"
+      },
+      {
+        "name": "Measure selected before and after tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-10-22T11:08:52Z",
+        "completed_at": "2026-10-22T11:08:54Z"
+      },
+      {
+        "name": "Upload pair evidence",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-10-22T11:08:54Z",
+        "completed_at": "2026-10-22T11:08:55Z"
+      },
+      {
+        "name": "Expose test or infrastructure failure in run history",
+        "status": "completed",
+        "conclusion": "failure",
+        "number": 7,
+        "started_at": "2026-10-22T11:08:55Z",
+        "completed_at": "2026-10-22T11:08:55Z"
+      },
+      {
+        "name": "Post Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 13,
+        "started_at": "2026-10-22T11:08:55Z",
+        "completed_at": "2026-10-22T11:08:55Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 14,
+        "started_at": "2026-10-22T11:08:55Z",
+        "completed_at": "2026-10-22T11:08:55Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-10-22T11:08:55Z",
+        "completed_at": "2026-10-22T11:08:56Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/check-runs/119789387969",
+    "labels": [
+      "ubuntu-24.04"
+    ],
+    "runner_id": 1000000172,
+    "runner_name": "GitHub Actions 1000000172",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 119789388217,
+    "run_id": 39768363600,
+    "workflow_name": "W6 metrics ghuy-20261022-110838 pair 1",
+    "head_branch": "test/giahuy-week6-metrics",
+    "run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOVJWlos8AAAAb5AEBuQ",
+    "head_sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+    "url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/jobs/119789388217",
+    "html_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600/job/119789388217",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-22T11:08:41Z",
+    "started_at": "2026-10-22T11:08:43Z",
+    "completed_at": "2026-10-22T11:09:02Z",
+    "name": "cache-cold",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-10-22T11:08:44Z",
+        "completed_at": "2026-10-22T11:08:46Z"
+      },
+      {
+        "name": "Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-10-22T11:08:46Z",
+        "completed_at": "2026-10-22T11:08:46Z"
+      },
+      {
+        "name": "Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-10-22T11:08:46Z",
+        "completed_at": "2026-10-22T11:08:49Z"
+      },
+      {
+        "name": "Isolated cache key",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-10-22T11:08:49Z",
+        "completed_at": "2026-10-22T11:08:49Z"
+      },
+      {
+        "name": "Start dependency preparation interval",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-10-22T11:08:49Z",
+        "completed_at": "2026-10-22T11:08:49Z"
+      },
+      {
+        "name": "Restore isolated cache",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-10-22T11:08:49Z",
+        "completed_at": "2026-10-22T11:08:50Z"
+      },
+      {
+        "name": "Install dependencies on miss",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-10-22T11:08:50Z",
+        "completed_at": "2026-10-22T11:08:56Z"
+      },
+      {
+        "name": "Stop dependency preparation interval",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-10-22T11:08:56Z",
+        "completed_at": "2026-10-22T11:08:56Z"
+      },
+      {
+        "name": "Save only experiment cache",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-10-22T11:08:56Z",
+        "completed_at": "2026-10-22T11:08:58Z"
+      },
+      {
+        "name": "Upload cold evidence",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10,
+        "started_at": "2026-10-22T11:08:58Z",
+        "completed_at": "2026-10-22T11:08:59Z"
+      },
+      {
+        "name": "Post Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 19,
+        "started_at": "2026-10-22T11:08:59Z",
+        "completed_at": "2026-10-22T11:08:59Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 20,
+        "started_at": "2026-10-22T11:08:59Z",
+        "completed_at": "2026-10-22T11:09:00Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 21,
+        "started_at": "2026-10-22T11:09:00Z",
+        "completed_at": "2026-10-22T11:09:00Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/check-runs/119789388217",
+    "labels": [
+      "ubuntu-24.04"
+    ],
+    "runner_id": 1000000173,
+    "runner_name": "GitHub Actions 1000000173",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 119789510661,
+    "run_id": 39768363600,
+    "workflow_name": "W6 metrics ghuy-20261022-110838 pair 1",
+    "head_branch": "test/giahuy-week6-metrics",
+    "run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOVJWlos8AAAAb5ALgBQ",
+    "head_sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+    "url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/jobs/119789510661",
+    "html_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600/job/119789510661",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-22T11:08:58Z",
+    "started_at": "2026-10-22T11:09:00Z",
+    "completed_at": "2026-10-22T11:09:10Z",
+    "name": "ai-evaluation",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-10-22T11:09:01Z",
+        "completed_at": "2026-10-22T11:09:02Z"
+      },
+      {
+        "name": "Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-10-22T11:09:02Z",
+        "completed_at": "2026-10-22T11:09:03Z"
+      },
+      {
+        "name": "Run actions/download-artifact@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-10-22T11:09:03Z",
+        "completed_at": "2026-10-22T11:09:04Z"
+      },
+      {
+        "name": "Measure one real AI call if configured",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-10-22T11:09:04Z",
+        "completed_at": "2026-10-22T11:09:06Z"
+      },
+      {
+        "name": "Upload AI evidence",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-10-22T11:09:06Z",
+        "completed_at": "2026-10-22T11:09:08Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10,
+        "started_at": "2026-10-22T11:09:08Z",
+        "completed_at": "2026-10-22T11:09:08Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11,
+        "started_at": "2026-10-22T11:09:08Z",
+        "completed_at": "2026-10-22T11:09:08Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/check-runs/119789510661",
+    "labels": [
+      "ubuntu-24.04"
+    ],
+    "runner_id": 1000000184,
+    "runner_name": "GitHub Actions 1000000184",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  {
+    "id": 119789538833,
+    "run_id": 39768363600,
+    "workflow_name": "W6 metrics ghuy-20261022-110838 pair 1",
+    "head_branch": "test/giahuy-week6-metrics",
+    "run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOVJWlos8AAAAb5ANOEQ",
+    "head_sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67",
+    "url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/jobs/119789538833",
+    "html_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39768363600/job/119789538833",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-22T11:09:03Z",
+    "started_at": "2026-10-22T11:09:05Z",
+    "completed_at": "2026-10-22T11:09:15Z",
+    "name": "cache-warm",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-10-22T11:09:06Z",
+        "completed_at": "2026-10-22T11:09:07Z"
+      },
+      {
+        "name": "Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-10-22T11:09:07Z",
+        "completed_at": "2026-10-22T11:09:08Z"
+      },
+      {
+        "name": "Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-10-22T11:09:08Z",
+        "completed_at": "2026-10-22T11:09:08Z"
+      },
+      {
+        "name": "Start dependency preparation interval",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-10-22T11:09:08Z",
+        "completed_at": "2026-10-22T11:09:08Z"
+      },
+      {
+        "name": "Restore isolated cache",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-10-22T11:09:08Z",
+        "completed_at": "2026-10-22T11:09:11Z"
+      },
+      {
+        "name": "Install dependencies on miss",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 6,
+        "started_at": "2026-10-22T11:09:11Z",
+        "completed_at": "2026-10-22T11:09:11Z"
+      },
+      {
+        "name": "Stop dependency preparation interval",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-10-22T11:09:11Z",
+        "completed_at": "2026-10-22T11:09:11Z"
+      },
+      {
+        "name": "Upload warm evidence",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-10-22T11:09:11Z",
+        "completed_at": "2026-10-22T11:09:12Z"
+      },
+      {
+        "name": "Post Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-10-22T11:09:12Z",
+        "completed_at": "2026-10-22T11:09:13Z"
+      },
+      {
+        "name": "Post Run actions/checkout@v6",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 16,
+        "started_at": "2026-10-22T11:09:13Z",
+        "completed_at": "2026-10-22T11:09:13Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 17,
+        "started_at": "2026-10-22T11:09:13Z",
+        "completed_at": "2026-10-22T11:09:13Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/check-runs/119789538833",
+    "labels": [
+      "ubuntu-24.04"
+    ],
+    "runner_id": 1000000185,
+    "runner_name": "GitHub Actions 1000000185",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  }
+]

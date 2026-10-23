@@ -1,0 +1,22 @@
+{
+  "downloaded_at_utc": "2026-10-22T11:10:48.640207+00:00",
+  "method": "Authenticated GitHub REST run ZIP + artifacts; top-level complete job logs, all text artifact members; UTF-8 LF; credentials/patterns redacted",
+  "files": [
+    "39768363600/job-logs/ghuy_0_cache-warm.txt",
+    "39768363600/job-logs/ghuy_1_ai-evaluation.txt",
+    "39768363600/job-logs/ghuy_2_cache-cold.txt",
+    "39768363600/job-logs/ghuy_3_flaky-pair.txt",
+    "39768363600/artifacts/ghuy-cache-warm/cache-warm.json",
+    "39768363600/artifacts/ghuy-cache-warm/start.txt",
+    "39768363600/artifacts/ghuy-ai-metrics/gemini-response.json",
+    "39768363600/artifacts/ghuy-ai-metrics/triage-analysis.md",
+    "39768363600/artifacts/ghuy-ai-metrics/ai-metrics.json",
+    "39768363600/artifacts/ghuy-pair-1/pair-01-after-raw.txt",
+    "39768363600/artifacts/ghuy-pair-1/pair-01-before-jest.json",
+    "39768363600/artifacts/ghuy-pair-1/pair-01-after-jest.json",
+    "39768363600/artifacts/ghuy-pair-1/pair-01-before-raw.txt",
+    "39768363600/artifacts/ghuy-pair-1/pair-results.json",
+    "39768363600/artifacts/ghuy-cache-cold/cache-cold.json",
+    "39768363600/artifacts/ghuy-cache-cold/start.txt"
+  ]
+}

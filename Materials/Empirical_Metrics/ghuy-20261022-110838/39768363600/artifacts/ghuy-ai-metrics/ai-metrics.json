@@ -1,0 +1,12 @@
+{
+  "api_status": "success",
+  "called": true,
+  "model": "gemini-3.5-flash-lite",
+  "http_status": 200,
+  "request_body_latency_ms": 2455.726275,
+  "response_json_valid": true,
+  "analysis_generated": true,
+  "quality_assessed": false,
+  "run_id": "39768363600",
+  "sha": "ba4b02b86b94c329a8b0614a5053bb7d7b161f67"
+}

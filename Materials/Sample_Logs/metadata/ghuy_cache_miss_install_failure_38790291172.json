@@ -1,0 +1,138 @@
+{
+  "source_type": "GitHub Actions complete Backend Test job log (not all workflow jobs)",
+  "run_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/38790291172",
+  "run_id": 38790291172,
+  "run_attempt": 1,
+  "commit_sha": "e601f2198f5d11e23111f1a2d45872b983846171",
+  "branch": "main",
+  "event": "push",
+  "run_created_at_utc": "2026-10-15T19:00:15Z",
+  "run_conclusion": "failure",
+  "job": {
+    "id": 116612788333,
+    "name": "Backend Test (Node.js 22)",
+    "conclusion": "failure",
+    "started_at": "2026-10-15T19:00:18Z",
+    "completed_at": "2026-10-15T19:00:23Z",
+    "html_url": "https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/38790291172/job/116612788333",
+    "runner_name": "GitHub Actions 1000000001",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-10-15T19:00:18Z",
+        "completed_at": "2026-10-15T19:00:19Z"
+      },
+      {
+        "name": "Checkout source code",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-10-15T19:00:19Z",
+        "completed_at": "2026-10-15T19:00:20Z"
+      },
+      {
+        "name": "Setup Node.js 22",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-10-15T19:00:20Z",
+        "completed_at": "2026-10-15T19:00:20Z"
+      },
+      {
+        "name": "Cache backend/node_modules",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-10-15T19:00:20Z",
+        "completed_at": "2026-10-15T19:00:21Z"
+      },
+      {
+        "name": "Install dependencies (npm ci)",
+        "status": "completed",
+        "conclusion": "failure",
+        "number": 5,
+        "started_at": "2026-10-15T19:00:21Z",
+        "completed_at": "2026-10-15T19:00:22Z"
+      },
+      {
+        "name": "Report dependency install time & cache status",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 6,
+        "started_at": "2026-10-15T19:00:22Z",
+        "completed_at": "2026-10-15T19:00:22Z"
+      },
+      {
+        "name": "Run backend test suite (Jest)",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 7,
+        "started_at": "2026-10-15T19:00:22Z",
+        "completed_at": "2026-10-15T19:00:22Z"
+      },
+      {
+        "name": "Post Cache backend/node_modules",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 12,
+        "started_at": "2026-10-15T19:00:22Z",
+        "completed_at": "2026-10-15T19:00:22Z"
+      },
+      {
+        "name": "Post Setup Node.js 22",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 13,
+        "started_at": "2026-10-15T19:00:22Z",
+        "completed_at": "2026-10-15T19:00:22Z"
+      },
+      {
+        "name": "Post Checkout source code",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 14,
+        "started_at": "2026-10-15T19:00:22Z",
+        "completed_at": "2026-10-15T19:00:22Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-10-15T19:00:22Z",
+        "completed_at": "2026-10-15T19:00:22Z"
+      }
+    ]
+  },
+  "download_endpoint": "https://api.github.com/repos/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/38790291172/logs",
+  "archive_member": "1_Backend Test (Node.js 22).txt",
+  "extracted_at_utc": "2026-10-22T05:33:16.284587+00:00",
+  "extracted_by": "Codex supporting Nguyen Gia Huy",
+  "method": "GitHub REST API authenticated with existing Git Credential Manager credential; ZIP member decoded UTF-8, line endings normalized LF; no token persisted.",
+  "raw_file": "raw/ghuy_cache_miss_install_failure_38790291172.txt",
+  "raw_sha256": "f8041ee9d11a698b781f0b02df5075bc0bcf0052c762c7aade72d15b76c7883d",
+  "raw_line_count": 186,
+  "excerpt_file": "excerpts/ghuy_cache_miss_install_failure_38790291172.txt",
+  "excerpt_raw_line_ranges": [
+    [
+      124,
+      149
+    ],
+    [
+      168,
+      171
+    ]
+  ],
+  "workflow_snapshot": "source/ghuy_cache_miss_install_failure_38790291172_workflow.yml",
+  "redaction": {
+    "github_masking": "Existing *** masks retained unchanged",
+    "additional_token_pattern_replacements": 0,
+    "other_changes": "No raw lines omitted. Excerpts omit unselected ranges and remove ANSI colour; timestamps/order/results retained. ZIP container and other jobs omitted."
+  }
+}
