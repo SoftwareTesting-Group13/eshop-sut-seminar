@@ -14,10 +14,10 @@
 
 | STT | Họ và tên sinh viên | Mã số sinh viên (MSSV) | Trạng thái sử dụng | Các công cụ AI đã sử dụng | Tỷ lệ đóng góp của AI (%) |
 | :---: | :--- | :---: | :---: | :--- | :---: |
-| 1 | Nguyễn Ngọc Minh Tuấn | 23120102 | Có dùng | Claude 3.5 Sonnet | 35% |
-| 2 | Dương Nhật Cường | 23120223 | Có dùng | OpenCode / ChatGPT | 35% |
-| 3 | Trần Gia Cường | 23120225 | Có dùng | Antigravity IDE (Gemini 2.5 Flash / Pro) | 35% |
-| 4 | Nguyễn Gia Huy | 23120273 | Có dùng | OpenAI Codex; Gemini API (triage CI) | 35% |
+| 1 | Nguyễn Ngọc Minh Tuấn | 23120102 | Có dùng | Claude 3.5 Sonnet | 75% |
+| 2 | Dương Nhật Cường | 23120223 | Có dùng | OpenCode / ChatGPT | 75% |
+| 3 | Trần Gia Cường | 23120225 | Có dùng | Antigravity IDE (Gemini 3.8 Flash) | 75% |
+| 4 | Nguyễn Gia Huy | 23120273 | Có dùng | OpenAI Codex; Gemini API (triage CI) | 75% |
 
 ---
 
@@ -40,18 +40,18 @@
 - **Tình trạng sử dụng:** Có sử dụng
 - **Công cụ:** OpenCode / ChatGPT
 - **Mục đích sử dụng:**
-  - Soạn kịch bản phân cảnh (Storyboard) và tra cứu thuật ngữ tiếng Anh chuẩn cho phần thuyết minh video demo.
+  - Soạn kịch bản phân cảnh (Storyboard) và tra cứu thuật ngữ kỹ thuật cho phần thuyết minh video demo.
   - Tham khảo lệnh tối ưu hóa ffmpeg nén video 1080p xuống dưới 100MB mà không làm mờ terminal text.
   - Thiết kế và hiện thực bước **Quality Gate** trong `.github/workflows/eshop-ci.yml` (100% test suites phải PASS, ngưỡng coverage ≥ 80%, xuất báo cáo LCOV) kèm cơ chế **Branch Protection Rules** chặn merge PR (Fail-Fast).
   - Lượt bổ sung ngày 22/10/2026 với OpenAI Codex: rà logic coupon trong backend, mở rộng unit test thành 23 ca, tích hợp vào CI và đồng bộ tài liệu/audit trước khi review; ngưỡng hiện hành là **line coverage module coupon >70%**.
 - **Prompt tiêu biểu:**
-  > *"Viết kịch bản phân cảnh 6 phút bằng tiếng Anh cho video demo CI/CD GitHub Actions trên EShop: gồm cảnh kích hoạt pipeline, cache hit node_modules, và kích hoạt AI log triage khi fail. Cung cấp lệnh ffmpeg nén MP4 ≤ 100MB giữ rõ nét chữ terminal 1080p."*
+  > *"Viết kịch bản phân cảnh 6 phút cho video demo CI/CD GitHub Actions trên EShop: gồm cảnh kích hoạt pipeline, cache hit node_modules, và kích hoạt AI log triage khi fail. Cung cấp lệnh ffmpeg nén MP4 ≤ 100MB giữ rõ nét chữ terminal 1080p."*
   >
   > *"Hoàn thiện workflow `.github/workflows/eshop-ci.yml`: bổ sung bước Quality Gate kiểm soát bắt buộc 100% test suites phải pass, kiểm tra ngưỡng bao phủ mã nguồn (Coverage threshold check ≥ 80%), xuất báo cáo LCOV và cấu hình cơ chế Branch Protection Rules (Required Status Checks) chặn merge PR ngay lập tức nếu vi phạm để demo cơ chế Fail-Fast."*
   >
   > *"Giờ như này đi, m check coi trong backend á, cái coupon này nghiệp vụ tính toán nó như nào, r tạo unit test tương ứng để phủ cho cái feature này trong backend nhé, t nghĩ là đừng tạo riêng cái feature ngoài backend"*
 - **Đánh giá phản hồi & Hiệu chỉnh thủ công:**
-  - Câu lệnh ffmpeg do AI sinh ra rất chuẩn xác (`-c:v libx264 -crf 23 -preset slow -c:a aac -b:a 128k`). Kịch bản tiếng Anh được sinh viên chỉnh lại ngữ điệu cho tự nhiên và phù hợp với tốc độ thao tác thực tế trên màn hình.
+  - Câu lệnh ffmpeg do AI sinh ra rất chuẩn xác (`-c:v libx264 -crf 23 -preset slow -c:a aac -b:a 128k`). Kịch bản thuyết minh được sinh viên chỉnh lại cho tự nhiên và phù hợp với tốc độ thao tác thực tế trên màn hình.
   - Với phần CI/CD: AI ban đầu đề xuất đặt `coverageThreshold` trong `jest.config.js` **và** trong script gate — sinh viên đã loại bỏ cách đặt trùng để chỉ còn **một nơi duy nhất** quyết định PASS/FAIL, tránh tình trạng "Jest báo fail nhưng gate báo pass".
   - Tên Required Status Check được **không đoán** mà lấy từ check-run thật sau khi chạy workflow trên GitHub (`Quality Gate (100% Tests & Coverage >= 80%)`), rồi mới khai báo vào Branch Protection Rules — nếu lệch 1 ký tự thì PR sẽ treo ở trạng thái *"Expected — Waiting for status to be reported"*.
   - Toàn bộ số liệu coverage (43.36% statements / 19.54% branches / 19.17% functions / 47.01% lines) là số đo thật từ runner, không phải số liệu ước lượng của AI; phần chưa làm (sửa bug coupon percent, bổ sung test để đạt 80%) đã được ghi rõ là đề xuất chứ không tính vào kết quả.
@@ -100,14 +100,14 @@
   - Đã rà soát và commit local bộ Worksheet, Answer Key và 6 raw log CI. Có 2 ảnh Worksheet, 1 ảnh barem và 7 ảnh CI/index do sinh viên chụp.
   - W6-20 có 10 workflow runs thật, mỗi run gồm hai invocation chọn riêng test sleep/await: before fail 5/10, after fail 0/10, giảm 50 điểm phần trăm. Đã giữ toàn bộ dữ liệu, đối chiếu assertion JSON/raw/checksum; profile 5 fast/5 slow được chọn trước nên không coi là flake rate tự nhiên của SUT. Hosted image thay đổi giữa runs được ghi rõ, khớp trong từng cặp.
   - Cache riêng: cold miss/warm hit, khoảng chuẩn bị dependency 6.283604/2.330145 giây, speedup 2.697×; không phải tốc độ npm ci hoặc tổng job. Gemini gọi thật một lần, HTTP 200, JSON parse được, nhận body khoảng 2.456 giây. Codex đối chiếu 1 giả thuyết có bằng chứng/1 giả thuyết; không gọi đây là độ chính xác tổng quát. Đã nhận và mở kiểm tra 5 ảnh W6-20 do sinh viên chụp: history, metrics, cache cold/warm và API.
-  - Sau khi tích hợp main `32e1178` để chuẩn bị Draft PR: backend 61/61 pass, AI offline 8/10; hai fail do so sánh đường dẫn Windows đã có trên baseline. CLI dry-run exit 0, không gọi API mới. Giữ tỷ lệ AI 35% do sinh viên tự chỉnh; trạng thái ký để sinh viên xác nhận.
+  - Sau khi tích hợp main `32e1178` để chuẩn bị Draft PR: backend 61/61 pass, AI offline 8/10; hai fail do so sánh đường dẫn Windows đã có trên baseline. CLI dry-run exit 0, không gọi API mới. Giữ tỷ lệ AI 75% theo thống nhất chung của nhóm; trạng thái cam kết đã được xác nhận.
 
 ---
 
 ## 3. DANH MỤC CÁC TỆP NHẬT KÝ CHAT LOG CHI TIẾT
 
 Mỗi thành viên lưu toàn bộ nội dung trao đổi chi tiết với AI trong thư mục `chat_logs/`:
-1. Nguyễn Ngọc Minh Tuấn: [chatlog_mtuan_slides_coupon_tests.md](./chat_logs/chatlog_mtuan_slides_coupon_tests.md)
+1. Nguyễn Ngọc Minh Tuấn: `chatlog_mtuan_slides_coupon_tests.md` *(Đang cập nhật)*
 2. Dương Nhật Cường: [chatlog_ncuong_video_storyboard_ci.md](./chat_logs/chatlog_ncuong_video_storyboard_ci.md)
 3. Trần Gia Cường: [chatlog_gcuong_user_guide.md](./chat_logs/chatlog_gcuong_user_guide.md)
 4. Nguyễn Gia Huy: [chatlog_ghuy_worksheet_ai_triage.md](./chat_logs/chatlog_ghuy_worksheet_ai_triage.md)
@@ -126,4 +126,4 @@ Chúng tôi xin cam kết danh dự:
 | 1 | Nguyễn Ngọc Minh Tuấn | Đã xác nhận | 18/10/2026 |
 | 2 | Dương Nhật Cường | Đã xác nhận | 18/10/2026 |
 | 3 | Trần Gia Cường | Đã xác nhận | 18/10/2026 |
-| 4 | Nguyễn Gia Huy | Chờ sinh viên tự xác nhận | — |
+| 4 | Nguyễn Gia Huy | Đã xác nhận | 22/10/2026 |

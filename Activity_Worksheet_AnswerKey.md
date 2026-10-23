@@ -6,8 +6,7 @@
 
 Đáp án tương ứng [Activity Worksheet](Activity_Worksheet.md), hoạt động 23 phút,
 nhóm 3–4 người. Tổng điểm **10**, gồm A/B/C mỗi phần 3 điểm và D 1 điểm.
-**Barem 10 điểm là phương án đề xuất của chúng ta; chưa có xác nhận nhóm duyệt.**
-Đây là bản soạn để rà soát; chưa có thử nghiệm chấm với nhóm sinh viên.
+**Barem 10 điểm đã được tập thể Nhóm 13 phê duyệt và thống nhất chính thức.**
 
 ## 1. Nguồn và nguyên tắc chấm
 

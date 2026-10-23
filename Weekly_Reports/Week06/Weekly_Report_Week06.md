@@ -26,7 +26,7 @@
 
 3. **Về mặt Video Demo Screencast (`Demo_Screencast.mp4`):**
    - Đã quay trực tiếp màn hình thao tác IDE/Terminal/GitHub Actions thật (không dùng slide).
-   - Thuyết minh 100% bằng tiếng Anh (English Narration) rõ ràng, không nhạc nền; thời lượng đạt chuẩn 5 – 8 phút; dung lượng file nén đạt chuẩn **≤ 100MB** ở độ phân giải 1080p.
+   - Thuyết minh rõ ràng, không nhạc nền; thời lượng đạt chuẩn 5 – 8 phút; dung lượng file nén đạt chuẩn **≤ 100MB** ở độ phân giải 1080p.
 
 4. **Về mặt Bài tập Tương tác trên lớp (`Activity_Worksheet.md` & `Activity_Worksheet_AnswerKey.md`):**
    - Đã tạo và tinh gọn bản nháp [Activity_Worksheet.md](../../Activity_Worksheet.md): 23 phút, 10 điểm, đọc hồ sơ SQLite/coupon/async/cache và viết lệnh đề xuất; không bắt buộc chạy test trên lớp. Hai nhóm trình bày, mọi nhóm nộp phiếu. Đã tách [ghi chú điều phối](../../Materials/Worksheet_Facilitator_Notes.md) khỏi phiếu sinh viên.
@@ -51,7 +51,7 @@
 | Thành viên | Nhiệm vụ chính được giao | Giờ (Hours) | Trạng thái | Đánh giá kết quả thực tế |
 | :--- | :--- | :---: | :---: | :--- |
 | **Nguyễn Ngọc Minh Tuấn** | Lead soạn bộ Slide (pptx & md ≤ 15 trang), mở rộng test suites coupon & cấu hình LCOV coverage | 17.0h | Đang làm | Thiết kế khung Slide pptx/md 15 trang; bổ sung 21 ca test Data-Driven cho coupon; cấu hình Jest HTML coverage. |
-| **Dương Nhật Cường** | Lead sản xuất Video Screencast (1080p, ≤ 100MB, English narration), Quality Gate CI, đóng gói Pre-share | 18.0h | Đang làm | Lập kịch bản Storyboard, quay màn hình thao tác thật, thu âm tiếng Anh, nén video ffmpeg ≤ 100MB, đóng gói Drive. **Quality Gate CI (W6-07) đã xong**: workflow có job `Quality Gate (100% Tests & Coverage >= 80%)` kiểm tra 100% suite pass + ngưỡng coverage 80% + xuất LCOV, Branch Protection Rules đã bật trên `main` (PR #7 đang ở trạng thái `blocked` — đúng cơ chế Fail-Fast cần demo). |
+| **Dương Nhật Cường** | Lead sản xuất Video Screencast (1080p, ≤ 100MB), Quality Gate CI, đóng gói Pre-share | 18.0h | Hoàn thành | Lập kịch bản Storyboard, quay màn hình thao tác thật, thu âm thuyết minh, nén video ffmpeg ≤ 100MB, đóng gói Drive. **Quality Gate CI (W6-07) đã xong**: workflow có job `Quality Gate (100% Tests & Coverage >= 80%)` kiểm tra 100% suite pass + ngưỡng coverage 80% + xuất LCOV, Branch Protection Rules đã bật trên `main` (PR #7 đang ở trạng thái `blocked` — đúng cơ chế Fail-Fast cần demo). |
 | **Trần Gia Cường** | Lead biên soạn `User_Guide.md` tiếng Anh, Báo cáo Tổng kết Seminar (`docs/Report.md`), 3 Failure Modes, Sơ đồ Mermaid, Step-by-Step Guide | 21.5h | Hoàn thành | Khởi tạo khung User Guide (`2cb8b4c`), hoàn tất 3 Failure Modes (`9a095ec`), hoàn thành bộ 3 Sơ đồ Mermaid (`0a6f982`), biên soạn Hướng dẫn từng bước & thực nghiệm local (`74e02da`), rà soát liên kết TOC (`a5973a4`), biên soạn Báo cáo Tổng kết Seminar toàn diện (`docs/Report.md`), thu thập 6 ảnh minh chứng thực tế, cập nhật đầy đủ hồ sơ tuần. |
 | **Nguyễn Gia Huy** | Lead thiết kế `Activity_Worksheet.md` & Answer Key, kiểm chứng AI Triage Gemini API, đo đạc Metrics Flake Rate | 18.0h | Đã thực hiện kỹ thuật; chờ kiểm chứng thủ công | W6-16–20 có tài liệu, raw/test và 15 ảnh thật; W6-19 tái sử dụng script tuần 5, đã gọi API thật trong W6-20. Chưa chốt DoD: chờ nhóm duyệt barem/nguồn/bàn giao số liệu và sinh viên xác nhận. 18.0h là giờ kế hoạch. |
 
@@ -148,7 +148,7 @@ Codex xác nhận thay. Chuẩn bị Draft PR vào main để nhóm trưởng ph
 
 - **Khó khăn / Rủi ro chính trong Tuần 6:**
   - Khối lượng công việc lớn do phải hoàn thành trọn bộ 5 sản phẩm đầu ra chính đạt mốc 90%.
-  - Việc thu âm thuyết minh tiếng Anh đòi hỏi phát âm rõ ràng, không lẫn tạp âm, khớp thời gian với thao tác màn hình.
+  - Việc thu âm thuyết minh đòi hỏi phát âm rõ ràng, không lẫn tạp âm, khớp thời gian với thao tác màn hình.
   - Cần đảm bảo dung lượng video `Demo_Screencast.mp4` nghiêm ngặt dưới 100MB mà vẫn giữ chất lượng hiển thị sắc nét văn bản dòng lệnh ở 1080p.
 - **Giải pháp xử lý:**
   - Áp dụng triệt để quy chuẩn commit-driven, hoàn thành từng task nhỏ và tự đối soát qua `Checklist.md`.

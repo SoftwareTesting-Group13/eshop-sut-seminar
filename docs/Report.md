@@ -14,8 +14,8 @@
 
 | STT | Mã sinh viên | Họ và tên | GitHub Username | Vai trò kỹ thuật chính | Email liên hệ |
 | :---: | :---: | :--- | :---: | :--- | :--- |
-| 1 | **23120102** | Nguyễn Ngọc Minh Tuấn | `@tuanminh` | **Lead Slide, SUT & Kịch bản Thuyết trình** | `23120102@student.hcmus.edu.vn` |
-| 2 | **23120223** | Dương Nhật Cường | `@ncuong` | **Lead CI/CD Pipeline, Hạ tầng & Video Screencast** | `23120223@student.hcmus.edu.vn` |
+| 1 | **23120102** | Nguyễn Ngọc Minh Tuấn | `@nnmt2810` | **Lead Slide, SUT & Kịch bản Thuyết trình** | `23120102@student.hcmus.edu.vn` |
+| 2 | **23120223** | Dương Nhật Cường | `@cuogne` | **Lead CI/CD Pipeline, Hạ tầng & Video Screencast** | `23120223@student.hcmus.edu.vn` |
 | 3 | **23120225** | Trần Gia Cường | `@trancuonG05` | **Lead User Guide, Báo cáo Tổng kết & Phân tích Kiến trúc** | `23120225@student.hcmus.edu.vn` |
 | 4 | **23120273** | Nguyễn Gia Huy | `@GiaHuyHCMUS05` | **Lead Activity Worksheet, AI Log Triage & Thực nghiệm Metrics** | `23120273@student.hcmus.edu.vn` |
 
@@ -23,52 +23,52 @@
 
 # MỤC LỤC NỘI DUNG
 
-- [1. Đặt vấn đề & Mục tiêu Đề tài](#1-đặt-vấn-đề--mục-tiêu-đề-tài)
+- [1. Đặt vấn đề & Mục tiêu Đề tài](#1-đặt-vấn-đề-mục-tiêu-đề-tài)
   - [1.1. Bối cảnh: Bài toán "Integration Hell" trong công nghệ phần mềm](#11-bối-cảnh-bài-toán-integration-hell-trong-công-nghệ-phần-mềm)
   - [1.2. Định vị trong môn học: CI/CD là Hạ tầng Test Harness tự động](#12-định-vị-trong-môn-học-cicd-là-hạ-tầng-test-harness-tự-động)
   - [1.3. Mục tiêu tổng quát và mục tiêu cụ thể của Seminar T07](#13-mục-tiêu-tổng-quát-và-mục-tiêu-cụ-thể-của-seminar-t07)
-- [2. Kiến trúc Hệ thống SUT & Monorepo Test Harness](#2-kiến-trúc-hệ-thống-sut--monorepo-test-harness)
+- [2. Kiến trúc Hệ thống SUT & Monorepo Test Harness](#2-kiến-trúc-hệ-thống-sut-monorepo-test-harness)
   - [2.1. Tổng quan hệ thống EShop Monorepo](#21-tổng-quan-hệ-thống-eshop-monorepo)
-  - [2.2. Sơ đồ Kiến trúc Hệ thống & Luồng Kiểm thử](#22-sơ-đồ-kiến-trúc-hệ-thống--luồng-kiểm-thử)
-  - [2.3. Cấu trúc thư mục Monorepo & Phạm vi kiểm thử](#23-cấu-trúc-thư-mục-monorepo--phạm-vi-kiểm-thử)
-- [3. Cơ sở Lý thuyết & 3 Trụ cột Kiểm thử trong CI/CD](#3-cơ-sở-lý-thuyết--3-trụ-cột-kiểm-thử-trong-cicd)
+  - [2.2. Sơ đồ Kiến trúc Hệ thống & Luồng Kiểm thử](#22-sơ-đồ-kiến-trúc-hệ-thống-luồng-kiểm-thử)
+  - [2.3. Cấu trúc thư mục Monorepo & Phạm vi kiểm thử](#23-cấu-trúc-thư-mục-monorepo-phạm-vi-kiểm-thử)
+- [3. Cơ sở Lý thuyết & 3 Trụ cột Kiểm thử trong CI/CD](#3-cơ-sở-lý-thuyết-3-trụ-cột-kiểm-thử-trong-cicd)
   - [3.1. DevOps và mối quan hệ hữu cơ với CI/CD](#31-devops-và-mối-quan-hệ-hữu-cơ-với-cicd)
   - [3.2. 4 Thành phần kiến trúc cốt lõi của Test Harness](#32-4-thành-phần-kiến-trúc-cốt-lõi-của-test-harness)
-  - [3.3. Quality Gates tự động & Cơ chế Fail-Fast](#33-quality-gates-tự-động--cơ-chế-fail-fast)
+  - [3.3. Quality Gates tự động & Cơ chế Fail-Fast](#33-quality-gates-tự-động-cơ-chế-fail-fast)
   - [3.4. Vấn nạn Flaky Tests và chi phí điều tra (Triage Cost)](#34-vấn-nạn-flaky-tests-và-chi-phí-điều-tra-triage-cost)
   - [3.5. Ba trụ cột kiểm thử tự động trong CI/CD](#35-ba-trụ-cột-kiểm-thử-tự-động-trong-cicd)
-- [4. Khảo sát, Đánh giá & Phân vai Bộ Công cụ](#4-khảo-sát-đánh-giá--phân-vai-bộ-công-cụ)
+- [4. Khảo sát, Đánh giá & Phân vai Bộ Công cụ](#4-khảo-sát-đánh-giá-phân-vai-bộ-công-cụ)
   - [4.1. Danh mục các công cụ khảo sát](#41-danh-mục-các-công-cụ-khảo-sát)
   - [4.2. Khung tiêu chí đánh giá chuẩn 5 trục](#42-khung-tiêu-chí-đánh-giá-chuẩn-5-trục)
   - [4.3. Bảng ma trận so sánh định lượng các công cụ](#43-bảng-ma-trận-so-sánh-định-lượng-các-công-cụ)
   - [4.4. Đề xuất bộ công cụ chủ đạo và phân vai](#44-đề-xuất-bộ-công-cụ-chủ-đạo-và-phân-vai)
-- [5. Thiết kế Kỹ thuật & Triển khai Chi tiết](#5-thiết-kế-kỹ-thuật--triển-khai-chi-tiết)
+- [5. Thiết kế Kỹ thuật & Triển khai Chi tiết](#5-thiết-kế-kỹ-thuật-triển-khai-chi-tiết)
   - [5.1. Công cụ trọng tâm: GitHub Actions Workflow (`eshop-ci.yml`)](#51-công-cụ-trọng-tâm-github-actions-workflow-eshop-ciyml)
   - [5.2. Tối ưu hóa bộ nhớ đệm phụ thuộc (`actions/cache`)](#52-tối-ưu-hóa-bộ-nhớ-đệm-phụ-thuộc-actionscache)
-  - [5.3. Công cụ kiểm thử thực thi: Jest Test Engine & Cờ tuần tự hóa](#53-công-cụ-kiểm-thử-thực-thi-jest-test-engine--cờ-tuần-tự-hóa)
-  - [5.4. Công cụ hỗ trợ chẩn đoán: AI Log Triage Script (`ai_triage.py`)](#54-công-cụ-hỗ-trợ-chẩn-đoán-ai-log-triage-script-aitriagepy)
-  - [5.5. Cơ chế Branch Protection Rules & Khóa Pull Request](#55-cơ-chế-branch-protection-rules--khóa-pull-request)
-  - [5.6. Sơ đồ Luồng CI/CD Pipeline & Quality Gate Fail-Fast](#56-sơ-đồ-luồng-cicd-pipeline--quality-gate-fail-fast)
+  - [5.3. Công cụ kiểm thử thực thi: Jest Test Engine & Cờ tuần tự hóa](#53-công-cụ-kiểm-thử-thực-thi-jest-test-engine-cờ-tuần-tự-hóa)
+  - [5.4. Công cụ hỗ trợ chẩn đoán: AI Log Triage Script (`ai_triage.py`)](#54-công-cụ-hỗ-trợ-chẩn-đoán-ai-log-triage-script-ai_triagepy)
+  - [5.5. Cơ chế Branch Protection Rules & Khóa Pull Request](#55-cơ-chế-branch-protection-rules-khóa-pull-request)
+  - [5.6. Sơ đồ Luồng CI/CD Pipeline & Quality Gate Fail-Fast](#56-sơ-đồ-luồng-cicd-pipeline-quality-gate-fail-fast)
 - [6. Phân tích Chuyên sâu 3 Mandatory Failure Modes](#6-phân-tích-chuyên-sâu-3-mandatory-failure-modes)
-  - [6.1. Failure Mode 1: SQLite File-Lock Concurrency Collision (`SQLITE_BUSY`)](#61-failure-mode-1-sqlite-file-lock-concurrency-collision-sqlitebusy)
-  - [6.2. Failure Mode 2: Lỗi Nghiệp vụ Công thức Coupon Percent (`discount_amount` âm)](#62-failure-mode-2-lỗi-nghiệp-vụ-công-thức-coupon-percent-discountamount-âm)
+  - [6.1. Failure Mode 1: SQLite File-Lock Concurrency Collision (`SQLITE_BUSY`)](#61-failure-mode-1-sqlite-file-lock-concurrency-collision-sqlite_busy)
+  - [6.2. Failure Mode 2: Lỗi Nghiệp vụ Công thức Coupon Percent (`discount_amount` âm)](#62-failure-mode-2-lỗi-nghiệp-vụ-công-thức-coupon-percent-discount_amount-âm)
   - [6.3. Failure Mode 3: Flaky Test do Độ trễ Bất đồng bộ (`sleep` vs `await`)](#63-failure-mode-3-flaky-test-do-độ-trễ-bất-đồng-bộ-sleep-vs-await)
-- [7. Phân công Công việc & Trách nhiệm Từng Thành viên](#7-phân-công-công-việc--trách-nhiệm-từng-thành-viên)
+- [7. Phân công Công việc & Trách nhiệm Từng Thành viên](#7-phân-công-công-việc-trách-nhiệm-từng-thành-viên)
   - [7.1. Bảng ma trận phân công trách nhiệm (RACI Matrix)](#71-bảng-ma-trận-phân-công-trách-nhiệm-raci-matrix)
   - [7.2. Nhiệm vụ và đóng góp của Nguyễn Ngọc Minh Tuấn (23120102)](#72-nhiệm-vụ-và-đóng-góp-của-nguyễn-ngọc-minh-tuấn-23120102)
   - [7.3. Nhiệm vụ và đóng góp của Dương Nhật Cường (23120223)](#73-nhiệm-vụ-và-đóng-góp-của-dương-nhật-cường-23120223)
   - [7.4. Nhiệm vụ và đóng góp của Trần Gia Cường (23120225)](#74-nhiệm-vụ-và-đóng-góp-của-trần-gia-cường-23120225)
   - [7.5. Nhiệm vụ và đóng góp của Nguyễn Gia Huy (23120273)](#75-nhiệm-vụ-và-đóng-góp-của-nguyễn-gia-huy-23120273)
-- [8. Tiến độ Thực hiện qua các Giai đoạn & Đóng gói Sản phẩm](#8-tiến-độ-thực-hiện-qua-các-giai-đoạn--đóng-gói-sản-phẩm)
+- [8. Tiến độ Thực hiện qua các Giai đoạn & Đóng gói Sản phẩm](#8-tiến-độ-thực-hiện-qua-các-giai-đoạn-đóng-gói-sản-phẩm)
   - [8.1. Lộ trình 3 Phase tinh gọn](#81-lộ-trình-3-phase-tinh-gọn)
   - [8.2. Danh mục sản phẩm bàn giao mốc 90% (Pre-share Package)](#82-danh-mục-sản-phẩm-bàn-giao-mốc-90-pre-share-package)
   - [8.3. Kịch bản Báo cáo Trực tiếp Live Demo (45 phút)](#83-kịch-bản-báo-cáo-trực-tiếp-live-demo-45-phút)
-- [9. Kết quả Thực nghiệm & Đo đạc Số liệu (Empirical Metrics)](#9-kết-quả-thực-nghiệm--đo-đạc-số-liệu-empirical-metrics)
+- [9. Kết quả Thực nghiệm & Đo đạc Số liệu (Empirical Metrics)](#9-kết-quả-thực-nghiệm-đo-đạc-số-liệu-empirical-metrics)
   - [9.1. Số liệu thực thi Unit Test Suite toàn hệ thống Backend](#91-số-liệu-thực-thi-unit-test-suite-toàn-hệ-thống-backend)
   - [9.2. Hiệu quả tối ưu hóa thời gian chạy nhờ Dependency Cache](#92-hiệu-quả-tối-ưu-hóa-thời-gian-chạy-nhờ-dependency-cache)
   - [9.3. Đo đạc tỷ lệ Flake Rate qua 10 lượt chạy lặp lại](#93-đo-đạc-tỷ-lệ-flake-rate-qua-10-lượt-chạy-lặp-lại)
   - [9.4. Đo đạc giá trị của Trợ lý AI Log Triage](#94-đo-đạc-giá-trị-của-trợ-lý-ai-log-triage)
-- [10. Tài liệu Tham khảo & Bản Cam kết Liêm chính Học thuật](#10-tài-liệu-tham-khảo--bản-cam-kết-liêm-chính-học-thuật)
+- [10. Tài liệu Tham khảo & Bản Cam kết Liêm chính Học thuật](#10-tài-liệu-tham-khảo-bản-cam-kết-liêm-chính-học-thuật)
   - [10.1. Danh mục tài liệu tham khảo chuẩn IEEE/ACM](#101-danh-mục-tài-liệu-tham-khảo-chuẩn-ieeeacm)
   - [10.2. Bản tuyên bố sử dụng AI (AI Disclosure Statement)](#102-bản-tuyên-bố-sử-dụng-ai-ai-disclosure-statement)
 
@@ -530,7 +530,7 @@ flowchart LR
 | **6. Thực nghiệm đo đạc Flake Rate & Empirical Metrics** | C | C | C | **A / R** |
 | **7. Biên soạn tài liệu User Guide tiếng Anh chuẩn 8 mục** | C | C | **A / R** | C |
 | **8. Xây dựng hệ thống sơ đồ kiến trúc Mermaid tương tác** | C | C | **A / R** | I |
-| **9. Sản xuất Video Screencast Demo (1080p, ≤ 100MB, tiếng Anh)**| C | **A / R** | C | C |
+| **9. Sản xuất Video Screencast Demo (1080p, ≤ 100MB)**| C | **A / R** | C | C |
 | **10. Thiết kế Bộ Slide thuyết trình (≤ 15 trang pptx/md)** | **A / R** | C | C | C |
 | **11. Thiết kế Bài tập Lớp học (Activity Worksheet & Answer Key)** | C | I | C | **A / R** |
 | **12. Kịch bản thuyết trình trực tiếp tại lớp (Live Presentation)** | **A / R** | **R** | **R** | **R** |
@@ -558,7 +558,7 @@ flowchart LR
   3. Viết script đánh giá Quality Gate (`.github/scripts/quality-gate.js`), bắt buộc 100% unit test pass và line coverage module coupon > 70%.
   4. Cấu hình Branch Protection Rules trên nhánh `main`, demo thành công trạng thái khóa nút Merge PR khi pipeline fail tại PR `#7`.
   5. Xây dựng kịch bản Storyboard phân cảnh chi tiết cho video demo screencast (`Video_Storyboard.md`).
-  6. Thực hiện quay màn hình trực tiếp độ phân giải 1080p, thu âm thuyết minh 100% bằng tiếng Anh (English narration) và nén video đạt chuẩn ≤ 100MB (`Demo_Screencast.mp4`).
+  6. Thực hiện quay màn hình trực tiếp độ phân giải 1080p, thu âm thuyết minh rõ ràng và nén video đạt chuẩn ≤ 100MB (`Demo_Screencast.mp4`).
 
 ### 7.4. Nhiệm vụ và đóng góp của Trần Gia Cường (23120225)
 * **Chức danh:** Lead User Guide, Báo cáo Tổng kết & Phân tích Kiến trúc
@@ -569,7 +569,7 @@ flowchart LR
   3. Thiết kế và nhúng trực tiếp **bộ 3 sơ đồ kỹ thuật Mermaid**: Kiến trúc Monorepo, Luồng Pipeline Fail-Fast, và Cơ chế SQLite File-Locking với đường nét đậm, bố cục phân tầng sắc nét.
   4. Biên soạn Hướng dẫn Thực nghiệm Từng bước (Step-by-Step Reproduction Guide - Mục 7) từ Bước A đến Bước G, kiểm chứng chuỗi lệnh chạy thành công 100% tại terminal.
   5. Rà soát học thuật, loại bỏ hoàn toàn cú pháp LaTeX math lỗi vỡ font, chuẩn hóa 60/60 liên kết Table of Contents (TOC) khớp tuyệt đối với GitHub slugs.
-  6. Chủ trì biên soạn toàn diện tài liệu **Báo cáo Tổng kết Seminar** ([docs/Report.md]) dài 10 phần lớn, tổng hợp toàn bộ nội dung từ Proposal, kiến trúc Test Harness SUT EShop, 3 failure modes, ma trận RACI và bảng số liệu thực nghiệm của cả 4 thành viên.
+  6. Chủ trì biên soạn toàn diện tài liệu **Báo cáo Tổng kết Seminar** (docs/Report.md) dài 10 phần lớn, tổng hợp toàn bộ nội dung từ Proposal, kiến trúc Test Harness SUT EShop, 3 failure modes, ma trận RACI và bảng số liệu thực nghiệm của cả 4 thành viên.
 
 ### 7.5. Nhiệm vụ và đóng góp của Nguyễn Gia Huy (23120273)
 * **Chức danh:** Lead Activity Worksheet, AI Log Triage & Thực nghiệm Metrics
@@ -606,24 +606,24 @@ Toàn bộ quy trình 8 giai đoạn chuẩn từ Đề cương môn học (Stag
 ### 8.2. Danh mục sản phẩm bàn giao mốc 90% (Pre-share Package)
 Tại thời điểm kết thúc Tuần 6, nhóm hoàn thành việc đóng gói bộ sản phẩm bàn giao sẵn sàng chia sẻ cho lớp trước buổi báo cáo ít nhất 3 ngày làm việc:
 1. **Tài liệu Hướng dẫn Kỹ thuật Chuyên sâu (`User_Guide.md`):** Viết hoàn toàn bằng tiếng Anh, 8 phần trọng tâm, tích hợp bộ 3 sơ đồ Mermaid tương tác, phân tích toàn diện 3 failure modes và hướng dẫn tái hiện từng bước.
-2. **Video Demo Screencast (`Demo_Screencast.mp4`):** Thời lượng 5–8 phút, độ phân giải sắc nét 1080p, thuyết minh tiếng Anh chuẩn, dung lượng nén tối ưu ≤ 100MB, thao tác 100% trên màn hình terminal/IDE/GitHub Actions thật.
+2. **Video Demo Screencast (`Demo_Screencast.mp4`):** Thời lượng 5–8 phút, độ phân giải sắc nét 1080p, thuyết minh rõ ràng, dung lượng nén tối ưu ≤ 100MB, thao tác 100% trên màn hình terminal/IDE/GitHub Actions thật.
 3. **Bộ Slide Báo cáo Thuyết trình:** Đồng thời cả 2 phiên bản `Seminar_Slides.pptx` và `docs/seminar_slide.md`, tuân thủ nghiêm ngặt quy định ≤ 15 trang chữ đen nền trắng, tập trung sơ đồ trực quan và số liệu thực nghiệm.
 4. **Bộ Bài tập Thực hành Tương tác Lớp học:** Tài liệu đề bài `Activity_Worksheet.md` (kịch bản Pipeline Postmortem 20–25 phút), file đáp án chi tiết kèm barem chấm điểm `Activity_Worksheet_AnswerKey.md`, và thư mục log lỗi mẫu `Materials/Sample_Logs/`.
 5. **Bộ Hồ sơ Báo cáo Tiến độ Tuần:** Thư mục `Weekly_Reports/Week06/` gồm `Weekly_Report_Week06.md`, `Git Commit Log Total.md`, `AI Usage Declaration.md`, và các tệp tin chat log cá nhân.
 
 ### 8.3. Kịch bản Báo cáo Trực tiếp Live Demo (45 phút)
 Thời lượng 45 phút của buổi seminar được phân bổ chuẩn mực:
-* **Phần 1: Báo cáo Thuyết trình & Định vị Đề tài (10 phút) — N.N. Minh Tuấn & Trần Gia Cường:**
+* **Phần 1: Báo cáo Thuyết trình & Định vị Đề tài (10 phút)**
   - Giới thiệu bài toán Integration Hell, định vị CI/CD là Test Harness Infrastructure, phân tích kiến trúc Monorepo EShop.
   - Phân tích cơ chế Fail-Fast, rào chắn Quality Gates và cơ chế file-locking SQLite.
-* **Phần 2: Trình diễn Live Demo Kỹ thuật (10 phút) — Dương Nhật Cường & Nguyễn Gia Huy:**
+* **Phần 2: Trình diễn Live Demo Kỹ thuật (10 phút)**
   - Demo thao tác trực tiếp trên GitHub: Mở PR chứa code lỗi coupon → Trigger CI runner → Cache HIT rút ngắn thời gian → Quality Gate phát hiện lỗi → Nút Merge PR bị khóa cứng → AI Log Triage can thiệp chẩn đoán → Push commit fix → Pipeline xanh → Mở khóa nút Merge.
-* **Phần 3: Điều phối Bài tập Tương tác Lớp học "Pipeline Postmortem" (20 phút) — Cả nhóm:**
+* **Phần 3: Điều phối Bài tập Tương tác Lớp học "Pipeline Postmortem" (20 phút)**
   - Phát phiếu bài tập Worksheet và cung cấp file log lỗi mẫu cho các nhóm trong lớp.
   - Sinh viên trong lớp đóng vai DevOps Engineer điều tra nguyên nhân thất bại và đề xuất câu lệnh fix.
   - Nhóm điều phối, giải đáp thắc mắc và chấm điểm nhanh theo Barem.
-* **Phần 4: Hỏi đáp & Tổng kết (5 phút) — Toàn bộ nhóm 13:**
-  - Trả lời câu hỏi phản biện từ Giảng viên và sinh viên lớp học, thu thập Minute Paper đánh giá cuối buổi.
+* **Phần 4: Hỏi đáp & Tổng kết (5 phút)**
+  - Trả lời câu hỏi phản biện từ Giảng viên và sinh viên lớp học.
 
 ---
 
