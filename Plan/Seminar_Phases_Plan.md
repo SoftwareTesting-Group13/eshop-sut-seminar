@@ -80,7 +80,7 @@ Toàn bộ quy trình 8 giai đoạn chuẩn (**Stage S1 → S8**) từ Đề c�
    - **Task 2.2:** Tự rà soát kiểm tra lỗi chính tả, câu từ kỹ thuật tiếng Anh và đảm bảo không sử dụng ký tự LaTeX gây lỗi format.
 2. **Dương Nhật Cường (Lead Sản xuất Demo Screencast):**
    - **Task 2.3:** Lập kịch bản video chi tiết (Storyboard) độ dài đúng chuẩn **5 – 8 phút**, thao tác 100% trên terminal/IDE/GitHub (tuyệt đối không chiếu slide).
-   - **Task 2.4:** Tiến hành quay màn hình (1080p, 60fps) và thu âm thuyết minh 100% bằng Tiếng Anh (English narration rõ ràng, không nhạc nền):
+   - **Task 2.4:** Tiến hành quay màn hình (1080p, 60fps) và thu âm thuyết minh rõ ràng, không nhạc nền:
      - `00:00 – 01:30` (1.5m): Cấu trúc Monorepo EShop, kiến trúc Test Harness và workflow GitHub Actions (`actions/cache` warm run vs cold run).
      - `01:30 – 04:00` (2.5m): Developer mở Pull Request chứa lỗi nghiệp vụ coupon percent $\rightarrow$ CI pipeline tự động kích hoạt $\rightarrow$ Chạy Data-Driven Unit Tests $\rightarrow$ Kích hoạt Fail-Fast tại Quality Gate $\rightarrow$ Nút Merge PR bị **KHÓA CỨNG (Blocked)** do Branch Protection Rules.
      - `04:00 – 05:15` (1.25m): AI Log Triage can thiệp (phụ trợ chuyên biệt): Step Summary hiển thị Cây giả thuyết (Hypothesis Tree) tóm tắt nguyên nhân lỗi coupon formula và gợi ý giải pháp sửa chữa.
@@ -152,7 +152,7 @@ Bảng checklist dưới đây được sử dụng xuyên suốt để theo dõ
 | 13 | `T2.1` | Viết tài liệu `User_Guide.md` (tiếng Anh, ≥ 7 mục) | T.G.Cường | Tuần 6 | [ ] | Bắt buộc có mục 6: Mandatory Failure Modes |
 | 14 | `T2.2` | Rà soát chất lượng ngôn ngữ, format Markdown User Guide | T.G.Cường | Tuần 6 | [ ] | Không dùng cú pháp LaTeX |
 | 15 | `T2.3` | Soạn kịch bản Storyboard cho Video Screencast (5–8m) | D.N.Cường | Tuần 6 | [ ] | Thao tác 100% trên IDE/terminal thật |
-| 16 | `T2.4` | Quay video & thuyết minh Tiếng Anh (English narration) | D.N.Cường | Tuần 6 | [ ] | 1080p, giọng đọc rõ ràng, không nhạc nền |
+| 16 | `T2.4` | Quay video & thu âm thuyết minh | D.N.Cường | Tuần 6 | [ ] | 1080p, giọng đọc rõ ràng, không nhạc nền |
 | 17 | `T2.5` | Biên tập & nén video `Demo_Screencast.mp4` ≤ 100MB | D.N.Cường | Tuần 6 | [ ] | Sử dụng Handbrake / ffmpeg để nén |
 | 18 | `T2.6` | Thiết kế bài tập lớp `Activity_Worksheet.md` (20–25m) | N.G.Huy | Tuần 6 | [ ] | Hoạt động "Pipeline Postmortem" |
 | 19 | `T2.7` | Chuẩn bị log lỗi CI mẫu và file workflow cho lớp làm | N.G.Huy | Tuần 6 | [ ] | Trích xuất log lỗi thực tế từ EShop |
@@ -174,7 +174,7 @@ Bảng checklist dưới đây được sử dụng xuyên suốt để theo dõ
 ## 4. CHECKLIST CẢNH BÁO CÁC LỖI TRỪ ĐIỂM TỰ ĐỘNG (AUTO-PENALTY WARNINGS)
 
 1. **Thiếu mục Failure Modes trong User Guide:** Bắt buộc phải có phân tích sâu tối thiểu 3 lỗi kỹ thuật thực tế (Nếu thiếu sẽ bị trừ trực tiếp 2 điểm).
-2. **Video Demo gian lận / Quá thời lượng:** Video demo phải chạy trên môi trường dòng lệnh/IDE thật, thuyết minh tiếng Anh, không dùng slide để câu giờ, thời lượng bắt buộc trong khoảng **5 – 8 phút**, dung lượng **≤ 100MB**.
+2. **Video Demo gian lận / Quá thời lượng:** Video demo phải chạy trên môi trường dòng lệnh/IDE thật, không dùng slide để câu giờ, thời lượng bắt buộc trong khoảng **5 – 8 phút**, dung lượng **≤ 100MB**.
 3. **Nộp tài liệu Pre-share trễ:** Phải chia sẻ tài liệu trước buổi báo cáo ít nhất **3 ngày làm việc** (Nộp trễ bị phạt 10% tổng điểm seminar).
 4. **Slide thuyết trình quá dài:** Số lượng slide tối đa là **15 slides** (vượt quá số trang sẽ bị trừ điểm theo rubric).
 5. **Thiếu chữ ký trong AI Disclosure:** Mọi thành viên trong nhóm đều phải ký tên vào form cam kết minh bạch AI `[AI-03]`.

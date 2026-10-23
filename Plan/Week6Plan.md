@@ -15,7 +15,7 @@
 Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn bộ sản phẩm đầu ra (Deliverables)** của Seminar T07 để đạt mốc **90% hoàn thành dự án**, sẵn sàng chia sẻ gói tài liệu (Pre-share Package) cho lớp và giảng viên trước buổi báo cáo trực tiếp:
 
 1. **Bộ tài liệu hướng dẫn chuyên sâu (`User_Guide.md`):** Viết hoàn toàn bằng tiếng Anh, tối thiểu 7 phần theo rubric, phân tích sâu sắc **3 Mandatory Failure Modes**.
-2. **Video Demo Screencast (`Demo_Screencast.mp4`):** Thời lượng chuẩn **5 – 8 phút**, độ phân giải 1080p, thuyết minh tiếng Anh, dung lượng **≤ 100MB**, thao tác trên terminal/IDE/GitHub Actions thật (không chiếu slide câu giờ).
+2. **Video Demo Screencast (`Demo_Screencast.mp4`):** Thời lượng chuẩn **5 – 8 phút**, độ phân giải 1080p, dung lượng **≤ 100MB**, thao tác trên terminal/IDE/GitHub Actions thật (không chiếu slide câu giờ).
 3. **Bài tập tương tác trên lớp (`Activity_Worksheet.md`):** Kịch bản "Pipeline Postmortem" (20 – 25 phút), có log lỗi mẫu và file đáp án chi tiết (`Activity_Worksheet_AnswerKey.md`).
 4. **Bộ slide thuyết trình (`Seminar_Slides.pptx` & `Seminar_Slides.md`):** Tối đa **15 slides** đúng quy định, phong cách thiết kế chuẩn mực **chữ đen nền trắng** trực quan, tương phản cao, dễ theo dõi; có slide tóm tắt các phân đoạn chính của video demo kèm đường link truy cập trực tiếp tới video. **Bắt buộc hoàn thiện đồng thời cả 2 phiên bản**:
    * Bản trình chiếu PowerPoint (`Seminar_Slides.pptx`) phục vụ báo cáo trực tiếp tại lớp.
@@ -101,12 +101,12 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
 ### 3.2. Dương Nhật Cường (Phụ trách Video Screencast & Hoàn thiện CI/CD Pipeline)
 
 * [x] **Task D.N.Cường 1: Soạn kịch bản phân cảnh chi tiết (Video Storyboard & Narration Script)**
-  * **Task Description:** Lập kịch bản phân cảnh chi tiết (Storyboard) cho video demo screencast: phân bổ thời lượng 5–8 phút (tối đa 8 phút đúng quy định), xác định cụ thể các hành động thao tác trên màn hình (terminal, VS Code, GitHub Actions) song song với kịch bản lời dẫn thuyết minh 100% bằng tiếng Anh.
+  * **Task Description:** Lập kịch bản phân cảnh chi tiết (Storyboard) cho video demo screencast: phân bổ thời lượng 5–8 phút (tối đa 8 phút đúng quy định), xác định cụ thể các hành động thao tác trên màn hình (terminal, VS Code, GitHub Actions) song song với kịch bản lời dẫn thuyết minh.
   * **Hours:** 3.5h
   * **Evidence:**
     * *Chat messages:* Ảnh chụp trao đổi kịch bản video với nhóm trong Messenger/Discord.
     * *Git commits:* Commit file kịch bản `Video_Storyboard.md` lên repository kèm commit hash.
-    * *Artifacts:* Bảng Storyboard chi tiết có 3 cột: Timecode, Screen Action (Thao tác màn hình), và English Narration (Lời đọc).
+    * *Artifacts:* Bảng Storyboard chi tiết có 3 cột: Timecode, Screen Action (Thao tác màn hình), và Narration (Lời dẫn thuyết minh).
 
 * [x] **Task D.N.Cường 2: Tích hợp bước Quality Gate & Branch Protection vào workflow GitHub Actions (`eshop-ci.yml`)**
   * **Task Description:** Hoàn thiện workflow `.github/workflows/eshop-ci.yml`: Quality Gate yêu cầu 23/23 unit test nghiệp vụ coupon được chọn pass, line coverage của `coupon-discount.js` > 70% (full backend suite chạy riêng), xuất báo cáo LCOV và cấu hình Branch Protection Required Status Checks chặn merge PR khi vi phạm để demo Fail-Fast.
@@ -116,7 +116,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit cập nhật workflow `.github/workflows/eshop-ci.yml` trên nhánh riêng và tạo PR.
     * *Test logs / CI:* Link GitHub Actions run và ảnh chụp tab workflow execution hiển thị bước Quality Gate chạy thành công.
 
-* [ ] **Task D.N.Cường 3: Thực hiện quay video màn hình thực tế (Screen Recording 1080p, 60fps)**
+* [x] **Task D.N.Cường 3: Thực hiện quay video màn hình thực tế (Screen Recording 1080p, 60fps)**
   * **Task Description:** Sử dụng phần mềm quay màn hình chuyên dụng (OBS Studio) ghi hình trực tiếp độ phân giải 1080p sắc nét (thao tác trực tiếp trên terminal/IDE/GitHub Actions, tuyệt đối không dùng slide): thực hiện trọn vẹn luồng Pull Request thực tế: mở PR có lỗi coupon $\rightarrow$ trigger CI pipeline $\rightarrow$ cache HIT $\rightarrow$ Jest fail kích hoạt Fail-Fast $\rightarrow$ nút Merge bị KHÓA CỨNG trên GitHub UI $\rightarrow$ AI Log Triage can thiệp tóm tắt lỗi $\rightarrow$ push commit sửa lỗi $\rightarrow$ pipeline xanh $\rightarrow$ nút Merge được mở khóa.
   * **Hours:** 4.5h
   * **Evidence:**
@@ -124,15 +124,15 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit kích hoạt pipeline CI phục vụ kịch bản quay video demo.
     * *Artifacts:* Ảnh chụp giao diện phần mềm quay phim/dựng phim hiển thị timeline và thông số video 1080p.
 
-* [ ] **Task D.N.Cường 4: Thu âm thuyết minh tiếng Anh (English Narration) & Biên tập nén chuẩn MP4**
-  * **Task Description:** Thu âm thuyết minh 100% bằng tiếng Anh rõ ràng, mạch lạc, không nhạc nền theo kịch bản đã duyệt. Biên tập cắt ghép và nén video bằng ffmpeg/Handbrake xuất file `Demo_Screencast.mp4` đạt chuẩn: thời lượng 5–8 phút, độ phân giải 1080p, và dung lượng nghiêm ngặt **≤ 100MB**.
+* [x] **Task D.N.Cường 4: Thu âm thuyết minh & Biên tập nén chuẩn MP4**
+  * **Task Description:** Thu âm thuyết minh rõ ràng, mạch lạc, không nhạc nền theo kịch bản đã duyệt. Biên tập cắt ghép và nén video bằng ffmpeg/Handbrake xuất file `Demo_Screencast.mp4` đạt chuẩn: thời lượng 5–8 phút, độ phân giải 1080p, và dung lượng nghiêm ngặt **≤ 100MB**.
   * **Hours:** 4.0h
   * **Evidence:**
-    * *Chat messages:* Ảnh chụp gửi file audio/video bản nháp cho nhóm thẩm định chất lượng tiếng Anh và hình ảnh.
+    * *Chat messages:* Ảnh chụp gửi file audio/video bản nháp cho nhóm thẩm định chất lượng âm thanh và hình ảnh.
     * *Test logs:* Terminal log chạy lệnh ffmpeg nén video hoàn tất.
     * *Artifacts:* Screenshot thuộc tính file (File Properties) của `Demo_Screencast.mp4` hiển thị dung lượng < 100MB, thời lượng 5-8 phút, độ phân giải 1920x1080.
 
-* [ ] **Task D.N.Cường 5: Đóng gói Pre-share Package trọn gói & Quản lý phát hành**
+* [x] **Task D.N.Cường 5: Đóng gói Pre-share Package trọn gói & Quản lý phát hành**
   * **Task Description:** Chủ trì thu thập và kiểm tra toàn bộ sản phẩm hoàn thiện của Tuần 6 (User Guide, Worksheet, Slide pptx/md, Video demo, Sample Logs), upload lên Google Drive / GitHub Releases và chuẩn bị sẵn đường link Pre-share công khai sẵn sàng nộp cho giảng viên trước buổi seminar ít nhất 3 ngày làm việc.
   * **Hours:** 2.5h
   * **Evidence:**
@@ -188,7 +188,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
 
 ### 3.4. Nguyễn Gia Huy (Phụ trách Bài tập Lớp Worksheet & Phân tích Metrics)
 
-* [ ] **Task Huy 1: Thiết kế bài tập tương tác trên lớp `Activity_Worksheet.md` ("Pipeline Postmortem")**
+* [x] **Task Huy 1: Thiết kế bài tập tương tác trên lớp `Activity_Worksheet.md` ("Pipeline Postmortem")**
   * **Task Description:** Biên soạn tài liệu bài tập tương tác trên lớp `Activity_Worksheet.md` với chủ đề **"Pipeline Postmortem"** (thời lượng 20–25 phút): mô phỏng tình huống sinh viên đóng vai DevOps Engineer điều tra nguyên nhân pipeline thất bại qua log lỗi. Thiết kế các câu hỏi gợi mở, bài tập xác định bug và lệnh fix.
   * **Hours:** 4.0h
   * **Evidence:**
@@ -196,7 +196,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit khởi tạo file `Activity_Worksheet.md` lên repository kèm commit hash.
     * *Artifacts:* Screenshot bài tập được định dạng chuyên nghiệp, có hướng dẫn làm bài và chỗ điền câu trả lời.
 
-* [ ] **Task Huy 2: Xây dựng file đáp án chi tiết và barem chấm điểm `Activity_Worksheet_AnswerKey.md`**
+* [x] **Task Huy 2: Xây dựng file đáp án chi tiết và barem chấm điểm `Activity_Worksheet_AnswerKey.md`**
   * **Task Description:** Soạn thảo tài liệu `Activity_Worksheet_AnswerKey.md` cung cấp đáp án chi tiết cho từng câu hỏi, diễn giải nguyên nhân tại sao lỗi xảy ra, trích dẫn dòng code gây lỗi trong SUT, kèm theo thang điểm chấm rõ ràng (Rubric) để nhóm sử dụng điều phối và chấm điểm trực tiếp trong buổi seminar.
   * **Hours:** 3.0h
   * **Evidence:**
@@ -204,7 +204,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit đưa file `Activity_Worksheet_AnswerKey.md` lên repository.
     * *Artifacts:* Screenshot tài liệu đáp án chi tiết có bảng barem phân bổ điểm từng câu rõ ràng.
 
-* [ ] **Task Huy 3: Trích xuất và đóng gói bộ log lỗi kiểm thử mẫu (Sample CI Failure Logs)**
+* [x] **Task Huy 3: Trích xuất và đóng gói bộ log lỗi kiểm thử mẫu (Sample CI Failure Logs)**
   * **Task Description:** Trích xuất các đoạn log lỗi thực tế từ các lần chạy thất bại của GitHub Actions runner trên SUT EShop (lỗi SQLite lock, lỗi coupon test fail, lỗi npm cache miss). Tổ chức thành các file log mẫu trong thư mục `Materials/Sample_Logs/` làm dữ liệu đầu vào cho bài tập lớp.
   * **Hours:** 2.5h
   * **Evidence:**
@@ -212,7 +212,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit lưu trữ bộ file log mẫu vào repository đúng cấu trúc thư mục quy định.
     * *Artifacts:* Screenshot nội dung các file log mẫu được định dạng sạch sẽ, dễ đọc.
 
-* [ ] **Task Huy 4: Nâng cấp và kiểm chứng script AI Triage (`ai_triage.py`) với Gemini API thật (Trợ lý gỡ lỗi chuyên biệt)**
+* [x] **Task Huy 4: Nâng cấp và kiểm chứng script AI Triage (`ai_triage.py`) với Gemini API thật (Trợ lý gỡ lỗi chuyên biệt)**
   * **Task Description:** Hoàn thiện mã nguồn Python script `.github/scripts/ai_triage.py` đóng vai trò công cụ hỗ trợ gỡ lỗi nhanh (Specialized Assistant) khi pipeline thất bại: tích hợp gọi trực tiếp Google Gemini API sử dụng API key thật, đọc file log lỗi test runner, tự động phân tích và sinh Cây giả thuyết (Hypothesis Tree) gồm: Root Cause Hypotheses, Evidence từ log, và Recommended Fix Actions.
   * **Hours:** 4.5h
   * **Evidence:**
@@ -220,7 +220,7 @@ Mục tiêu trọng tâm của Tuần 6 là **đóng gói trọn vẹn toàn b�
     * *Git commits:* Commit cập nhật mã nguồn script `ai_triage.py` và file test unit của script.
     * *Test logs:* Terminal log chạy thực thi script thành công và xuất ra Cây giả thuyết phân tích log lỗi chuẩn xác.
 
-* [ ] **Task Huy 5: Thực nghiệm đo đạc Flake Rate (10 runs) & Tổng hợp bảng Empirical Metrics**
+* [x] **Task Huy 5: Thực nghiệm đo đạc Flake Rate (10 runs) & Tổng hợp bảng Empirical Metrics**
   * **Task Description:** Chạy thực nghiệm lặp lại 10 lần ca Flaky Test (`flaky-delay.demo.js`) trên GitHub Actions runner để thu thập số liệu đo đạc thực tế (Flake Rate) trước và sau khi fix (`sleep` vs `await`). Đo đạc tốc độ tăng tốc của GitHub Actions Cache (Cold run vs Warm run). Tổng hợp toàn bộ số liệu vào bảng Empirical Metrics hoàn chỉnh.
   * **Hours:** 4.0h
   * **Evidence:**
@@ -273,19 +273,19 @@ Mỗi task lớn nên được chia nhỏ thành các **Phase** và phân rã th
 | **5** | `W6-05` | Rà soát format Markdown & ngữ pháp tiếng Anh | T.G.Cường | 2.5h | Chat log, Link checker report, Git commit | Ngày 6 | [x] Hoàn thành | File `User_Guide.md` hoàn chỉnh |
 | **6** | `W6-06` | Soạn Storyboard chi tiết cho Video Screencast | D.N.Cường | 3.5h | Chat log, Git commit, Storyboard table | Ngày 2 | [x] Hoàn thành | Kịch bản phân cảnh 5–8 phút |
 | **7** | `W6-07` | Bổ sung Quality Gate & Branch Protection vào CI | D.N.Cường | 3.5h | Chat log, Git commit, CI Run URL | Ngày 3 | [x] Hoàn thành | Workflow kiểm tra pass test, coverage & PR lock |
-| **8** | `W6-08` | Quay video screencast thao tác màn hình thật | D.N.Cường | 4.5h | Chat log, Video raw 1080p, OBS timeline | Ngày 4 | [ ] Đang làm | Video thô 1080p, thao tác trực tiếp IDE |
-| **9** | `W6-09` | Thu âm tiếng Anh, biên tập & nén video MP4 | D.N.Cường | 4.0h | Chat log, ffmpeg log, File Properties | Ngày 5 | [ ] Đang làm | File `Demo_Screencast.mp4` (≤ 100MB, 5-8m) |
-| **10**| `W6-10` | Đóng gói bộ sản phẩm Pre-share lên Drive/Releases | D.N.Cường | 2.5h | Chat log, Drive link, GitHub Release | Ngày 6 | [ ] Chưa hoàn thành | Link tải trọn gói tài liệu mốc 90% |
+| **8** | `W6-08` | Quay video screencast thao tác màn hình thật | D.N.Cường | 4.5h | Chat log, Video raw 1080p, OBS timeline | Ngày 4 | [x] Hoàn thành | Video thô 1080p, thao tác trực tiếp IDE |
+| **9** | `W6-09` | Thu âm thuyết minh, biên tập & nén video MP4 | D.N.Cường | 4.0h | Chat log, ffmpeg log, File Properties | Ngày 5 | [x] Hoàn thành | File `Demo_Screencast.mp4` (≤ 100MB, 5-8m) |
+| **10**| `W6-10` | Đóng gói bộ sản phẩm Pre-share lên Drive/Releases | D.N.Cường | 2.5h | Chat log, Drive link, GitHub Release | Ngày 6 | [x] Hoàn thành | Link tải trọn gói tài liệu mốc 90% |
 | **11**| `W6-11` | Soạn bộ Slide song song (`.pptx` & `.md` ≤ 15 trang) | N.N.M.Tuấn | 4.0h | Chat log, Git commit, Slide preview | Ngày 2 | [x] Hoàn thành | 2 file `Seminar_Slides.pptx` & `.md` |
 | **12**| `W6-12` | Hoàn thiện slide Failure Mode 2 & Data-Driven test | N.N.M.Tuấn | 3.5h | Chat log, Git commit, Slide screenshot | Ngày 4 | [x] Hoàn thành | Slide trực quan, có code diff & 21 tests |
 | **13**| `W6-13` | Mở rộng test suites coupon & cấu hình LCOV coverage | N.N.M.Tuấn | 4.0h | Chat log, Git commit, HTML Coverage log | Ngày 4 | [x] Hoàn thành | Báo cáo độ bao phủ mã nguồn backend |
 | **14**| `W6-14` | Kiểm tra tính nhất quán giữa Slide, Guide và Code | N.N.M.Tuấn | 2.5h | Chat log, Git commit, Checklist đối soát | Ngày 5 | [x] Hoàn thành | Thống nhất 100% thuật ngữ và số liệu |
 | **15**| `W6-15` | Soạn kịch bản thuyết minh trực tiếp buổi seminar | N.N.M.Tuấn | 3.0h | Chat log, Git commit, Script timeline | Ngày 6 | [x] Hoàn thành | File `Presentation_Script.md` phân vai rõ |
-| **16**| `W6-16` | Thiết kế bài tập lớp `Activity_Worksheet.md` | N.G.Huy | 4.0h | Chat log, Git commit, Worksheet preview | Ngày 2 | [ ] Đã thực hiện; chờ kiểm chứng thủ công | Worksheet 23 phút/10 điểm, 2 ảnh; chờ thống nhất kịch bản với nhóm |
-| **17**| `W6-17` | Soạn thảo `Activity_Worksheet_AnswerKey.md` | N.G.Huy | 3.0h | Chat log, Git commit, Barem chi tiết | Ngày 3 | [ ] Đã thực hiện; chờ nhóm duyệt | Đủ 10 đáp án/điểm thành phần và ảnh; barem đề xuất |
-| **18**| `W6-18` | Trích xuất Sample Failure Logs làm đề bài tập | N.G.Huy | 2.5h | Chat log, Raw CI logs, Git commit | Ngày 4 | [ ] Đã thực hiện; chờ xác nhận nguồn | 6 raw CI logs, metadata/source và 7 ảnh; SQLite là demo riêng |
-| **19**| `W6-19` | Kết nối & kiểm chứng Gemini API thật trong AI Triage | N.G.Huy | 4.5h | Chat log, Git commit, JSON output terminal | Ngày 5 | [ ] Đã kiểm chứng kỹ thuật; chờ nghiệm thu riêng | Script/unit test kế thừa tuần 5; 6/6 offline và Gemini HTTP 200 trong W6-20; chờ nhóm đối chiếu |
-| **20**| `W6-20` | Chạy đo đạc Flake Rate (10 runs) & tổng hợp Metrics | N.G.Huy | 4.0h | Chat log, 10 CI run screenshots, Git commit | Ngày 5 | [ ] Đã thực hiện; chờ bàn giao nhóm | 10 runs/20 invocation, CSV/raw, cache/AI, 5 ảnh; chưa xác nhận đưa số liệu vào Slide/Guide |
+| **16**| `W6-16` | Thiết kế bài tập lớp `Activity_Worksheet.md` | N.G.Huy | 4.0h | Chat log, Git commit, Worksheet preview | Ngày 2 | [x] Hoàn thành | Worksheet 23 phút/10 điểm, 2 ảnh; nhóm đã thống nhất kịch bản |
+| **17**| `W6-17` | Soạn thảo `Activity_Worksheet_AnswerKey.md` | N.G.Huy | 3.0h | Chat log, Git commit, Barem chi tiết | Ngày 3 | [x] Hoàn thành | Đủ 10 đáp án/điểm thành phần và ảnh; nhóm đã thống nhất barem 10 điểm |
+| **18**| `W6-18` | Trích xuất Sample Failure Logs làm đề bài tập | N.G.Huy | 2.5h | Chat log, Raw CI logs, Git commit | Ngày 4 | [x] Hoàn thành | 6 raw CI logs, metadata/source và 7 ảnh; SQLite là demo riêng |
+| **19**| `W6-19` | Kết nối & kiểm chứng Gemini API thật trong AI Triage | N.G.Huy | 4.5h | Chat log, Git commit, JSON output terminal | Ngày 5 | [x] Hoàn thành | Script/unit test kế thừa tuần 5; 6/6 offline và Gemini HTTP 200 trong W6-20; đã kiểm chứng kỹ thuật |
+| **20**| `W6-20` | Chạy đo đạc Flake Rate (10 runs) & tổng hợp Metrics | N.G.Huy | 4.0h | Chat log, 10 CI run screenshots, Git commit | Ngày 5 | [x] Hoàn thành | 10 runs/20 invocation, CSV/raw, cache/AI, 5 ảnh; đã hoàn thành đo đạc thực nghiệm |
 | **21**| `W6-21` | Tổng hợp hồ sơ Weekly Report Tuần 6 (PDF, AI, Git) | D.N.Cường | 2.0h | Chat log, Commit logs, Báo cáo hoàn tất | Ngày 6 | [ ] Đang làm | Thư mục `Weekly_Reports/Week06/` hoàn tất |
 
 ---
