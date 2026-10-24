@@ -1,0 +1,24 @@
+# Controlled GitHub Actions demo, not a historical EShop failure.
+# Run: https://github.com/SoftwareTesting-Group13/eshop-sut-seminar/actions/runs/39741620266
+# Lxxxx refers to the sanitized complete job raw log; ANSI removed.
+# Raw lines 145-163; all other lines omitted.
+
+L0145 | 2026-10-22T07:36:14.9786511Z node backend/demos/sqlite-lock.demo.cjs "$DEMO_MODE" 2>&1 | tee "ci-artifacts/ghuy_sqlite_${DEMO_MODE}.txt"
+L0146 | 2026-10-22T07:36:14.9825585Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+L0147 | 2026-10-22T07:36:14.9825984Z env:
+L0148 | 2026-10-22T07:36:14.9826253Z   DEMO_MODE: parallel
+L0149 | 2026-10-22T07:36:14.9826542Z ##[endgroup]
+L0150 | 2026-10-22T07:36:15.0122788Z 2026-10-22T07:36:15.009Z [SQLITE-DEMO] mode=parallel processCount=1 connectionCount=2 busyTimeoutMs=0
+L0151 | 2026-10-22T07:36:15.0124175Z 2026-10-22T07:36:15.012Z [SQLITE-DEMO] node=v22.23.3 platform=linux temporaryDb=true
+L0152 | 2026-10-22T07:36:15.0125240Z 2026-10-22T07:36:15.012Z [SQLITE-DEMO] run=39741620266 attempt=1 sha=485a77881b7c7be487af71805147bca1a1ae9d0e
+L0153 | 2026-10-22T07:36:15.1770514Z 2026-10-22T07:36:15.176Z [SQLITE-DEMO] sqlite=3.52.0 journalMode=DELETE sharedFile=true
+L0154 | 2026-10-22T07:36:15.1771289Z 2026-10-22T07:36:15.176Z [SQLITE-DEMO] writer=A INSERT succeeded; write transaction remains open
+L0155 | 2026-10-22T07:36:15.1772311Z 2026-10-22T07:36:15.176Z [SQLITE-DEMO] writer=B attempting INSERT while writerATransactionOpen=true
+L0156 | 2026-10-22T07:36:15.1773897Z 2026-10-22T07:36:15.177Z [SQLITE-DEMO] writer=B INSERT failed code=SQLITE_BUSY message=SQLITE_BUSY: database is locked
+L0157 | 2026-10-22T07:36:15.1778329Z 2026-10-22T07:36:15.177Z [SQLITE-DEMO] writer=A ROLLBACK completed during cleanup
+L0158 | 2026-10-22T07:36:15.1782225Z 2026-10-22T07:36:15.178Z [SQLITE-DEMO] Temporary database and connections cleaned up
+L0159 | 2026-10-22T07:36:15.1786715Z Error: SQLITE_BUSY: database is locked
+L0160 | 2026-10-22T07:36:15.1830752Z ##[error]Process completed with exit code 1.
+L0161 | 2026-10-22T07:36:15.1920438Z ##[group]Run actions/upload-artifact@v6
+L0162 | 2026-10-22T07:36:15.1920751Z with:
+L0163 | 2026-10-22T07:36:15.1921042Z   name: ghuy-sqlite-parallel

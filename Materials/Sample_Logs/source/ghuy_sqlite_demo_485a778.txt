@@ -1,0 +1,96 @@
+# Source: backend/demos/sqlite-lock.demo.cjs @ 485a77881b7c7be487af71805147bca1a1ae9d0e
+S0001 | // Controlled teaching reproduction: two connections, one disposable SQLite file.
+S0002 | // This is not a failure captured from the EShop application or parallel Jest workers.
+S0003 | const sqlite3 = require('sqlite3');
+S0004 | const fs = require('node:fs');
+S0005 | const os = require('node:os');
+S0006 | const path = require('node:path');
+S0007 | 
+S0008 | const mode = process.argv[2];
+S0009 | if (!['parallel', 'serial'].includes(mode)) {
+S0010 |   console.error('Usage: node backend/demos/sqlite-lock.demo.cjs parallel|serial');
+S0011 |   process.exitCode = 2;
+S0012 | } else {
+S0013 |   main(mode).catch((error) => {
+S0014 |     console.error(error.stack || error);
+S0015 |     process.exitCode = 1;
+S0016 |   });
+S0017 | }
+S0018 | 
+S0019 | function open(filename) {
+S0020 |   return new Promise((resolve, reject) => {
+S0021 |     const db = new sqlite3.Database(filename, (error) => {
+S0022 |       if (error) return reject(error);
+S0023 |       db.configure('busyTimeout', 0);
+S0024 |       resolve(db);
+S0025 |     });
+S0026 |   });
+S0027 | }
+S0028 | function run(db, sql) {
+S0029 |   return new Promise((resolve, reject) => db.run(sql, (error) => error ? reject(error) : resolve()));
+S0030 | }
+S0031 | function get(db, sql) {
+S0032 |   return new Promise((resolve, reject) => db.get(sql, (error, row) => error ? reject(error) : resolve(row)));
+S0033 | }
+S0034 | function close(db) {
+S0035 |   return new Promise((resolve, reject) => db.close((error) => error ? reject(error) : resolve()));
+S0036 | }
+S0037 | function log(message) {
+S0038 |   console.log(`${new Date().toISOString()} [SQLITE-DEMO] ${message}`);
+S0039 | }
+S0040 | 
+S0041 | async function main(selectedMode) {
+S0042 |   const folder = fs.mkdtempSync(path.join(os.tmpdir(), 'ghuy-sqlite-demo-'));
+S0043 |   const filename = path.join(folder, 'isolated.sqlite');
+S0044 |   let first;
+S0045 |   let second;
+S0046 |   let transactionOpen = false;
+S0047 |   try {
+S0048 |     log(`mode=${selectedMode} processCount=1 connectionCount=2 busyTimeoutMs=0`);
+S0049 |     log(`node=${process.version} platform=${process.platform} temporaryDb=true`);
+S0050 |     if (process.env.GITHUB_RUN_ID) {
+S0051 |       log(`run=${process.env.GITHUB_RUN_ID} attempt=${process.env.GITHUB_RUN_ATTEMPT} sha=${process.env.GITHUB_SHA}`);
+S0052 |     }
+S0053 |     first = await open(filename);
+S0054 |     await run(first, 'PRAGMA journal_mode = DELETE');
+S0055 |     await run(first, 'CREATE TABLE writes (writer TEXT NOT NULL)');
+S0056 |     second = await open(filename);
+S0057 |     const version = await get(first, 'SELECT sqlite_version() AS version');
+S0058 |     log(`sqlite=${version.version} journalMode=DELETE sharedFile=true`);
+S0059 |     await run(first, 'BEGIN IMMEDIATE');
+S0060 |     transactionOpen = true;
+S0061 |     await run(first, "INSERT INTO writes VALUES ('A')");
+S0062 |     log('writer=A INSERT succeeded; write transaction remains open');
+S0063 |     if (selectedMode === 'serial') {
+S0064 |       await run(first, 'COMMIT');
+S0065 |       transactionOpen = false;
+S0066 |       log('writer=A COMMIT completed before writer=B starts');
+S0067 |     }
+S0068 |     log(`writer=B attempting INSERT while writerATransactionOpen=${transactionOpen}`);
+S0069 |     try {
+S0070 |       await run(second, "INSERT INTO writes VALUES ('B')");
+S0071 |     } catch (error) {
+S0072 |       log(`writer=B INSERT failed code=${error.code} message=${error.message}`);
+S0073 |       throw error;
+S0074 |     }
+S0075 |     if (selectedMode === 'parallel') {
+S0076 |       throw new Error('Demo did not reproduce SQLITE_BUSY: writer B unexpectedly succeeded');
+S0077 |     }
+S0078 |     const row = await get(first, 'SELECT COUNT(*) AS count FROM writes');
+S0079 |     if (row.count !== 2) throw new Error(`Expected 2 committed writes, received ${row.count}`);
+S0080 |     log(`PASS committedWrites=${row.count}`);
+S0081 |   } finally {
+S0082 |     if (first && transactionOpen) {
+S0083 |       await run(first, 'ROLLBACK');
+S0084 |       log('writer=A ROLLBACK completed during cleanup');
+S0085 |     }
+S0086 |     if (second) await close(second);
+S0087 |     if (first) await close(first);
+S0088 |     for (const suffix of ['', '-journal', '-wal', '-shm']) {
+S0089 |       const temporaryFile = filename + suffix;
+S0090 |       if (fs.existsSync(temporaryFile)) fs.unlinkSync(temporaryFile);
+S0091 |     }
+S0092 |     fs.rmdirSync(folder);
+S0093 |     log('Temporary database and connections cleaned up');
+S0094 |   }
+S0095 | }

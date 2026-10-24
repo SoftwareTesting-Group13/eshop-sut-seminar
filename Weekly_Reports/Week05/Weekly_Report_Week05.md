@@ -87,7 +87,7 @@
   - Sử dụng AI để hỗ trợ và review bug, đồng thời kiểm tra kỹ lưỡng các bước thực hiện trước khi commit.
 - **Kế hoạch hành động Tuần 6 (Mốc hoàn thành 90% seminar):**
   - Viết tài liệu `User_Guide.md` (tiếng Anh, ≥ 6 mục + 3 Failure Modes).
-  - Sản xuất video `Demo_Screencast.mp4` (5–8 phút, tiếng Anh, 1080p, ≤ 100MB).
+  - Sản xuất video `Demo_Screencast.mp4` (5–8 phút, 1080p, ≤ 100MB).
   - Thiết kế `Activity_Worksheet.md` (Pipeline Postmortem ~20-25m có answer key).
   - Soạn thảo `Seminar_Slides.pptx` (≤ 15 slides).
   - Đóng gói link Pre-share sẵn sàng nộp trước buổi báo cáo.

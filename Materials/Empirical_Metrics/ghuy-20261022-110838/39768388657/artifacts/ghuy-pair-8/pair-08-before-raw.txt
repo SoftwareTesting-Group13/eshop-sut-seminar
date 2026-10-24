@@ -1,0 +1,20 @@
+# Captured stdout then stderr; stream ordering is not reconstructed.
+# STDOUT
+
+# STDERR
+  console.log
+    [FM3][sleep] profile=fast workDelayMs=20 waitMs=100 ready=true
+
+      at Object.log (demos/flaky-delay.demo.js:32:15)
+
+PASS demos/flaky-delay.demo.js
+  Failure Mode 3 - async delay / sleep-based flaky test
+    ✓ sleep-based wait can inspect work before completion (111 ms)
+    ○ skipped await completion waits for the work instead of guessing a delay
+
+Test Suites: 1 passed, 1 total
+Tests:       1 skipped, 1 passed, 2 total
+Snapshots:   0 total
+Time:        0.46 s
+Ran all test suites with tests matching "sleep-based wait can inspect work before completion".
+Test results written to: ../ci-artifacts/metrics/pair-08-before-jest.json

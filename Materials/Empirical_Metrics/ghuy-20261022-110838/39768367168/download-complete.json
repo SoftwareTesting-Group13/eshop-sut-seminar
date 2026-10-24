@@ -1,0 +1,12 @@
+{
+  "downloaded_at_utc": "2026-10-22T11:10:53.252156+00:00",
+  "method": "Authenticated GitHub REST run ZIP + artifacts; top-level complete job logs, all text artifact members; UTF-8 LF; credentials/patterns redacted",
+  "files": [
+    "39768367168/job-logs/ghuy_3_flaky-pair.txt",
+    "39768367168/artifacts/ghuy-pair-2/pair-02-after-jest.json",
+    "39768367168/artifacts/ghuy-pair-2/pair-02-after-raw.txt",
+    "39768367168/artifacts/ghuy-pair-2/pair-02-before-jest.json",
+    "39768367168/artifacts/ghuy-pair-2/pair-02-before-raw.txt",
+    "39768367168/artifacts/ghuy-pair-2/pair-results.json"
+  ]
+}
