@@ -13,6 +13,8 @@ Môn Kiểm thử phần mềm – lớp Testing-CQ2023-3-LQVu
 
 Giảng viên: TS. Lâm Quang Vũ, TS. Trần Duy Hoàng, ThS. Trương Phước Lộc, ThS. Hồ Tuấn Thanh
 
+> Bộ slide gồm 15 slide, đồng bộ với seminar_slide_sut_aligned.pptx.
+
 ## Slide 1 – CI/CD & Test Harness Engineering
 
 Seminar T07 – Kiểm thử tự động trên hệ thống EShop.
@@ -191,7 +193,7 @@ Script: `.github/scripts/ai_triage.py`; khóa `GEMINI_API_KEY` lưu trong GitHub
 4. Jest `test.each` kiểm thử coupon; CI demo chạy unit suite riêng.
 5. AI triage chỉ chạy khi PR có Backend Test fail.
 
-**Video:** chưa có file demo trong repo; bổ sung URL khi có video.
+**Video demo:** [Xem trên YouTube](https://youtu.be/hze3wsX1Xck).
 
 ## Slide 15 – Kết luận và bài học
 
