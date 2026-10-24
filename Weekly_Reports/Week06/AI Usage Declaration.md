@@ -107,7 +107,7 @@
 ## 3. DANH MỤC CÁC TỆP NHẬT KÝ CHAT LOG CHI TIẾT
 
 Mỗi thành viên lưu toàn bộ nội dung trao đổi chi tiết với AI trong thư mục `chat_logs/`:
-1. Nguyễn Ngọc Minh Tuấn: `chatlog_mtuan_slides_coupon_tests.md` *(Đang cập nhật)*
+1. Nguyễn Ngọc Minh Tuấn: [chatlog_mtuan_slides_coupon_tests.md](./chat_logs/chatlog_mtuan_slides_coupon_tests.md)
 2. Dương Nhật Cường: [chatlog_ncuong_video_storyboard_ci.md](./chat_logs/chatlog_ncuong_video_storyboard_ci.md)
 3. Trần Gia Cường: [chatlog_gcuong_user_guide.md](./chat_logs/chatlog_gcuong_user_guide.md)
 4. Nguyễn Gia Huy: [chatlog_ghuy_worksheet_ai_triage.md](./chat_logs/chatlog_ghuy_worksheet_ai_triage.md)
