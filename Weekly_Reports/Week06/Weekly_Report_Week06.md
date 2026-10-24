@@ -103,10 +103,21 @@
    - **Mô tả:** Ảnh chụp lịch sử Git Commits của Trần Gia Cường trên GitHub repository (nhánh `gcuong`), minh chứng hoàn thành đầy đủ chuỗi 5 commit hoàn thiện `User_Guide.md`.
 
 ### 4.2. Minh chứng nhóm Nguyễn Ngọc Minh Tuấn (`mtuan_`)
-- *(Hiện tại chưa có file ảnh trong thư mục `Weekly_Reports/Week06/screenshots/`. Các ảnh minh chứng slide và test coverage của Tuấn đang tạm lưu tại thư mục `evidence/` trên branch `main` và đang chờ chuyển sang `screenshots/` theo đúng quy chuẩn).*
+1. **Minh chứng Task W6-11: Slide Báo cáo Thuyết trình (15 slides)**
+   - File: `mtuan_03_slide_overview.png`
+   - Mô tả: Ảnh chụp tổng quan giao diện thiết kế bộ Slide báo cáo `Seminar_Slides.pptx` (chữ đen nền trắng, cấu trúc chuẩn 15 trang).
+2. **Minh chứng Task W6-12: Slide phân tích lỗi Failure Mode 2**
+   - File: `mtuan_02_failure_mode_2.png`
+   - Mô tả: Slide chi tiết phân tích lỗi tính phần trăm coupon (`(1 - discount_value)`), code diff và biểu thức toán học.
+3. **Minh chứng Task W6-13: Mở rộng Data-Driven Tests & Báo cáo LCOV/HTML Coverage**
+   - File: `mtuan_01_coupon_tests.png`, `mtuan_04_html_code_coverage.png`, `mtuan_05_terminal_log.png`
+   - Mô tả: Bộ 21 ca kiểm thử Jest Data-Driven (`test.each`) cho coupon và giao diện báo cáo HTML Code Coverage đạt chỉ tiêu.
 
 ### 4.3. Minh chứng nhóm Dương Nhật Cường (`ncuong_`)
-- *(Hiện tại chưa có file ảnh trong thư mục `Weekly_Reports/Week06/screenshots/`. Đang cập nhật khi hoàn thành kịch bản quay video screencast và nén file MP4).*
+1. **Minh chứng Task W6-08 & W6-09: Sản xuất Video Screencast Demo**
+   - File thông tin & link video: `videos/README.md`
+   - Mô tả: Video quay màn hình thao tác trực tiếp trên IDE/terminal/GitHub Actions (thời lượng ~10 phút, độ phân giải 1080p, thuyết minh rõ ràng). Thực hiện trọn vẹn kịch bản Fail-Fast PR Lock và AI Log Triage.
+
 
 ### 4.4. Minh chứng nhóm Nguyễn Gia Huy (`ghuy_`)
 
