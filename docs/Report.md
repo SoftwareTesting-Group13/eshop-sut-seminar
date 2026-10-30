@@ -91,7 +91,7 @@ Khác biệt hoàn toàn với môn học DevOps (vốn tập trung sâu vào h�
   2. *Triển khai Pipeline:* Cấu hình workflow GitHub Actions (`eshop-ci.yml`) với cơ chế bộ nhớ đệm thông minh (`actions/cache`), áp đặt rào chắn **Quality Gates** (100% test pass, line coverage module coupon > 70%) và thiết lập **Branch Protection Rules** bắt buộc trạng thái xanh mới cho phép merge PR.
   3. *Tái hiện 3 Failure Modes kỹ thuật bắt buộc:* (1) Xung đột file-locking SQLite do chạy đa luồng (`SQLITE_BUSY`); (2) Lỗi nghiệp vụ công thức tính coupon percent; (3) Flaky test do bất đồng bộ timing (`sleep` vs `await`).
   4. *Tích hợp Trợ lý AI Log Triage:* Xây dựng script Python phân tích log lỗi tự động qua Google Gemini API, sinh Cây giả thuyết (Hypothesis Tree) rút ngắn thời gian điều tra lỗi từ ~2 phút xuống ~15 giây.
-  5. *Đóng gói sản phẩm đào tạo:* Biên soạn User Guide chuyên sâu tiếng Anh, sản xuất Video Screencast chuẩn 1080p (≤ 100MB), thiết kế bộ Slide ≤ 15 trang, và bài tập tình huống thực hành trên lớp (Activity Worksheet).
+  5. *Đóng gói sản phẩm đào tạo:* Biên soạn User Guide chuyên sâu tiếng Anh, sản xuất Video Screencast chuẩn 1080p (≤ 100MB), thiết kế bộ Slide thuyết trình, và bài tập tình huống thực hành trên lớp (Activity Worksheet).
 
 ---
 
@@ -531,7 +531,7 @@ flowchart LR
 | **7. Biên soạn tài liệu User Guide tiếng Anh chuẩn 8 mục** | C | C | **A / R** | C |
 | **8. Xây dựng hệ thống sơ đồ kiến trúc Mermaid tương tác** | C | C | **A / R** | I |
 | **9. Sản xuất Video Screencast Demo (1080p, ≤ 100MB)**| C | **A / R** | C | C |
-| **10. Thiết kế Bộ Slide thuyết trình (≤ 15 trang pptx/md)** | **A / R** | C | C | C |
+| **10. Thiết kế Bộ Slide thuyết trình (pptx/md)** | **A / R** | C | C | C |
 | **11. Thiết kế Bài tập Lớp học (Activity Worksheet & Answer Key)** | C | I | C | **A / R** |
 | **12. Kịch bản thuyết trình trực tiếp tại lớp (Live Presentation)** | **A / R** | **R** | **R** | **R** |
 | **13. Biên soạn Báo cáo Tổng kết Seminar (`docs/Report.md`)** | C | C | **A / R** | C |
@@ -545,7 +545,7 @@ flowchart LR
   1. Chủ trì biên soạn tài liệu `Proposal.md` và bảng khảo sát định lượng `toolSurvey.md`.
   2. Mở rộng 21 ca kiểm thử Data-Driven Testing cho phân hệ coupon, kiểm tra phân quyền truy cập và hạn mức đơn hàng.
   3. Cấu hình báo cáo Code Coverage định dạng HTML và LCOV cho Backend Jest suite.
-  4. Thiết kế hoàn chỉnh bộ Slide báo cáo đồng thời cả 2 phiên bản: `Seminar_Slides.pptx` (trình chiếu tại lớp) và `docs/seminar_slide.md` (tra cứu trực tiếp trên GitHub), tuân thủ nghiêm ngặt chuẩn **chữ đen nền trắng** và quy định **≤ 15 trang**.
+  4. Thiết kế hoàn chỉnh bộ Slide báo cáo đồng thời cả 2 phiên bản: `Seminar_Slides.pptx` (trình chiếu tại lớp) và `docs/seminar_slide.md` (tra cứu trực tiếp trên GitHub), tuân thủ nghiêm ngặt chuẩn **chữ đen nền trắng**.
   5. Biên soạn kịch bản thuyết minh trực tiếp tại lớp (`docs/seminar_script.md`) phân bổ thời gian chi tiết từng phút cho 4 thành viên.
   6. Mở và hợp nhất thành công Pull Request `#11` (`docs/tuan-week6`) vào nhánh `main`.
 
@@ -597,7 +597,7 @@ Toàn bộ quy trình 8 giai đoạn chuẩn từ Đề cương môn học (Stag
 ├──────────────────────────────────┼──────────────────────────────────┼────────────────────────────┤
 │ • Soạn Proposal & toolSurvey     │ • Hoàn thiện User_Guide.md (EN)  │ • Pre-share trước 3 ngày   │
 │ • Thiết lập Pipeline eshop-ci    │ • Video Demo 1080p (≤ 100MB)     │ • Báo cáo Live 45 phút     │
-│ • Cấu hình Jest & --runInBand    │ • Slide pptx & md (≤ 15 trang)   │ • Điều phối Worksheet 20m  │
+│ • Cấu hình Jest & --runInBand    │ • Slide pptx & md                │ • Điều phối Worksheet 20m  │
 │ • Tái hiện 3 Failure Modes       │ • Activity Worksheet + Barem     │ • Thu thập Minute Paper    │
 │ • Viết script AI Log Triage      │ • Đóng gói Pre-share Package     │ • Nộp bộ hồ sơ AI Audit    │
 └──────────────────────────────────┴──────────────────────────────────┴────────────────────────────┘
@@ -607,7 +607,7 @@ Toàn bộ quy trình 8 giai đoạn chuẩn từ Đề cương môn học (Stag
 Tại thời điểm kết thúc Tuần 6, nhóm hoàn thành việc đóng gói bộ sản phẩm bàn giao sẵn sàng chia sẻ cho lớp trước buổi báo cáo ít nhất 3 ngày làm việc:
 1. **Tài liệu Hướng dẫn Kỹ thuật Chuyên sâu (`User_Guide.md`):** Viết hoàn toàn bằng tiếng Anh, 8 phần trọng tâm, tích hợp bộ 3 sơ đồ Mermaid tương tác, phân tích toàn diện 3 failure modes và hướng dẫn tái hiện từng bước.
 2. **Video Demo Screencast (`Demo_Screencast.mp4`):** Thời lượng 5–8 phút, độ phân giải sắc nét 1080p, thuyết minh rõ ràng, dung lượng nén tối ưu ≤ 100MB, thao tác 100% trên màn hình terminal/IDE/GitHub Actions thật.
-3. **Bộ Slide Báo cáo Thuyết trình:** Đồng thời cả 2 phiên bản `Seminar_Slides.pptx` và `docs/seminar_slide.md`, tuân thủ nghiêm ngặt quy định ≤ 15 trang chữ đen nền trắng, tập trung sơ đồ trực quan và số liệu thực nghiệm.
+3. **Bộ Slide Báo cáo Thuyết trình:** Đồng thời cả 2 phiên bản `Seminar_Slides.pptx` và `docs/seminar_slide.md`, tuân thủ chuẩn trình chiếu chữ đen nền trắng, tập trung sơ đồ trực quan và số liệu thực nghiệm.
 4. **Bộ Bài tập Thực hành Tương tác Lớp học:** Tài liệu đề bài `Activity_Worksheet.md` (kịch bản Pipeline Postmortem 20–25 phút), file đáp án chi tiết kèm barem chấm điểm `Activity_Worksheet_AnswerKey.md`, và thư mục log lỗi mẫu `Materials/Sample_Logs/`.
 5. **Bộ Hồ sơ Báo cáo Tiến độ Tuần:** Thư mục `Weekly_Reports/Week06/` gồm `Weekly_Report_Week06.md`, `Git Commit Log Total.md`, `AI Usage Declaration.md`, và các tệp tin chat log cá nhân.
 
