@@ -66,3 +66,18 @@ Kịch bản thuyết trình mới tại [docs/PresentationScript.md](../../docs
 * **Bản kê khai sử dụng AI Tuần 7:** [AI Usage Declaration.md](./AI%20Usage%20Declaration.md)
 * **Nhật ký commit Git tổng hợp Tuần 7:** [Git Commit Log Total.md](./Git%20Commit%20Log%20Total.md)
 * **Workflow CI tích hợp AI PR Comment:** [.github/workflows/eshop-ci.yml](../../.github/workflows/eshop-ci.yml)
+* **Thư mục ảnh minh chứng:** [screenshots/](./screenshots/)
+
+---
+
+## 5. KHU VỰC MINH CHỨNG TRỰC QUAN (VISUAL EVIDENCE)
+
+> [!NOTE]
+> Mọi file ảnh minh chứng được lưu trữ tại thư mục `Weekly_Reports/Week07/screenshots/` phục vụ cho việc đối soát và nghiệm thu tiến độ Tuần 7.
+
+1. **Minh chứng Kế hoạch Phối hợp Seminar giữa 2 Nhóm:**
+   * **File:** [screenshots/coordinationPlan.png](./screenshots/coordinationPlan.png)
+   * **Mô tả:** Ảnh chụp bảng phân định ranh giới nội dung và kịch bản phối hợp giữa Nhóm 10 (Nền tảng & Hạ tầng CI/CD) và Nhóm 13 (Test Harness Engineering, Data-Driven Testing, Concurrency Bug và AI-Triage PR comment).
+2. **Minh chứng Kịch bản Thuyết trình Phân vai Chi tiết (20 phút):**
+   * **File:** [screenshots/presentationScript.png](./screenshots/presentationScript.png)
+   * **Mô tả:** Ảnh chụp giao diện tài liệu kịch bản thuyết trình phân vai ([docs/PresentationScript.md](../../docs/PresentationScript.md)) với phân bổ thời lượng chi tiết từng phút cho 4 thành viên và hoạt động tương tác Joint In-class Activity.

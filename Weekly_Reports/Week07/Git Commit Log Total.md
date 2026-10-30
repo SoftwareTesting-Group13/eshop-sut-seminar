@@ -36,8 +36,8 @@
 ---
 
 ### 2.3. Thành viên 3: Trần Gia Cường (`trancuonG05` / `23120225`)
-*Nhánh làm việc: `gcuong`*
-* *(Các commit chuẩn bị tài liệu Tuần 7, đồng bộ kịch bản thuyết trình phân vai và rà soát các giới hạn slide đang thực hiện trên local)*
+*Nhánh làm việc chính: `gcuong`*
+* **[15e6440]** 2026-10-30 — `docs(week7): add week 7 reports, presentation script, visual evidence, and align slide limits`
 
 ---
 
