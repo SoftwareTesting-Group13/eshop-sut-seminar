@@ -61,3 +61,19 @@
 - **Mục đích sử dụng:**
 - **Prompt tiêu biểu:**
 - **Đánh giá phản hồi & Hiệu chỉnh thủ công:**
+
+---
+
+## 3. CAM KẾT LIÊM CHÍNH HỌC THUẬT (ACADEMIC INTEGRITY DECLARATION)
+
+Chúng tôi xin cam kết danh dự:
+1. Toàn bộ nội dung khai báo trên là trung thực và phản ánh chính xác quá trình sử dụng các công cụ trí tuệ nhân tạo (AI) trong tuần làm việc thứ 7 của nhóm.
+2. AI chỉ được sử dụng với vai trò là công cụ hỗ trợ (tư vấn giải pháp, rà soát cấu trúc văn bản, gợi ý khung kịch bản). Mọi nội dung kỹ thuật, kịch bản thuyết trình và tài liệu báo cáo đều được các thành viên trong nhóm trực tiếp đọc hiểu, đối chiếu mã nguồn và chịu trách nhiệm hoàn toàn về tính đúng đắn.
+3. Nhóm tuyệt đối không sao chép nguyên văn (copy-paste) kết quả chưa qua kiểm chứng từ AI.
+
+| STT | Họ và tên thành viên | Trạng thái xác nhận | Ngày cam kết |
+| :---: | :--- | :---: | :---: |
+| 1 | Nguyễn Ngọc Minh Tuấn | *(Chờ xác nhận)* | 30/10/2026 |
+| 2 | Dương Nhật Cường | *(Chờ xác nhận)* | 30/10/2026 |
+| 3 | Trần Gia Cường | Đã xác nhận | 30/10/2026 |
+| 4 | Nguyễn Gia Huy | *(Chờ xác nhận)* | 30/10/2026 |
