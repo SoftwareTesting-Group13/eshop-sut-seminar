@@ -13,7 +13,7 @@ Môn Kiểm thử phần mềm – lớp Testing-CQ2023-3-LQVu
 
 Giảng viên: TS. Lâm Quang Vũ, TS. Trần Duy Hoàng, ThS. Trương Phước Lộc, ThS. Hồ Tuấn Thanh
 
-> Bộ slide gồm 15 slide, đồng bộ với seminar_slide_sut_aligned.pptx.
+> Bộ slide đồng bộ với seminar_slide_sut_aligned.pptx.
 
 ## Slide 1 – CI/CD & Test Harness Engineering
 
