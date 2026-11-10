@@ -66,6 +66,7 @@ Kịch bản thuyết trình mới tại [docs/PresentationScript.md](../../docs
 * **Bản kê khai sử dụng AI Tuần 7:** [AI Usage Declaration.md](./AI%20Usage%20Declaration.md)
 * **Nhật ký commit Git tổng hợp Tuần 7:** [Git Commit Log Total.md](./Git%20Commit%20Log%20Total.md)
 * **Workflow CI tích hợp AI PR Comment:** [.github/workflows/eshop-ci.yml](../../.github/workflows/eshop-ci.yml)
+* **Thư mục Chat Logs với AI:** [chat_logs/](./chat_logs/)
 * **Thư mục ảnh minh chứng:** [screenshots/](./screenshots/)
 
 ---
