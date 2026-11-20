@@ -6,6 +6,10 @@ node_modules/
 coverage/
 */coverage/
 
+# Jenkins stage logs (backend/test-results/*.log)
+test-results/
+*/test-results/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
