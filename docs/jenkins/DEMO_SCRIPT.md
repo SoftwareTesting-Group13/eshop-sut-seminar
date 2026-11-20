@@ -106,6 +106,17 @@ Mở file `Jenkinsfile` trong repo (tab GitHub hoặc editor), chỉ nhanh 5 sta
    > "Kể cả log từng stage, kết quả test JSON và báo cáo coverage đều được lưu
    > lại thành artifact. Build sau có thể tải về để kiểm chứng."
 
+6. Quay lại **trang job con của nhánh** (không phải trang build) → cuộn xuống
+   mục **Stage View**.
+
+   > "Đây là plugin *Pipeline: Stage View*. Mỗi cột là một stage của pipeline,
+   > mỗi hàng là một build: ô xanh là pass, ô đỏ gạch chéo là fail. Sau khi
+   > sửa lỗi ở Mục 4, quay lại trang này sẽ thấy thêm một hàng đỏ — thấy rõ
+   > Jenkins tự phát hiện lỗi."
+
+   *(Nếu chưa cài plugin này thì cài theo
+   [SETUP_GUIDE.md mục 1.3](SETUP_GUIDE.md#13-kiểm-tra--cài-plugin) rồi F5 trang.)*
+
 ---
 
 ## Mục 4 — Jenkins có phát hiện lỗi không (4–5 phút)

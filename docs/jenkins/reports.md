@@ -23,6 +23,45 @@ Jenkins → eshop-ci (Multibranch) → job con của nhánh demo → chọn 1 bu
 - Trang của job con (không phải trang tổng `eshop-ci`) mới có menu
   **Stages / Pipeline Overview** để xem sơ đồ 5 stage.
 
+### 1.1 Stage View — bảng stage × build (hình đẹp nhất để chụp slide)
+
+Cài plugin **Pipeline: Stage View** (`pipeline-stage-view`, xem
+[SETUP_GUIDE.md mục 1.3](SETUP_GUIDE.md#13-kiểm-tra--cài-plugin)).
+
+Trang job con của nhánh sẽ có mảng bảng:
+
+```text
+Stage View
+┌──────────┬──────────┬─────────┬───────┬──────────────┐
+│          │ Checkout │ Install │ Test  │ Quality Gate │
+├──────────┼──────────┼─────────┼───────┼──────────────┤
+│ build #3 │ 3s       │ 7s      │ 3s    │ skipped      │
+│ build #2 │ 8s       │ 5s      │ 5s    │ skipped      │
+└──────────┴──────────┴─────────┴───────┴──────────────┘
+```
+
+| Thứ trên bảng | Nghĩa là gì |
+|---|---|
+| Ô xanh nhạt | Stage chạy thành công |
+| Ô đỏ gạch chéo + chữ `failed` | Stage fail — dùng để chỉ ra "Jenkins bắt được lỗi" |
+| Ô xám | Stage bị skip (vì stage trước đã fail) |
+| Số trong ô | Thời gian stage chạy |
+| Hàng `Average stage times` | Trung bình mỗi stage qua các build |
+| Cột bên trái (#3, #2…) | Bấm vào để mở đúng build đó |
+
+> Mảng này **tự động có** sau khi plugin cài xong — không cần cấu hình gì thêm,
+> chỉ cần job đã có ít nhất 1 build.
+
+### 1.2 Stages (Graph View) — sơ đồ 1 build
+
+Menu **Stages** ở cột bên trái của job con → hiện flowchart của từng build:
+xanh lá = pass, đỏ = fail, vàng = đang chạy. Bấm vào ô stage để xem log riêng
+của stage đó.
+
+> Plugin **Pipeline Graph View** (`pipeline-graph-view`). Bản mới nhất yêu cầu
+> Jenkins 2.589 (ta đang dùng 2.580.1) → Jenkins sẽ tự chọn bản tương thích
+> khi cài.
+
 > Plugin **Pipeline: Stage View** (ID `pipeline-stage-view`) cho bảng màu từng
 > stage; **Pipeline Graph View** cho sơ đồ. Cài ở Manage Jenkins → Plugins nếu
 > muốn có giao diện đẹp.

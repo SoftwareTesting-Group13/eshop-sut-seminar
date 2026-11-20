@@ -90,10 +90,11 @@ Dán vào ô *Unlock Jenkins*, bấm **Continue**, rồi:
 Nếu trang hiện **Sign in** (đã có tài khoản từ lần dựng trước): đăng nhập bình
 thường, **không** xóa volume để chạy lại wizard.
 
-### 1.3 Kiểm tra plugin
+### 1.3 Kiểm tra & cài plugin
 
-Pipeline cần đúng **3 plugin**. Bốn plugin đầu đã nằm trong bộ "suggested plugins"
-nên wizard đã cài; `github-branch-source` cũng thuộc nhóm này.
+#### Bắt buộc — 3 plugin
+
+Cả 3 đều đã nằm trong bộ "suggested plugins" nên wizard đã cài sẵn.
 
 | Plugin (ID) | Vai trò |
 |---|---|
@@ -104,6 +105,34 @@ nên wizard đã cài; `github-branch-source` cũng thuộc nhóm này.
 Kiểm tra: **Manage Jenkins → Plugins → Installed plugins**, tìm đúng 3 ID trên.
 Thiếu thì vào **Available plugins**, gõ ID, tick, **Install**, và tick *"Restart
 Jenkins when installation is complete and no jobs are running"* nếu được hỏi.
+
+#### Nên có — 2 plugin cho giao diện đẹp khi demo
+
+| Plugin (ID) | Cho ra cái gì |
+|---|---|
+| `pipeline-stage-view` (**Pipeline: Stage View**) | Bảng lưới **stage × build**: mỗi cột là 1 stage, mỗi hàng là 1 build, ô xanh = pass, ô đỏ gạch chéo = fail, kèm thời gian trung bình mỗi stage. **Đây là hình đẹp nhất để chụp slide.** |
+| `pipeline-graph-view` (**Pipeline Graph View**) | Menu **Stages**: sơ đồ flowchart từng stage của 1 build (xanh lá = pass, đỏ = fail, vàng = đang chạy) |
+
+Cài cả hai:
+
+1. **Manage Jenkins → Plugins → Available plugins**.
+2. Gõ lần lượt `Pipeline: Stage View` rồi `Pipeline Graph View` — **đánh dấu đúng
+   tên plugin**, không gõ ID (dễ dính plugin khác trùng chữ).
+3. Bấm **Install** cho từng plugin, đợi xong.
+4. Nếu được hỏi restart → tick *"Restart Jenkins when installation is complete
+   and no jobs are running"* → **Restart**.
+
+Sau khi cài:
+
+- **Stage View** xuất hiện ngay trên trang **job con của nhánh** (ví dụ
+  `eshop-ci → main`), là một mảng bảng ngay dưới phần thông tin job. Cần có
+  ít nhất 1 build đã chạy thì mới có dữ liệu.
+- **Stages** (Graph View) xuất hiện trong menu bên trái của job con.
+
+> Bản `pipeline-graph-view` mới nhất yêu cầu Jenkins 2.589, còn controller của
+> ta là 2.580.1. Jenkins sẽ tự chọn bản cũ hơn tương thích khi cài — nếu nó
+> báo *"requires Jenkins 2.589"*, bấm **Install anyway** là được, hoặc bỏ qua
+> plugin này (Stage View mới là thứ quan trọng cho demo).
 
 > **Không cần** plugin JUnit, Coverage, NodeJS, Docker Pipeline. Repo chưa có
 > `jest-junit`/`cobertura` nên pipeline đọc kết quả bằng log + artifact
