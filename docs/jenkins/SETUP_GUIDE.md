@@ -424,6 +424,12 @@ Nếu job `eshop-ci` đã tồn tại → **Configure** và sửa, đừng tạo
    (không phải `backend/Jenkinsfile`).
 7. **Save**.
 
+> **Tuỳ chọn — muốn push code là Jenkins tự build?** Xem
+> [WEBHOOK_SETUP.md](WEBHOOK_SETUP.md) (ngrok + GitHub webhook). Lưu ý: mục
+> *Triggers* trong trang Configure của job Multibranch **bị xám** là bình thường,
+> không cần tick ô *GitHub hook trigger for GITScm polling*. Không làm thì vẫn
+> demo bình thường bằng *Scan Multibranch Pipeline Now*.
+
 ### 4.2 Scan
 
 Trong job `eshop-ci` → **Scan Multibranch Pipeline Now** → mở **Scan Log**.

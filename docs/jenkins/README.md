@@ -7,6 +7,7 @@ unit test trước lớp.
 |---|---|
 | [SETUP_GUIDE.md](SETUP_GUIDE.md) | Dựng môi trường từ số 0: controller → agent → job → build đầu tiên. Làm theo **trước demo**. |
 | [DEMO_SCRIPT.md](DEMO_SCRIPT.md) | Kịch bản trình bày trước lớp: thứ tự mở màn hình, câu nói, kịch bản build đỏ. |
+| [WEBHOOK_SETUP.md](WEBHOOK_SETUP.md) | *(Tuỳ chọn)* Bật tự động build khi push code: ngrok + GitHub webhook. Không có nó vẫn demo bằng Scan/Build Now. |
 | [reports.md](reports.md) | Đọc kết quả: ở đâu xem test pass/fail, coverage, artifact; và bảng xử lý lỗi. |
 
 ## Mô hình
